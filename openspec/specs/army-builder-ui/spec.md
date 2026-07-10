@@ -1,0 +1,194 @@
+# army-builder-ui Specification
+
+## Purpose
+TBD - created by archiving change army-builder-1p40k. Update Purpose after archive.
+## Requirements
+### Requirement: Faction selection and unit roster
+
+The system SHALL let the user choose a faction for the current list and SHALL display that faction's available units with their key stats for adding to the list. Each roster unit SHALL show a "Details" button, separate from its add control; activating it expands an inline panel showing that unit's baseline equipment, special rules, and every available upgrade section and option with its cost (read-only — no selection controls), and activating it again collapses the panel. The expanded panel SHALL NOT repeat the unit's name, and SHALL NOT render as a bordered/boxed panel nested inside the roster row's own box — it is separated from the row above it by a divider only. A roster unit whose special rules include Hero SHALL show a "Hero" badge; a roster unit that is not Hero but whose special rules include Psyker SHALL show a "Psyker" badge.
+
+#### Scenario: Browse a faction roster
+
+- **WHEN** the user views the builder for a list with a chosen faction
+- **THEN** the faction's units are listed with name, size, quality, cost, a "Details" control, and an add control
+
+#### Scenario: Add from the roster
+
+- **WHEN** the user activates the add control on a roster unit
+- **THEN** that unit is added to the current list and appears in the list's selected-units area
+
+#### Scenario: Expand a roster unit's details panel
+
+- **WHEN** the user activates a roster unit's "Details" control
+- **THEN** an inline panel expands showing that unit's baseline equipment (with weapon rule tooltips), special rules (with tooltips), and every upgrade section/option available to it with its point cost, without needing to add the unit first
+
+#### Scenario: The details panel has no selection controls
+
+- **WHEN** a roster unit's details panel is expanded
+- **THEN** its upgrade options are listed without checkboxes or any other selection control — activating the panel never changes the unit's (nonexistent) selection state
+
+#### Scenario: The details panel does not repeat the unit's name or nest a box
+
+- **WHEN** a roster unit's details panel is expanded
+- **THEN** the panel does not show the unit's name again, and is not rendered as its own bordered panel inside the roster row's box
+
+#### Scenario: Collapse an expanded details panel
+
+- **WHEN** the user activates the "Details" control of a roster unit whose panel is already expanded
+- **THEN** the panel collapses
+
+#### Scenario: Expanding details does not add the unit, and adding does not expand details
+
+- **WHEN** the user activates a roster unit's "Details" control, or its add control
+- **THEN** only that control's own action occurs — activating "Details" never adds the unit to the list, and activating add never expands or collapses the details panel
+
+#### Scenario: Hero badge
+
+- **WHEN** a roster unit's special rules include Hero
+- **THEN** the roster entry shows a "Hero" badge
+
+#### Scenario: Psyker badge
+
+- **WHEN** a roster unit's special rules include Psyker and do not include Hero
+- **THEN** the roster entry shows a "Psyker" badge
+
+#### Scenario: A Hero Psyker shows only the Hero badge
+
+- **WHEN** a roster unit's special rules include both Hero and Psyker
+- **THEN** the roster entry shows only the "Hero" badge, not both
+
+### Requirement: Edit units and upgrades in the builder
+
+The system SHALL display each selected unit with its effective stats and SHALL provide controls to select that unit's available upgrade options and to remove the unit. The displayed equipment list SHALL reflect weapon additions, removals, and replacements from the unit's currently selected upgrades, not only its baseline loadout, with each weapon's range/attacks shown in brackets and its special rules shown as hoverable tooltips. If a unit's effective equipment (after all currently selected upgrades) contains no melee weapon, the displayed equipment list SHALL include a default `Light CCW` entry with its range/attacks bracket, per the rule that units without a melee weapon count as using Light CCWs/Claws. For a unit with more than one model, each equipment line SHALL be prefixed with the number of models in the unit currently carrying it (e.g. `4x Assault Rifle`), reflecting partial upgrades that replace only some of the unit's models' weapons; a single-model unit's equipment list SHALL NOT show this prefix.
+
+#### Scenario: Upgrade controls reflect available groups
+
+- **WHEN** a selected unit has upgrade-group letters
+- **THEN** the builder shows the options for those groups with their point costs, and selecting one updates the unit's stats and cost
+
+#### Scenario: Remove control
+
+- **WHEN** the user activates a unit's remove control
+- **THEN** the unit is removed from the list
+
+#### Scenario: Selecting a weapon-replacing upgrade updates the equipment list
+
+- **WHEN** the user selects an upgrade option that replaces one of the unit's weapons
+- **THEN** the unit's displayed equipment list updates to show the new weapon, with its range/attacks in brackets and any special rules shown as tooltipped chips
+
+#### Scenario: A ranged-only unit's equipment list shows a default melee weapon
+
+- **WHEN** a unit's baseline equipment and currently selected upgrades include no melee weapon
+- **THEN** the displayed equipment list includes a `Light CCW` entry showing `(Melee, A1)`
+
+#### Scenario: A unit with a real melee weapon does not get the default
+
+- **WHEN** a unit's baseline equipment or currently selected upgrades already include a melee weapon
+- **THEN** the displayed equipment list does not include a default `Light CCW` entry
+
+#### Scenario: A partial single-model swap splits the displayed count
+
+- **WHEN** a 5-model unit with baseline `Assault Rifles` has a "replace one Assault Rifle" upgrade option selected that adds a `Meltagun`
+- **THEN** the displayed equipment list shows `4x Assault Rifle` and `1x Meltagun`
+
+#### Scenario: A whole-unit replacement shows the full unit count
+
+- **WHEN** a multi-model unit has a "replace all X" upgrade option selected
+- **THEN** the displayed equipment list shows the replacement weapon prefixed with the unit's full model count, and no longer lists the original weapon
+
+#### Scenario: A single-model unit shows no count prefix
+
+- **WHEN** a unit with exactly one model is displayed
+- **THEN** its equipment list shows no `Nx ` count prefix on any line
+
+### Requirement: Live totals and validation display
+
+The system SHALL display the running point total, the points cap, the hero count, and any validation issues, updating them as the list changes.
+
+#### Scenario: Totals update live
+
+- **WHEN** the user adds, upgrades, or removes a unit
+- **THEN** the displayed total, hero count, and validation messages update immediately
+
+#### Scenario: Over-cap indication
+
+- **WHEN** the list total exceeds the points cap
+- **THEN** the builder visibly indicates the over-cap state
+
+### Requirement: Hover tooltips for rules
+
+The system SHALL display the full explanatory text of a special rule, army special rule, psychic power, or weapon rule when the user hovers over its name in the builder. An upgrade option whose label names a rule it grants (the whole label, or the text before a trailing parenthetical) SHALL show the same hover tooltip on that label, before the option is even selected.
+
+#### Scenario: Special rule tooltip
+
+- **WHEN** the user hovers over a special-rule label such as `Fearless` on a unit
+- **THEN** a tooltip shows the full rule text from the glossary
+
+#### Scenario: Parameterized rule tooltip
+
+- **WHEN** the user hovers over a parameterized rule such as `Tough(3)`
+- **THEN** the tooltip shows the rule text together with its parameter value
+
+#### Scenario: Weapon rule tooltip
+
+- **WHEN** the user hovers over a weapon rule such as Piercing
+- **THEN** a tooltip shows that weapon rule's full text
+
+#### Scenario: Upgrade option tooltip for a granted army rule
+
+- **WHEN** the user hovers over an upgrade option's label whose text names an army rule it grants (e.g. a "Battle Standard" option)
+- **THEN** a tooltip shows that army rule's full text, the same as it would once the option is selected and shown on the unit
+
+### Requirement: Combine and attach controls in the builder
+
+The system SHALL show a control to combine two selected list entries of the same Infantry-eligible unit, visible only when the list has two such eligible entries available to combine, and a control to split an already-combined pair. A combined pair SHALL render as a single card showing its combined model count and combined cost, with upgrade options that affect all models shown once (selecting one applies it to both linked entries) and options that affect one model or a bounded subset of models shown per entry. An upgrade group that has no option matching the current whole-unit/per-entry panel SHALL render nothing for that group (no heading, divider, or empty space). The system SHALL show a control to attach a selected Hero or Psyker list entry to an eligible Infantry list entry of the same Quality, and a control to detach it; an attached Hero/Psyker SHALL render nested under its host unit's card.
+
+#### Scenario: Combine control appears only when eligible
+
+- **WHEN** the list has two entries of the same Infantry-eligible unit
+- **THEN** a control to combine them is shown; it is not shown for a unit that is not Infantry-eligible or when there is only one copy
+
+#### Scenario: Combined pair renders as one card
+
+- **WHEN** two entries are combined
+- **THEN** the builder shows one card with the combined model count, combined cost, one set of whole-unit upgrade controls, and a per-entry panel for any single-model/bounded-subset options
+
+#### Scenario: A group with no matching options renders no divider
+
+- **WHEN** a combined pair's whole-unit upgrade panel (or a single entry's per-model panel) is displayed and an upgrade group has no option that belongs to that panel
+- **THEN** that group renders nothing — no heading, no divider line, and no empty space — for that panel
+
+#### Scenario: Split control is always available on a combined pair
+
+- **WHEN** a combined pair is displayed
+- **THEN** a control to split it back into two independent entries is shown
+
+#### Scenario: Attach control targets eligible units
+
+- **WHEN** the user attaches a Hero or Psyker entry
+- **THEN** only same-Quality Infantry-eligible entries are offered as valid targets
+
+#### Scenario: Attached Hero renders nested under its host
+
+- **WHEN** a Hero or Psyker is attached to a unit
+- **THEN** the builder shows the Hero/Psyker's card nested under (or visibly grouped with) its host unit's card, with a detach control
+
+### Requirement: Group-deployment combine controls in the builder
+
+The system SHALL show a control to combine a selected list entry with another entry sharing a group-deployment army rule (Conclave, Warband, Beastmaster, Court, or any future rule of the same "deploy up to N models together" shape), visible only when at least one other eligible, not-yet-full-group entry exists in the list. A group SHALL render as a single card showing its combined model count, combined cost, and a per-member roster listing each distinct member unit and count, with each member's own upgrade controls shown independently underneath. The system SHALL show a control on each member to remove it from the group.
+
+#### Scenario: Combine control appears only when an eligible partner exists
+
+- **WHEN** the list has two or more entries sharing a group-deployment army rule and room remains under the rule's model cap
+- **THEN** a control to combine them is shown; it is not shown when no other eligible entry exists or the group is already at its model cap
+
+#### Scenario: A group renders as one card with a member roster
+
+- **WHEN** two or more entries are combined into a group
+- **THEN** the builder shows one card with the group's combined model count, combined cost, and a roster line per distinct member unit and count
+
+#### Scenario: Remove-from-group control is available per member
+
+- **WHEN** a group card is displayed
+- **THEN** each member shows a control to remove just that member from the group
+

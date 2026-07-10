@@ -1,0 +1,35 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  color-scheme: light dark;
+}
+
+html,
+body,
+#app {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+}
+
+/* Print styling: hide interactive chrome and present a clean, paper-friendly reference. */
+@media print {
+  .no-print {
+    display: none !important;
+  }
+  body {
+    background: #fff !important;
+    color: #000 !important;
+  }
+  .print-page {
+    margin: 0;
+    padding: 0;
+  }
+  .print-unit {
+    break-inside: avoid;
+  }
+}
