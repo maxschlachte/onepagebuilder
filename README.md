@@ -1,6 +1,6 @@
 # One Page 40k — Army Builder
 
-An interactive army-list builder for [One Page 40k](https://onepagerules.wordpress.com/)
+An interactive army-list builder for [One Page 40k](https://www.mattcaron.net/opr_mirror/)
 (Main Rulebook **v3.3.1**). It enforces the army-composition rules, lets you assemble,
 edit, duplicate and delete lists, and produces a self-contained printable reference.
 
