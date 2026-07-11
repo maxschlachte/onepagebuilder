@@ -23,8 +23,8 @@ export const harlequins = faction({
     ]),
     group('B', [
       section('Replace any Pistol', 'any', [
-        { label: 'Neuro Disruptor (12”, A1p)', cost: 0, addEquipment: [customWeapon('Neuro Disruptor', { range: 12, attacks: '1', rules: rules('Piercing') })], removeOneEquipment: ['Pistols (Rending)'] },
-        { label: 'Fusion Pistol (6”, A6x)', cost: 10, addEquipment: [customWeapon('Fusion Pistol', { range: 6, attacks: '6', rules: rules('Piercing, Single Target') })], removeOneEquipment: ['Pistols (Rending)'] },
+        { label: 'Neuro Disruptor', cost: 0, addEquipment: [customWeapon('Neuro Disruptor', { range: 12, attacks: '1', rules: rules('Piercing') })], removeOneEquipment: ['Pistols (Rending)'] },
+        { label: 'Fusion Pistol', cost: 10, addEquipment: [customWeapon('Fusion Pistol', { range: 6, attacks: '6', rules: rules('Piercing, Single Target') })], removeOneEquipment: ['Pistols (Rending)'] },
       ]),
       section('Replace any Medium CCW', 'any', [
         { label: 'Medium CCW (Impact(D3))', cost: 5, addEquipment: [meleeWeapon('Medium', 'CCW', { rules: rules('Impact(D3)') })], removeOneEquipment: ['Medium CCWs'] },
@@ -38,11 +38,11 @@ export const harlequins = faction({
     group('C', [
       section('Equip any model with', 'any', [
         { label: 'Zephyrglaive (Impact(1))', cost: 5, addEquipment: [gear('Zephyrglaive', { rules: rules('Impact(1)') })] },
-        { label: 'Star Bolas (12”, A3p)', cost: 20, addEquipment: [customWeapon('Star Bolas', { range: 12, attacks: '3', rules: rules('Piercing') })] },
+        { label: 'Star Bolas', cost: 20, addEquipment: [customWeapon('Star Bolas', { range: 12, attacks: '3', rules: rules('Piercing') })] },
       ]),
       section('Replace any Shuriken Cannon', 'any', [
         {
-          label: 'Haywire Cannon (24”, A3, Haywire)',
+          label: 'Haywire Cannon',
           cost: 15,
           addEquipment: [customWeapon('Haywire Cannon', { range: 24, attacks: '3', rules: rules('Haywire') })],
           removeOneEquipment: ['Shuriken Cannons (24”, A3, Rending)'],
@@ -54,8 +54,8 @@ export const harlequins = faction({
       // already carries two copies, so per design.md this is treated as a pure
       // addition (no removal) rather than assumed to fully replace both.
       section('Take one', 'one', [
-        { label: 'Haywire Cannon (24”, A3, Haywire)', cost: 50, addEquipment: [customWeapon('Haywire Cannon', { range: 24, attacks: '3', rules: rules('Haywire') })] },
-        { label: 'Prismatic Cannon (24”, AD3*3p)', cost: 70, addEquipment: [customWeapon('Prismatic Cannon', { range: 24, attacks: 'D3*3', rules: rules('Piercing') })] },
+        { label: 'Haywire Cannon', cost: 50, addEquipment: [customWeapon('Haywire Cannon', { range: 24, attacks: '3', rules: rules('Haywire') })] },
+        { label: 'Prismatic Cannon', cost: 70, addEquipment: [customWeapon('Prismatic Cannon', { range: 24, attacks: 'D3*3', rules: rules('Piercing') })] },
       ]),
     ]),
   ],

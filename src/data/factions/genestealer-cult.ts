@@ -25,7 +25,7 @@ export const genestealerCult = faction({
       section('Replace up to two Assault Rifles with any', 'upToTwo', [
         { label: 'Grenade Launcher', cost: 10, addEquipment: [weapon('grenade-launcher')], removeOneEquipment: ['Assault Rifles'] },
         {
-          label: 'Mining Laser (24”, A6x)',
+          label: 'Mining Laser',
           cost: 25,
           addEquipment: [customWeapon('Mining Laser', { range: 24, attacks: '6', rules: rules('Piercing, Single Target') })],
           removeOneEquipment: ['Assault Rifles'],

@@ -203,7 +203,7 @@ export const chaosSpaceMarines = faction({
     group('J', [
       section('Replace Autocannon', 'one', [
         {
-          label: 'Demolisher Cannon (24”, A9p, Rending)',
+          label: 'Demolisher Cannon',
           cost: 85,
           addEquipment: [customWeapon('Demolisher Cannon', { range: 24, attacks: '9', rules: rules('Piercing, Rending') })],
           removeEquipment: ['Autocannon'],
@@ -218,13 +218,13 @@ export const chaosSpaceMarines = faction({
     group('K', [
       section('Replace one Sonic Blaster', 'one', [
         {
-          label: 'Doom Siren (12”, A6, Ignores Cover)',
+          label: 'Doom Siren',
           cost: 10,
           addEquipment: [customWeapon('Doom Siren', { range: 12, attacks: '6', rules: rules('Ignores Cover') })],
           removeOneEquipment: ['Sonic Blasters (24”, A2, Ignores Cover)'],
         },
         {
-          label: 'Blastmaster (36”, A2, Ignores Cover)',
+          label: 'Blastmaster',
           cost: 10,
           addEquipment: [customWeapon('Blastmaster', { range: 36, attacks: '2', rules: rules('Ignores Cover') })],
           removeOneEquipment: ['Sonic Blasters (24”, A2, Ignores Cover)'],
@@ -233,9 +233,9 @@ export const chaosSpaceMarines = faction({
     ]),
     group('L', [
       section('Replace Linked Heavy Flamer', 'one', [
-        { label: 'Flail (A3x in Melee)', cost: 0, addEquipment: [customWeapon('Flail', { range: null, attacks: '3', rules: rules('Piercing, Single Target') })], removeEquipment: ['Linked Heavy Flamer'] },
+        { label: 'Flail', cost: 0, addEquipment: [customWeapon('Flail', { range: null, attacks: '3', rules: rules('Piercing, Single Target') })], removeEquipment: ['Linked Heavy Flamer'] },
         {
-          label: 'Havoc Launcher (48”, A3, Linked)',
+          label: 'Havoc Launcher',
           cost: 10,
           addEquipment: [customWeapon('Havoc Launcher', { range: 48, attacks: '3', rules: rules('Linked') })],
           removeEquipment: ['Linked Heavy Flamer'],
@@ -265,33 +265,33 @@ export const chaosSpaceMarines = faction({
     group('N', [
       section('Replace Lasher Tendrils', 'one', [
         {
-          label: 'Magma Cutters (A3x in Melee, Rending)',
+          label: 'Magma Cutters',
           cost: 20,
           addEquipment: [customWeapon('Magma Cutters', { range: null, attacks: '3', rules: rules('Piercing, Single Target, Rending') })],
           removeEquipment: ['Lasher Tendrils (Fear)'],
         },
         {
-          label: '2x Ectoplasma Cannons (24”, A3p)',
+          label: '2x Ectoplasma Cannons',
           cost: 70,
           addEquipment: [customWeapon('Ectoplasma Cannons', { range: 24, attacks: '3', rules: rules('Piercing') }, { count: 2 })],
           removeEquipment: ['Lasher Tendrils (Fear)'],
         },
         {
-          label: '2x Hades Autocannons (36”, A4p)',
+          label: '2x Hades Autocannons',
           cost: 140,
           addEquipment: [customWeapon('Hades Autocannons', { range: 36, attacks: '4', rules: rules('Piercing') }, { count: 2 })],
           removeEquipment: ['Lasher Tendrils (Fear)'],
         },
       ]),
       section('Take one', 'one', [
-        { label: 'Ectoplasma Cannon (24”, A3p)', cost: 35, addEquipment: [customWeapon('Ectoplasma Cannon', { range: 24, attacks: '3', rules: rules('Piercing') })] },
+        { label: 'Ectoplasma Cannon', cost: 35, addEquipment: [customWeapon('Ectoplasma Cannon', { range: 24, attacks: '3', rules: rules('Piercing') })] },
       ]),
     ]),
     group('O', [
       section('Take any', 'any', [
         { label: 'Dozer Blade (Strider)', cost: 5, adds: ['Strider'] },
         { label: 'Pintle Mount (Linked Assault Rifle)', cost: 10, addEquipment: [linked(weapon('assault-rifle'))] },
-        { label: 'Havoc Launcher (48”, A3, Linked)', cost: 60, addEquipment: [customWeapon('Havoc Launcher', { range: 48, attacks: '3', rules: rules('Linked') })] },
+        { label: 'Havoc Launcher', cost: 60, addEquipment: [customWeapon('Havoc Launcher', { range: 48, attacks: '3', rules: rules('Linked') })] },
       ]),
       section(
         'Equip with one Pintle Mount attachment',

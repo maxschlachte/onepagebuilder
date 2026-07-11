@@ -33,9 +33,9 @@ export const spaceMarineChapters = faction({
       section('Take one', 'one', [
         { label: 'Pistol', cost: 5, addEquipment: [weapon('pistol')] },
         { label: 'Assault Rifle', cost: 10, addEquipment: [weapon('assault-rifle')] },
-        { label: 'Inferno Pistol (6”, A3x)', cost: 10, addEquipment: [customWeapon('Inferno Pistol', { range: 6, attacks: '3', rules: rules('Piercing, Single Target') })] },
-        { label: 'Hand Flamer (12”, A4)', cost: 15, addEquipment: [customWeapon('Hand Flamer', { range: 12, attacks: '4' })] },
-        { label: 'Stormbolter (24”, A2)', cost: 15, addEquipment: [customWeapon('Stormbolter', { range: 24, attacks: '2' })] },
+        { label: 'Inferno Pistol', cost: 10, addEquipment: [customWeapon('Inferno Pistol', { range: 6, attacks: '3', rules: rules('Piercing, Single Target') })] },
+        { label: 'Hand Flamer', cost: 15, addEquipment: [customWeapon('Hand Flamer', { range: 12, attacks: '4' })] },
+        { label: 'Stormbolter', cost: 15, addEquipment: [customWeapon('Stormbolter', { range: 24, attacks: '2' })] },
         { label: 'Plasma Pistol', cost: 20, addEquipment: [weapon('plasma-pistol')] },
       ]),
       section('Replace Medium CCW', 'one', [
@@ -59,8 +59,8 @@ export const spaceMarineChapters = faction({
     group('B', [
       section('Replace any Pistol', 'any', [
         { label: 'Assault Rifle', cost: 5, addEquipment: [weapon('assault-rifle')], removeOneEquipment: ['Pistol'] },
-        { label: 'Inferno Pistol (6”, A3x)', cost: 10, addEquipment: [customWeapon('Inferno Pistol', { range: 6, attacks: '3', rules: rules('Piercing, Single Target') })], removeOneEquipment: ['Pistol'] },
-        { label: 'Hand Flamer (12”, A4)', cost: 15, addEquipment: [customWeapon('Hand Flamer', { range: 12, attacks: '4' })], removeOneEquipment: ['Pistol'] },
+        { label: 'Inferno Pistol', cost: 10, addEquipment: [customWeapon('Inferno Pistol', { range: 6, attacks: '3', rules: rules('Piercing, Single Target') })], removeOneEquipment: ['Pistol'] },
+        { label: 'Hand Flamer', cost: 15, addEquipment: [customWeapon('Hand Flamer', { range: 12, attacks: '4' })], removeOneEquipment: ['Pistol'] },
         { label: 'Plasma Pistol', cost: 20, addEquipment: [weapon('plasma-pistol')], removeOneEquipment: ['Pistol'] },
       ]),
       section('Replace any Medium CCW', 'any', [
@@ -73,14 +73,14 @@ export const spaceMarineChapters = faction({
     ]),
     group('C', [
       section('Replace any Angelus Boltgun', 'any', [
-        { label: 'Inferno Pistol (6”, A3x)', cost: 0, addEquipment: [customWeapon('Inferno Pistol', { range: 6, attacks: '3', rules: rules('Piercing, Single Target') })], removeOneEquipment: ['Angelus Boltguns (12”, A2)'] },
+        { label: 'Inferno Pistol', cost: 0, addEquipment: [customWeapon('Inferno Pistol', { range: 6, attacks: '3', rules: rules('Piercing, Single Target') })], removeOneEquipment: ['Angelus Boltguns (12”, A2)'] },
         { label: 'Plasma Pistol', cost: 10, addEquipment: [weapon('plasma-pistol')], removeOneEquipment: ['Angelus Boltguns (12”, A2)'] },
       ]),
       section('Replace any Medium CCW', 'any', [
         { label: 'Medium Powersword', cost: 5, addEquipment: [meleeWeapon('Medium', 'Powersword')], removeOneEquipment: ['Medium CCW'] },
         { label: 'Medium Powerfist', cost: 10, addEquipment: [meleeWeapon('Medium', 'Powerfist')], removeOneEquipment: ['Medium CCW'] },
       ]),
-      section('Upgrade all models with', 'one', [{ label: 'Death Masks (Fear)', cost: 20 }]),
+      section('Upgrade all models with', 'one', [{ label: 'Death Masks (Fear)', cost: 20, adds: ['Fear'] }]),
     ]),
     group('D', [
       // Baal Predator is size 5 (squadron-priced); "Replace Linked Minigun" is singular/definite
@@ -96,7 +96,7 @@ export const spaceMarineChapters = faction({
         { label: 'Dozer Blade (Strider)', cost: 5, adds: ['Strider'] },
         // Nested-parenthetical compound label ("X (Y (Limited))") has no single resolvable weapon profile — left without equipment effects (matches space-marines.ts/imperial-guard.ts).
         { label: 'Hunter-Killer Missile (Missile Launcher (Limited))', cost: 10 },
-        { label: 'Pintle Mount (Stormbolter (24”, A2))', cost: 15, addEquipment: [customWeapon('Pintle Mount', { range: 24, attacks: '2' })] },
+        { label: 'Pintle Mount (Stormbolter)', cost: 15, addEquipment: [customWeapon('Pintle Mount', { range: 24, attacks: '2' })] },
         { label: 'Extra Armor (Tough(+3))', cost: 35, adds: ['Tough(+3)'] },
       ]),
     ]),
@@ -123,7 +123,7 @@ export const spaceMarineChapters = faction({
       // "Replace all equipment with" is unconditional and unambiguous regardless of size.
       section('Replace all equipment with', 'one', [
         {
-          label: 'Heavy Powerfist, Stormbolter (24”, A2), Frag Cannon (12”, A12p, Rending)',
+          label: 'Heavy Powerfist, Stormbolter, Frag Cannon',
           cost: 75,
           addEquipment: [meleeWeapon('Heavy', 'Powerfist'), customWeapon('Stormbolter', { range: 24, attacks: '2' }), customWeapon('Frag Cannon', { range: 12, attacks: '12', rules: rules('Piercing, Rending') })],
           removeEquipment: ['2x Stormbolter (24”, A2)', 'Force Powerfist'],
@@ -137,29 +137,29 @@ export const spaceMarineChapters = faction({
     group('H', [
       section('Replace one Stormbolter', 'one', [
         { label: 'Incinerator (Heavy Flamer)', cost: 20, addEquipment: [weapon('heavy-flamer', { label: 'Incinerator' })], removeOneEquipment: ['Stormbolters (24”, A2)'] },
-        { label: 'Psilencer (24”, A6)', cost: 30, addEquipment: [customWeapon('Psilencer', { range: 24, attacks: '6' })], removeOneEquipment: ['Stormbolters (24”, A2)'] },
-        { label: 'Psycannon (24”, A3p, Rending)', cost: 30, addEquipment: [customWeapon('Psycannon', { range: 24, attacks: '3', rules: rules('Piercing, Rending') })], removeOneEquipment: ['Stormbolters (24”, A2)'] },
+        { label: 'Psilencer', cost: 30, addEquipment: [customWeapon('Psilencer', { range: 24, attacks: '6' })], removeOneEquipment: ['Stormbolters (24”, A2)'] },
+        { label: 'Psycannon', cost: 30, addEquipment: [customWeapon('Psycannon', { range: 24, attacks: '3', rules: rules('Piercing, Rending') })], removeOneEquipment: ['Stormbolters (24”, A2)'] },
       ]),
       section('Upgrade all models with', 'one', [{ label: 'Teleporter', cost: 15, adds: ['Teleporter'] }]),
     ]),
     group('I', [
       section('Replace any Stormbolter', 'any', [
         { label: 'Incinerator (Heavy Flamer)', cost: 20, addEquipment: [weapon('heavy-flamer', { label: 'Incinerator' })], removeOneEquipment: ['Stormbolters (24”, A2)'] },
-        { label: 'Psilencer (24”, A6)', cost: 30, addEquipment: [customWeapon('Psilencer', { range: 24, attacks: '6' })], removeOneEquipment: ['Stormbolters (24”, A2)'] },
-        { label: 'Psycannon (24”, A3p, Rending)', cost: 30, addEquipment: [customWeapon('Psycannon', { range: 24, attacks: '3', rules: rules('Piercing, Rending') })], removeOneEquipment: ['Stormbolters (24”, A2)'] },
+        { label: 'Psilencer', cost: 30, addEquipment: [customWeapon('Psilencer', { range: 24, attacks: '6' })], removeOneEquipment: ['Stormbolters (24”, A2)'] },
+        { label: 'Psycannon', cost: 30, addEquipment: [customWeapon('Psycannon', { range: 24, attacks: '3', rules: rules('Piercing, Rending') })], removeOneEquipment: ['Stormbolters (24”, A2)'] },
       ]),
     ]),
     group('J', [
       section('Take up to two', 'upToTwo', [
-        { label: 'Heavy Incinerator (18”, A6p)', cost: 55, addEquipment: [customWeapon('Heavy Incinerator', { range: 18, attacks: '6', rules: rules('Piercing') })] },
-        { label: 'Gatling Psilencer (24”, A12)', cost: 95, addEquipment: [customWeapon('Gatling Psilencer', { range: 24, attacks: '12' })] },
-        { label: 'Heavy Psycannon (24”, A9p, Rending)', cost: 135, addEquipment: [customWeapon('Heavy Psycannon', { range: 24, attacks: '9', rules: rules('Piercing, Rending') })] },
+        { label: 'Heavy Incinerator', cost: 55, addEquipment: [customWeapon('Heavy Incinerator', { range: 18, attacks: '6', rules: rules('Piercing') })] },
+        { label: 'Gatling Psilencer', cost: 95, addEquipment: [customWeapon('Gatling Psilencer', { range: 24, attacks: '12' })] },
+        { label: 'Heavy Psycannon', cost: 135, addEquipment: [customWeapon('Heavy Psycannon', { range: 24, attacks: '9', rules: rules('Piercing, Rending') })] },
       ]),
       section('Upgrade with', 'one', [{ label: 'Teleporter', cost: 5, adds: ['Teleporter'] }]),
     ]),
     group('K', [
       section('Any model may take one', 'one', [
-        { label: 'Auto-Launcher (12”, AD3)', cost: 10, addEquipment: [customWeapon('Auto-Launcher', { range: 12, attacks: 'D3' })] },
+        { label: 'Auto-Launcher', cost: 10, addEquipment: [customWeapon('Auto-Launcher', { range: 12, attacks: 'D3' })] },
         { label: 'Storm Shield (Tough(+3))', cost: 25, adds: ['Tough(+3)'] },
       ]),
       section('Replace any Heavy CCW', 'any', [

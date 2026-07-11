@@ -35,24 +35,24 @@ export const tau = faction({
         { label: 'Drone (Linked Carbine)', cost: 10, addEquipment: [linked(weapon('carbine', { rules: rules('Drone') }), { label: 'Drone (Linked Carbine)' })] },
         { label: 'Drone (Markerlight)', cost: 15, addEquipment: [gear('Drone', { rules: rules('Markerlight, Drone') })] },
         { label: 'Drone (Shield)', cost: 25, addEquipment: [gear('Drone', { rules: rules('Shield, Drone') })] },
-        { label: 'Drone (Missile Pod (36”, A2p))', cost: 30, addEquipment: [customWeapon('Drone', { range: 36, attacks: '2', rules: rules('Piercing, Drone') })] },
+        { label: 'Drone (Missile Pod)', cost: 30, addEquipment: [customWeapon('Drone', { range: 36, attacks: '2', rules: rules('Piercing, Drone') })] },
       ]),
     ]),
     group('B', [
       section('Equip any model with up to three', 'upToThree', [
         { label: 'Flamer', cost: 20, addEquipment: [weapon('flamer')] },
-        { label: 'Burst Cannon (18”, A4)', cost: 20, addEquipment: [customWeapon('Burst Cannon', { range: 18, attacks: '4' })] },
-        { label: 'Cyclic Ion Blaster (18”, A3p)', cost: 20, addEquipment: [customWeapon('Cyclic Ion Blaster', { range: 18, attacks: '3', rules: rules('Piercing') })] },
-        { label: 'Missile Pod (36”, A2p)', cost: 25, addEquipment: [customWeapon('Missile Pod', { range: 36, attacks: '2', rules: rules('Piercing') })] },
+        { label: 'Burst Cannon', cost: 20, addEquipment: [customWeapon('Burst Cannon', { range: 18, attacks: '4' })] },
+        { label: 'Cyclic Ion Blaster', cost: 20, addEquipment: [customWeapon('Cyclic Ion Blaster', { range: 18, attacks: '3', rules: rules('Piercing') })] },
+        { label: 'Missile Pod', cost: 25, addEquipment: [customWeapon('Missile Pod', { range: 36, attacks: '2', rules: rules('Piercing') })] },
         { label: 'Plasmagun', cost: 25, addEquipment: [weapon('plasmagun')] },
-        { label: 'Fusion Blaster (18”, A6x)', cost: 35, addEquipment: [customWeapon('Fusion Blaster', { range: 18, attacks: '6', rules: rules('Piercing, Single Target') })] },
+        { label: 'Fusion Blaster', cost: 35, addEquipment: [customWeapon('Fusion Blaster', { range: 18, attacks: '6', rules: rules('Piercing, Single Target') })] },
         {
-          label: 'High Output Burst Cannon (18”, A6, Linked)',
+          label: 'High Output Burst Cannon',
           cost: 35,
           addEquipment: [customWeapon('High Output Burst Cannon', { range: 18, attacks: '6', rules: rules('Linked') })],
         },
         {
-          label: 'Airburst Fragmentation Projector (18”, A9, Indirect, Ignores Cover)',
+          label: 'Airburst Fragmentation Projector',
           cost: 55,
           addEquipment: [customWeapon('Airburst Fragmentation Projector', { range: 18, attacks: '9', rules: rules('Indirect, Ignores Cover') })],
         },
@@ -73,7 +73,7 @@ export const tau = faction({
     group('E', [
       section('Replace one Burst Cannon', 'one', [
         {
-          label: 'Fusion Blaster (18”, A6x)',
+          label: 'Fusion Blaster',
           cost: 15,
           addEquipment: [customWeapon('Fusion Blaster', { range: 18, attacks: '6', rules: rules('Piercing, Single Target') })],
           removeOneEquipment: ['Burst Cannon (18”, A4)'],
@@ -83,13 +83,13 @@ export const tau = faction({
     group('F', [
       section('Replace one Carbine and Markerlight', 'one', [
         {
-          label: 'Rail Rifle (30”, A1p)',
+          label: 'Rail Rifle',
           cost: 0,
           addEquipment: [customWeapon('Rail Rifle', { range: 30, attacks: '1', rules: rules('Piercing') })],
           removeOneEquipment: ['Carbines', 'Markerlights'],
         },
         {
-          label: 'Ion Rifle (30”, A3p)',
+          label: 'Ion Rifle',
           cost: 20,
           addEquipment: [customWeapon('Ion Rifle', { range: 30, attacks: '3', rules: rules('Piercing') })],
           removeOneEquipment: ['Carbines', 'Markerlights'],
@@ -99,7 +99,7 @@ export const tau = faction({
         { label: 'Drone (Inhibitor)', cost: 10, addEquipment: [gear('Drone', { rules: rules('Inhibitor, Drone') })] },
         { label: 'Drone (Accelerator)', cost: 10, addEquipment: [gear('Drone', { rules: rules('Accelerator, Drone') })] },
         {
-          label: 'Drone (Beacon, Burst Cannon (18”, A4))',
+          label: 'Drone (Beacon, Burst Cannon)',
           cost: 30,
           addEquipment: [customWeapon('Drone', { range: 18, attacks: '4', rules: rules('Beacon, Drone') })],
         },
@@ -108,7 +108,7 @@ export const tau = faction({
     group('G', [
       section('Replace Fusion Collider', 'one', [
         {
-          label: 'Cyclic Ion Raker (24”, A9p)',
+          label: 'Cyclic Ion Raker',
           cost: 55,
           addEquipment: [customWeapon('Cyclic Ion Raker', { range: 24, attacks: '9', rules: rules('Piercing') })],
           removeEquipment: ['Fusion Collider (18”, A4p)'],
@@ -116,13 +116,13 @@ export const tau = faction({
       ]),
       section('Replace Linked Flamer', 'one', [
         {
-          label: 'Linked Burst Cannon (18”, A4)',
+          label: 'Linked Burst Cannon',
           cost: 0,
           addEquipment: [customWeapon('Linked Burst Cannon', { range: 18, attacks: '4', rules: rules('Linked') })],
           removeEquipment: ['Linked Flamer'],
         },
         {
-          label: 'Linked Fusion Blaster (18”, A6x)',
+          label: 'Linked Fusion Blaster',
           cost: 20,
           addEquipment: [customWeapon('Linked Fusion Blaster', { range: 18, attacks: '6', rules: rules('Piercing, Single Target, Linked') })],
           removeEquipment: ['Linked Flamer'],
@@ -133,9 +133,9 @@ export const tau = faction({
       // Baseline is `2x Linked Carbines` even on size-1 units (Piranha/Devilfish/Hammerhead) —
       // a single-model-multi-copy case (see design.md), so this only adds, never removes.
       section('Replace 2x Linked Carbines', 'one', [
-        { label: 'Linked Burst Cannon (18”, A4)', cost: 10, addEquipment: [customWeapon('Linked Burst Cannon', { range: 18, attacks: '4', rules: rules('Linked') })] },
+        { label: 'Linked Burst Cannon', cost: 10, addEquipment: [customWeapon('Linked Burst Cannon', { range: 18, attacks: '4', rules: rules('Linked') })] },
         {
-          label: 'Linked Smart Missiles (30”, A4, Indirect)',
+          label: 'Linked Smart Missiles',
           cost: 40,
           addEquipment: [customWeapon('Linked Smart Missiles', { range: 30, attacks: '4', rules: rules('Indirect, Linked') })],
         },
@@ -155,13 +155,13 @@ export const tau = faction({
       // `6x Seeker Missiles`), so this is a full swap, not a partial "replace one of many".
       section('Replace 6x Seeker Missile', 'one', [
         {
-          label: 'Railgun (48”, A6x, Rending)',
+          label: 'Railgun',
           cost: 55,
           addEquipment: [customWeapon('Railgun', { range: 48, attacks: '6', rules: rules('Piercing, Single Target, Rending') })],
           removeEquipment: ['6x Seeker Missiles'],
         },
         {
-          label: 'Ion Cannon (48”, A9p)',
+          label: 'Ion Cannon',
           cost: 110,
           addEquipment: [customWeapon('Ion Cannon', { range: 48, attacks: '9', rules: rules('Piercing') })],
           removeEquipment: ['6x Seeker Missiles'],
@@ -171,7 +171,7 @@ export const tau = faction({
     group('J', [
       section('Replace any Assault Rifle', 'any', [
         {
-          label: 'Kroot Rifle (24”, A1p, Sniper)',
+          label: 'Kroot Rifle',
           cost: 25,
           adds: ['Sniper'],
           addEquipment: [customWeapon('Kroot Rifle', { range: 24, attacks: '1', rules: rules('Piercing, Sniper') })],
@@ -182,7 +182,7 @@ export const tau = faction({
     group('K', [
       section('Replace Heavy Burst Cannon', 'one', [
         {
-          label: 'Ion Accelerator (48”, A9p, Rending)',
+          label: 'Ion Accelerator',
           cost: 0,
           addEquipment: [customWeapon('Ion Accelerator', { range: 48, attacks: '9', rules: rules('Piercing, Rending') })],
           removeEquipment: ['Heavy Burst Cannon (36”, A12p, Rending)'],
@@ -190,13 +190,13 @@ export const tau = faction({
       ]),
       section('Replace Linked Plasmagun', 'one', [
         {
-          label: 'Linked Fusion Blaster (18”, A6x)',
+          label: 'Linked Fusion Blaster',
           cost: 10,
           addEquipment: [customWeapon('Linked Fusion Blaster', { range: 18, attacks: '6', rules: rules('Piercing, Single Target, Linked') })],
           removeEquipment: ['Linked Plasmagun'],
         },
         {
-          label: 'Linked Smart Missiles (30”, A4, Indirect)',
+          label: 'Linked Smart Missiles',
           cost: 15,
           addEquipment: [customWeapon('Linked Smart Missiles', { range: 30, attacks: '4', rules: rules('Indirect, Linked') })],
           removeEquipment: ['Linked Plasmagun'],
@@ -216,7 +216,7 @@ export const tau = faction({
         'one',
         [
           {
-            label: 'Smart Missiles (30”, A4, Indirect)',
+            label: 'Smart Missiles',
             cost: 10,
             addEquipment: [customWeapon('Smart Missiles', { range: 30, attacks: '4', rules: rules('Indirect') })],
             removeEquipment: ['Missile Pod (36”, A2p)'],
@@ -231,7 +231,7 @@ export const tau = faction({
     group('M', [
       section('Replace Heavy Rail Rifle', 'one', [
         {
-          label: 'Linked High Yield Pod (36”, A4p)',
+          label: 'Linked High Yield Pod',
           cost: 10,
           addEquipment: [customWeapon('Linked High Yield Pod', { range: 36, attacks: '4', rules: rules('Piercing, Linked') })],
           removeEquipment: ['Linked Heavy Rail Rifle (48”, A3x)'],
@@ -239,7 +239,7 @@ export const tau = faction({
       ]),
       section('Replace Linked Plasmagun', 'one', [
         {
-          label: 'Smart Missiles (30”, A4, Indirect)',
+          label: 'Smart Missiles',
           cost: 0,
           addEquipment: [customWeapon('Smart Missiles', { range: 30, attacks: '4', rules: rules('Indirect') })],
           removeEquipment: ['Linked Plasmagun'],

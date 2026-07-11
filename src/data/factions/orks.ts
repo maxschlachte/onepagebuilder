@@ -67,18 +67,18 @@ export const orks = faction({
     ]),
     group('C', [
       section('Take one', 'one', [
-        { label: 'Kannon (36”, AD3p)', cost: 25, addEquipment: [customWeapon('Kannon', { range: 36, attacks: 'D3', rules: rules('Piercing') })] },
-        { label: 'Lobba (48”, A3, Indirect)', cost: 45, addEquipment: [customWeapon('Lobba', { range: 48, attacks: '3', rules: rules('Indirect') })] },
-        { label: 'Zzap Gun (36”, AD6x, Shake)', cost: 50, addEquipment: [customWeapon('Zzap Gun', { range: 36, attacks: 'D6', rules: rules('Piercing, Single Target, Shake') })] },
+        { label: 'Kannon', cost: 25, addEquipment: [customWeapon('Kannon', { range: 36, attacks: 'D3', rules: rules('Piercing') })] },
+        { label: 'Lobba', cost: 45, addEquipment: [customWeapon('Lobba', { range: 48, attacks: '3', rules: rules('Indirect') })] },
+        { label: 'Zzap Gun', cost: 50, addEquipment: [customWeapon('Zzap Gun', { range: 36, attacks: 'D6', rules: rules('Piercing, Single Target, Shake') })] },
       ]),
       section('Take up to four', 'upToFour', [
         { label: 'Grenade Launcher', cost: 20, addEquipment: [weapon('grenade-launcher')] },
         { label: 'Machinegun', cost: 25, addEquipment: [weapon('machinegun')] },
       ]),
-      section('Take one', 'one', [{ label: 'Killkannon (24”, A9x)', cost: 70, addEquipment: [customWeapon('Killkannon', { range: 24, attacks: '9', rules: rules('Piercing, Single Target') })] }]),
+      section('Take one', 'one', [{ label: 'Killkannon', cost: 70, addEquipment: [customWeapon('Killkannon', { range: 24, attacks: '9', rules: rules('Piercing, Single Target') })] }]),
       // "Deff Rolla" grants the Reinforced Ram army rule/Impact(+D6) — an ability, not a weapon.
       section('Upgrade with', 'one', [
-        { label: 'Deff Rolla (Reinforced Ram, Impact(+D6))', cost: 25 },
+        { label: 'Deff Rolla (Reinforced Ram, Impact(+D6))', cost: 25, adds: ['Reinforced Ram', 'Impact(+D6)'] },
       ]),
     ]),
     group('D', [
@@ -99,19 +99,19 @@ export const orks = faction({
     group('F', [
       section('Replace all Flamers', 'one', [
         { label: 'Grenade Launchers', cost: 0, addEquipment: [weapon('grenade-launcher', { label: 'Grenade Launchers' })], removeEquipment: ['Flamers'] },
-        { label: 'Snazzguns (24”, AD6)', cost: 10, addEquipment: [customWeapon('Snazzguns', { range: 24, attacks: 'D6' })], removeEquipment: ['Flamers'] },
-        { label: 'Deffguns (48”, AD3p)', cost: 60, addEquipment: [customWeapon('Deffguns', { range: 48, attacks: 'D3', rules: rules('Piercing') })], removeEquipment: ['Flamers'] },
+        { label: 'Snazzguns', cost: 10, addEquipment: [customWeapon('Snazzguns', { range: 24, attacks: 'D6' })], removeEquipment: ['Flamers'] },
+        { label: 'Deffguns', cost: 60, addEquipment: [customWeapon('Deffguns', { range: 48, attacks: 'D3', rules: rules('Piercing') })], removeEquipment: ['Flamers'] },
       ]),
       section('Upgrade with one', 'one', [
         { label: 'Ammo Runt (may take five)', cost: 5, adds: ['Ammo Runt'] },
-        { label: 'Bomb Squig (18”, A6x, Limited)', cost: 5, addEquipment: [customWeapon('Bomb Squig', { range: 18, attacks: '6', rules: rules('Piercing, Single Target, Limited') })] },
+        { label: 'Bomb Squig', cost: 5, addEquipment: [customWeapon('Bomb Squig', { range: 18, attacks: '6', rules: rules('Piercing, Single Target, Limited') })] },
       ]),
       section('Replace up to two Grenade Launchers and Medium CCWs', 'upToTwo', [
         // Only "Medium CCW" is decremented here: a "Grenade Launchers" target would only
         // exist after a separate, earlier "Replace all Flamers: Grenade Launchers" swap in
         // this same group, which this section's single option can't distinguish from the
         // baseline "Medium CCWs" case without double-decrementing when both are present.
-        { label: 'Tankhammer (A6x, Unwieldy)', cost: 0, addEquipment: [customWeapon('Tankhammer', { range: null, attacks: '6', rules: rules('Piercing, Single Target, Unwieldy') })], removeOneEquipment: ['Medium CCW'] },
+        { label: 'Tankhammer', cost: 0, addEquipment: [customWeapon('Tankhammer', { range: null, attacks: '6', rules: rules('Piercing, Single Target, Unwieldy') })], removeOneEquipment: ['Medium CCW'] },
       ]),
     ]),
     group('G', [
@@ -147,7 +147,7 @@ export const orks = faction({
     group('I', [
       section('Replace Kannon', 'one', [
         {
-          label: 'Smasha Gun (36”, AD6x)',
+          label: 'Smasha Gun',
           cost: 10,
           addEquipment: [customWeapon('Smasha Gun', { range: 36, attacks: 'D6', rules: rules('Piercing, Single Target') })],
           removeOneEquipment: ['Kannon (36”, AD3p)'],
@@ -159,25 +159,25 @@ export const orks = faction({
           removeOneEquipment: ['Kannon (36”, AD3p)'],
         },
         {
-          label: 'Traktor Kannon (36”, A3x, Shake)',
+          label: 'Traktor Kannon',
           cost: 15,
           addEquipment: [customWeapon('Traktor Kannon', { range: 36, attacks: '3', rules: rules('Piercing, Single Target, Shake') })],
           removeOneEquipment: ['Kannon (36”, AD3p)'],
         },
         {
-          label: 'Zzap Gun (36”, AD6x, Shake)',
+          label: 'Zzap Gun',
           cost: 20,
           addEquipment: [customWeapon('Zzap Gun', { range: 36, attacks: 'D6', rules: rules('Piercing, Single Target, Shake') })],
           removeOneEquipment: ['Kannon (36”, AD3p)'],
         },
         {
-          label: 'Lobba (48”, A3, Indirect)',
+          label: 'Lobba',
           cost: 20,
           addEquipment: [customWeapon('Lobba', { range: 48, attacks: '3', rules: rules('Indirect') })],
           removeOneEquipment: ['Kannon (36”, AD3p)'],
         },
         {
-          label: 'Bubblechukka (36”, AD6+6)',
+          label: 'Bubblechukka',
           cost: 60,
           addEquipment: [customWeapon('Bubblechukka', { range: 36, attacks: 'D6+6' })],
           removeOneEquipment: ['Kannon (36”, AD3p)'],
@@ -205,7 +205,7 @@ export const orks = faction({
           removeOneEquipment: ['Grenade Launcher'],
         },
         {
-          label: 'Grotzooka (18”, A6p)',
+          label: 'Grotzooka',
           cost: 25,
           addEquipment: [customWeapon('Grotzooka', { range: 18, attacks: '6', rules: rules('Piercing') })],
           removeOneEquipment: ['Grenade Launcher'],
@@ -216,11 +216,11 @@ export const orks = faction({
       // All utility/ability grants (army rules or unmodeled abilities), not weapons.
       section('Upgrade with any', 'any', [
         { label: 'Red Paint Job (Fast)', cost: 5, adds: ['Fast'] },
-        { label: 'Grot Riggers (Mek Tools)', cost: 5 },
+        { label: 'Grot Riggers (Mek Tools)', cost: 5, adds: ['Mek Tools'] },
         { label: 'Boarding Plank', cost: 10, adds: ['Boarding Plank'] },
         { label: 'Grabbin Klaw (Shake in Melee)', cost: 10 },
         { label: 'Reinforced Ram', cost: 10, adds: ['Reinforced Ram'] },
-        { label: 'Wreckin’ Ball (Impact(+D6))', cost: 10 },
+        { label: 'Wreckin’ Ball (Impact(+D6))', cost: 10, adds: ['Impact(+D6)'] },
         { label: '‘Ard Case (Tough(+3))', cost: 25, adds: ['Tough(+3)'] },
       ]),
     ]),
@@ -253,7 +253,7 @@ export const orks = faction({
     group('M', [
       section('Replace Plasma Cannon', 'one', [
         {
-          label: 'Mega-Shoota (36”, A3D6p)',
+          label: 'Mega-Shoota',
           cost: 100,
           addEquipment: [customWeapon('Mega-Shoota', { range: 36, attacks: '3D6', rules: rules('Piercing') })],
           removeOneEquipment: ['Plasma Cannon'],

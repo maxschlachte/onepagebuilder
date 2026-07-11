@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import type { EquipmentEntry, Faction } from '../domain/types'
+import { formatWeaponProfile } from '../domain/format'
 import RuleChips from './RuleChips.vue'
 
 const props = defineProps<{
@@ -10,8 +11,7 @@ const props = defineProps<{
 
 function profile(e: EquipmentEntry): string {
   if (!e.weapon) return ''
-  const rng = e.weapon.range === null ? 'Melee' : `${e.weapon.range}"`
-  return `${rng}, A${e.weapon.attacks}`
+  return formatWeaponProfile(e.weapon)
 }
 
 /** Number of models carrying `e`, for multi-model units (see `unitSize`). */

@@ -31,7 +31,7 @@ export const adeptusMechanicus = faction({
         { label: 'Pistol (Radium)', cost: 5, addEquipment: [weapon('pistol', { rules: rules('Radium') })], removeOneEquipment: ['Pistol (Ignores Cover)'] },
         { label: 'Pistol (Haywire)', cost: 5, addEquipment: [weapon('pistol', { rules: rules('Haywire') })], removeOneEquipment: ['Pistol (Ignores Cover)'] },
         {
-          label: 'Radium Carbine (18”, A3, Radium)',
+          label: 'Radium Carbine',
           cost: 20,
           addEquipment: [customWeapon('Radium Carbine', { range: 18, attacks: '3', rules: rules('Radium') })],
           removeOneEquipment: ['Pistol (Ignores Cover)'],
@@ -45,13 +45,13 @@ export const adeptusMechanicus = faction({
     ]),
     group('B', [
       section('Take one', 'one', [
-        { label: 'Dataspike (A1 in Melee, Haywire)', cost: 10, addEquipment: [customWeapon('Dataspike', { range: null, attacks: '1', rules: rules('Haywire') })] },
+        { label: 'Dataspike', cost: 10, addEquipment: [customWeapon('Dataspike', { range: null, attacks: '1', rules: rules('Haywire') })] },
       ]),
     ]),
     group('C', [
       section('Replace Eradication Ray', 'one', [
         {
-          label: 'Volkite Blaster (24”, A3p, Deflagrate)',
+          label: 'Volkite Blaster',
           cost: 10,
           addEquipment: [customWeapon('Volkite Blaster', { range: 24, attacks: '3', rules: rules('Piercing, Deflagrate') })],
           removeOneEquipment: ['Eradication Ray (24”, A3p)'],
@@ -59,7 +59,7 @@ export const adeptusMechanicus = faction({
       ]),
       section('Replace Carbine', 'one', [
         {
-          label: 'Macrostubber (12”, A5)',
+          label: 'Macrostubber',
           cost: 15,
           addEquipment: [customWeapon('Macrostubber', { range: 12, attacks: '5' })],
           removeOneEquipment: ['Carbine (Ignores Cover)'],
@@ -78,13 +78,13 @@ export const adeptusMechanicus = faction({
           removeOneEquipment: ['Rifles', 'Radium Carbines (18”, A3, Radium)'],
         },
         {
-          label: 'Plasma Caliver (18”, A3p)',
+          label: 'Plasma Caliver',
           cost: 15,
           addEquipment: [customWeapon('Plasma Caliver', { range: 18, attacks: '3', rules: rules('Piercing') })],
           removeOneEquipment: ['Rifles', 'Radium Carbines (18”, A3, Radium)'],
         },
         {
-          label: 'Arquebus (48”, A3x, Sniper)',
+          label: 'Arquebus',
           cost: 145,
           addEquipment: [customWeapon('Arquebus', { range: 48, attacks: '3', rules: rules('Piercing, Single Target, Sniper') })],
           removeOneEquipment: ['Rifles', 'Radium Carbines (18”, A3, Radium)'],
@@ -104,7 +104,7 @@ export const adeptusMechanicus = faction({
     group('F', [
       section('Replace all Stubcarbines and Medium Powerswords', 'one', [
         {
-          label: 'Flechette Blasters (12”, A5), Medium CCWs (Taser)',
+          label: 'Flechette Blasters, Medium CCWs (Taser)',
           cost: 0,
           addEquipment: [customWeapon('Flechette Blasters', { range: 12, attacks: '5' }), meleeWeapon('Medium', 'CCW', { label: 'Medium CCWs', rules: rules('Taser') })],
           removeEquipment: ['Stubcarbines (18”, A3)', 'Medium Powerswords'],
@@ -114,7 +114,7 @@ export const adeptusMechanicus = faction({
     group('G', [
       section('Replace any Plasma Culverin', 'any', [
         {
-          label: 'Heavy Grav-Cannon (30”, A5p)',
+          label: 'Heavy Grav-Cannon',
           cost: 0,
           addEquipment: [customWeapon('Heavy Grav-Cannon', { range: 30, attacks: '5', rules: rules('Piercing') })],
           removeOneEquipment: ['Plasma Culverines (24”, A6p)'],
@@ -132,7 +132,7 @@ export const adeptusMechanicus = faction({
     group('H', [
       section('Replace any Heavy Arc Rifle', 'any', [
         {
-          label: 'Torsion Cannon (24”, A3x, Contortion)',
+          label: 'Torsion Cannon',
           cost: 0,
           addEquipment: [customWeapon('Torsion Cannon', { range: 24, attacks: '3', rules: rules('Piercing, Single Target, Contortion') })],
           removeOneEquipment: ['Heavy Arc Rifles (36”, A2p, Haywire)'],
@@ -158,7 +158,7 @@ export const adeptusMechanicus = faction({
       ]),
       section('Replace any Assault Rifle', 'any', [
         {
-          label: 'Incendine Combustor (18”, A6)',
+          label: 'Incendine Combustor',
           cost: 25,
           addEquipment: [customWeapon('Incendine Combustor', { range: 18, attacks: '6' })],
           removeOneEquipment: ['Assault Rifles (Ignores Cover)'],
@@ -168,7 +168,7 @@ export const adeptusMechanicus = faction({
     group('J', [
       section('Replace Heavy CCW', 'one', [
         {
-          label: 'Jezzail (30”, A2p, Sniper, Radium)',
+          label: 'Jezzail',
           cost: 25,
           addEquipment: [customWeapon('Jezzail', { range: 30, attacks: '2', rules: rules('Piercing, Sniper, Radium') })],
           removeOneEquipment: ['Heavy CCW (Joust, Piercing, Taser)'],
@@ -194,19 +194,19 @@ export const adeptusMechanicus = faction({
       // title/baseline mismatch pattern as group A above.
       section('Replace Eradication Beamer', 'one', [
         {
-          label: 'Neutron Laser (48”, A3p, Rending), Machinegun',
+          label: 'Neutron Laser, Machinegun',
           cost: 95,
           addEquipment: [customWeapon('Neutron Laser', { range: 48, attacks: '3', rules: rules('Piercing, Rending') }), weapon('machinegun')],
           removeOneEquipment: ['Linked Machinegun (Ignores Cover)'],
         },
         {
-          label: 'Eradication Beamer (36”, A9p)',
+          label: 'Eradication Beamer',
           cost: 150,
           addEquipment: [customWeapon('Eradication Beamer', { range: 36, attacks: '9', rules: rules('Piercing') })],
           removeOneEquipment: ['Linked Machinegun (Ignores Cover)'],
         },
         {
-          label: 'Icarus Array (48”, A8p)',
+          label: 'Icarus Array',
           cost: 190,
           addEquipment: [customWeapon('Icarus Array', { range: 48, attacks: '8', rules: rules('Piercing') })],
           removeOneEquipment: ['Linked Machinegun (Ignores Cover)'],

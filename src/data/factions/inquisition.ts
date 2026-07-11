@@ -45,12 +45,12 @@ export const inquisition = faction({
     ]),
     group('B', [
       section('Replace Pistol', 'one', [
-        { label: 'Inferno Pistol (6”, A3x)', cost: 5, addEquipment: [customWeapon('Inferno Pistol', { range: 6, attacks: '3', rules: rules('Piercing, Single Target') })], removeOneEquipment: ['Pistol'] },
+        { label: 'Inferno Pistol', cost: 5, addEquipment: [customWeapon('Inferno Pistol', { range: 6, attacks: '3', rules: rules('Piercing, Single Target') })], removeOneEquipment: ['Pistol'] },
         { label: 'Pistol (Poison)', cost: 5, addEquipment: [weapon('pistol', { rules: rules('Poison') })], removeOneEquipment: ['Pistol'] },
-        { label: 'Hellrifle (36”, A1p, Rending)', cost: 15, addEquipment: [customWeapon('Hellrifle', { range: 36, attacks: '1', rules: rules('Piercing, Rending') })], removeOneEquipment: ['Pistol'] },
+        { label: 'Hellrifle', cost: 15, addEquipment: [customWeapon('Hellrifle', { range: 36, attacks: '1', rules: rules('Piercing, Rending') })], removeOneEquipment: ['Pistol'] },
         { label: 'Heavy Flamer', cost: 25, addEquipment: [weapon('heavy-flamer')], removeOneEquipment: ['Pistol'] },
-        { label: 'Psycannon (24”, A3p, Rending)', cost: 35, addEquipment: [customWeapon('Psycannon', { range: 24, attacks: '3', rules: rules('Piercing, Rending') })], removeOneEquipment: ['Pistol'] },
-        { label: 'Conversion Beamer (48”, A3p, Rending)', cost: 60, addEquipment: [customWeapon('Conversion Beamer', { range: 48, attacks: '3', rules: rules('Piercing, Rending') })], removeOneEquipment: ['Pistol'] },
+        { label: 'Psycannon', cost: 35, addEquipment: [customWeapon('Psycannon', { range: 24, attacks: '3', rules: rules('Piercing, Rending') })], removeOneEquipment: ['Pistol'] },
+        { label: 'Conversion Beamer', cost: 60, addEquipment: [customWeapon('Conversion Beamer', { range: 48, attacks: '3', rules: rules('Piercing, Rending') })], removeOneEquipment: ['Pistol'] },
       ]),
       section('Replace Heavy CCW', 'one', [
         { label: 'Heavy Powersword', cost: 5, addEquipment: [meleeWeapon('Heavy', 'Powersword')], removeOneEquipment: ['Heavy CCW'] },
@@ -58,7 +58,7 @@ export const inquisition = faction({
       ]),
       section('Upgrade with', 'any', [
         { label: 'Terminator Armor (Deep Strike, Armored)', cost: 10, adds: ['Deep Strike', 'Armored'] },
-        { label: '3x Servo Skull', cost: 15 },
+        { label: '3x Servo Skull', cost: 15, adds: ['Servo-Skull'] },
         { label: 'Psyker(1)', cost: 15, adds: ['Psyker(1)'] },
       ]),
     ]),

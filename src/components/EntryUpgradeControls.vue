@@ -3,10 +3,12 @@ import { computed } from 'vue'
 import { useListsStore } from '../stores/lists'
 import { affectsAllModels, isSectionAvailable, maxPicks } from '../domain/calc'
 import { createResolver } from '../domain/resolve'
+import { formatWeaponProfile } from '../domain/format'
 import { rulesDatabase } from '../data/index'
 import RuleTooltip from './RuleTooltip.vue'
+import RuleChips from './RuleChips.vue'
 import type { ListUnit } from '../domain/list'
-import type { Faction, RuleRef, UnitProfile, UpgradeOption, UpgradeSection } from '../domain/types'
+import type { Faction, RuleRef, UnitProfile, UpgradeOption, UpgradeSection, Weapon } from '../domain/types'
 
 const props = defineProps<{
   /** Omit both `listId` and `listUnit` for a read-only catalog listing (e.g. a
@@ -76,6 +78,11 @@ function labelTooltip(option: UpgradeOption): { tooltip?: RuleRef; prefix: strin
   return { tooltip, prefix, suffix }
 }
 
+/** Weapon profiles this option adds — used to show stats/rules before it's ever selected. */
+function weaponsFor(option: UpgradeOption): Weapon[] {
+  return (option.effects?.addEquipment ?? []).flatMap((e) => (e.weapon ? [e.weapon] : []))
+}
+
 function labelsFor(optionIds: string[]): string[] {
   const options = props.faction.upgradeGroups.flatMap((g) => g.sections.flatMap((s) => s.options))
   return optionIds.map((id) => options.find((o) => o.id === id)?.label ?? id)
@@ -132,6 +139,10 @@ function unavailableReason(section: UpgradeSection): string | undefined {
               <RuleTooltip :ref-data="labelTooltip(opt).tooltip!" :faction="faction" />{{ labelTooltip(opt).suffix }}
             </template>
             <template v-else>{{ opt.label }}</template>
+            <template v-for="(w, wi) in weaponsFor(opt)" :key="wi">
+              <span class="ml-1 text-xs text-gray-500">({{ formatWeaponProfile(w) }})</span>
+              <span v-if="w.rules.length" class="ml-1 text-xs">— <RuleChips :rules="w.rules" :faction="faction" /></span>
+            </template>
           </span>
           <span class="text-gray-500">{{ opt.costDelta === 0 ? 'Free' : `+${opt.costDelta}pts` }}</span>
         </label>

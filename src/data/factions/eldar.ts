@@ -35,7 +35,7 @@ export const eldar = faction({
     group('A', [
       section('Replace Shuriken Cannon', 'one', [
         {
-          label: 'Starcannon (36”, A2p)',
+          label: 'Starcannon',
           cost: 5,
           addEquipment: [customWeapon('Starcannon', { range: 36, attacks: '2', rules: rules('Piercing') })],
           removeOneEquipment: ['Shuriken Cannon (24”, A3, Rending)'],
@@ -47,13 +47,13 @@ export const eldar = faction({
           removeOneEquipment: ['Shuriken Cannon (24”, A3, Rending)'],
         },
         {
-          label: 'Bright Lance (36”, A6x)',
+          label: 'Bright Lance',
           cost: 55,
           addEquipment: [customWeapon('Bright Lance', { range: 36, attacks: '6', rules: rules('Piercing, Single Target') })],
           removeOneEquipment: ['Shuriken Cannon (24”, A3, Rending)'],
         },
         {
-          label: 'Scatter Laser (36”, A4p, Linked)',
+          label: 'Scatter Laser',
           cost: 55,
           addEquipment: [customWeapon('Scatter Laser', { range: 36, attacks: '4', rules: rules('Piercing, Linked') })],
           removeOneEquipment: ['Shuriken Cannon (24”, A3, Rending)'],
@@ -63,7 +63,7 @@ export const eldar = faction({
     group('B', [
       section('Replace one Linked Shotgun', 'one', [
         {
-          label: 'Shuriken Cannon (24”, A3, Rending)',
+          label: 'Shuriken Cannon',
           cost: 15,
           addEquipment: [customWeapon('Shuriken Cannon', { range: 24, attacks: '3', rules: rules('Rending') })],
           removeOneEquipment: ['Linked Shotgun (Rending)'],
@@ -81,7 +81,7 @@ export const eldar = faction({
     group('D', [
       section('Replace Linked Shuriken Cannon', 'one', [
         {
-          label: 'Linked Starcannon (36”, A2p)',
+          label: 'Linked Starcannon',
           cost: 5,
           addEquipment: [customWeapon('Linked Starcannon', { range: 36, attacks: '2', rules: rules('Piercing, Linked') })],
           removeOneEquipment: ['Linked Shuriken Cannon (24”, A3, Rending)'],
@@ -93,13 +93,13 @@ export const eldar = faction({
           removeOneEquipment: ['Linked Shuriken Cannon (24”, A3, Rending)'],
         },
         {
-          label: 'Scatter Laser (36”, A4p, Linked)',
+          label: 'Scatter Laser',
           cost: 50,
           addEquipment: [customWeapon('Scatter Laser', { range: 36, attacks: '4', rules: rules('Piercing, Linked') })],
           removeOneEquipment: ['Linked Shuriken Cannon (24”, A3, Rending)'],
         },
         {
-          label: 'Linked Bright Lance (36”, A6x)',
+          label: 'Linked Bright Lance',
           cost: 75,
           addEquipment: [customWeapon('Linked Bright Lance', { range: 36, attacks: '6', rules: rules('Piercing, Single Target, Linked') })],
           removeOneEquipment: ['Linked Shuriken Cannon (24”, A3, Rending)'],
@@ -189,7 +189,7 @@ export const eldar = faction({
       section('Replace 2x Wraithcannons', 'one', [
         { label: 'Ghostglaive (Linked in Melee) and Scattershield (Tough(+3))', cost: 20, adds: ['Tough(+3)'] },
         {
-          label: 'Suncannon (48”, A9p) and Scattershield (Tough(+3))',
+          label: 'Suncannon and Scattershield (Tough(+3))',
           cost: 230,
           adds: ['Tough(+3)'],
           addEquipment: [customWeapon('Suncannon', { range: 48, attacks: '9', rules: rules('Piercing') })],
@@ -199,7 +199,7 @@ export const eldar = faction({
     group('K', [
       section('Replace all Medium Powerswords', 'one', [
         {
-          label: 'Wraithcannons (12”, A1p, Rending)',
+          label: 'Wraithcannons',
           cost: 0,
           addEquipment: [customWeapon('Wraithcannons', { range: 12, attacks: '1', rules: rules('Piercing, Rending') })],
           removeEquipment: ['Medium Powerswords'],
@@ -223,13 +223,13 @@ export const eldar = faction({
     group('L', [
       section('Replace Shuriken Cannon and Autocannon', 'one', [
         {
-          label: 'Prism Cannon (48”, AD3*3p)',
+          label: 'Prism Cannon',
           cost: 65,
           addEquipment: [customWeapon('Prism Cannon', { range: 48, attacks: 'D3*3', rules: rules('Piercing') })],
           removeOneEquipment: ['Shuriken Cannon (24”, A3, Rending)', 'Autocannon'],
         },
         {
-          label: 'Doomweaver (48”, A9p, Indirect, Rending)',
+          label: 'Doomweaver',
           cost: 215,
           addEquipment: [customWeapon('Doomweaver', { range: 48, attacks: '9', rules: rules('Piercing, Indirect, Rending') })],
           removeOneEquipment: ['Shuriken Cannon (24”, A3, Rending)', 'Autocannon'],
@@ -239,13 +239,13 @@ export const eldar = faction({
     group('M', [
       section('Replace Vibro Cannon', 'one', [
         {
-          label: 'D-Cannon (24”, A3p, Indirect, Deadly)',
+          label: 'D-Cannon',
           cost: 0,
           addEquipment: [customWeapon('D-Cannon', { range: 24, attacks: '3', rules: rules('Piercing, Indirect, Deadly') })],
           removeOneEquipment: ['Vibro cannon (48”, A3x, Vibro)'],
         },
         {
-          label: 'Shadow Weaver (48”, A3p, Indirect, Rending)',
+          label: 'Shadow Weaver',
           cost: 25,
           addEquipment: [customWeapon('Shadow Weaver', { range: 48, attacks: '3', rules: rules('Piercing, Indirect, Rending') })],
           removeOneEquipment: ['Vibro cannon (48”, A3x, Vibro)'],
@@ -254,17 +254,17 @@ export const eldar = faction({
     ]),
     group('N', [
       section('Replace one Missile Launcher', 'one', [
-        { label: 'Shuriken Cannon (24”, A3, Rending)', cost: 0, addEquipment: [customWeapon('Shuriken Cannon', { range: 24, attacks: '3', rules: rules('Rending') })], removeOneEquipment: ['Missile Launcher'] },
-        { label: 'Tempest launcher (36”, A6, Indirect)', cost: 30, addEquipment: [customWeapon('Tempest launcher', { range: 36, attacks: '6', rules: rules('Indirect') })], removeOneEquipment: ['Missile Launcher'] },
+        { label: 'Shuriken Cannon', cost: 0, addEquipment: [customWeapon('Shuriken Cannon', { range: 24, attacks: '3', rules: rules('Rending') })], removeOneEquipment: ['Missile Launcher'] },
+        { label: 'Tempest launcher', cost: 30, addEquipment: [customWeapon('Tempest launcher', { range: 36, attacks: '6', rules: rules('Indirect') })], removeOneEquipment: ['Missile Launcher'] },
       ]),
     ]),
     group('O', [
       section('Take up to two', 'upToTwo', [
-        { label: 'Shuriken Cannon (24”, A3, Rending)', cost: 35, addEquipment: [customWeapon('Shuriken Cannon', { range: 24, attacks: '3', rules: rules('Rending') })] },
-        { label: 'Starcannon (36”, A2p)', cost: 35, addEquipment: [customWeapon('Starcannon', { range: 36, attacks: '2', rules: rules('Piercing') })] },
+        { label: 'Shuriken Cannon', cost: 35, addEquipment: [customWeapon('Shuriken Cannon', { range: 24, attacks: '3', rules: rules('Rending') })] },
+        { label: 'Starcannon', cost: 35, addEquipment: [customWeapon('Starcannon', { range: 36, attacks: '2', rules: rules('Piercing') })] },
         { label: 'Missile Launcher', cost: 50, addEquipment: [weapon('missile-launcher')] },
-        { label: 'Bright Lance (36”, A6x)', cost: 90, addEquipment: [customWeapon('Bright Lance', { range: 36, attacks: '6', rules: rules('Piercing, Single Target') })] },
-        { label: 'Scatter Laser (36”, A4p, Linked)', cost: 90, addEquipment: [customWeapon('Scatter Laser', { range: 36, attacks: '4', rules: rules('Piercing, Linked') })] },
+        { label: 'Bright Lance', cost: 90, addEquipment: [customWeapon('Bright Lance', { range: 36, attacks: '6', rules: rules('Piercing, Single Target') })] },
+        { label: 'Scatter Laser', cost: 90, addEquipment: [customWeapon('Scatter Laser', { range: 36, attacks: '4', rules: rules('Piercing, Linked') })] },
       ]),
     ]),
     group('P', [
@@ -288,7 +288,7 @@ export const eldar = faction({
     group('R', [
       section('Replace one Meltagun', 'one', [
         { label: 'Heavy Flamer', cost: 5, addEquipment: [weapon('heavy-flamer')], removeOneEquipment: ['Meltagun'] },
-        { label: 'Firepike (18”, A6x)', cost: 10, addEquipment: [customWeapon('Firepike', { range: 18, attacks: '6', rules: rules('Piercing, Single Target') })], removeOneEquipment: ['Meltagun'] },
+        { label: 'Firepike', cost: 10, addEquipment: [customWeapon('Firepike', { range: 18, attacks: '6', rules: rules('Piercing, Single Target') })], removeOneEquipment: ['Meltagun'] },
       ]),
     ]),
     group('S', [section('Upgrade with one', 'one', [{ label: 'Gun Platform', cost: 30, adds: ['Gun Platform'] }])]),

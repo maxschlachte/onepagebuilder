@@ -5,7 +5,7 @@ TBD - created by archiving change army-builder-1p40k. Update Purpose after archi
 ## Requirements
 ### Requirement: Faction selection and unit roster
 
-The system SHALL let the user choose a faction for the current list and SHALL display that faction's available units with their key stats for adding to the list. Each roster unit SHALL show a "Details" button, separate from its add control; activating it expands an inline panel showing that unit's baseline equipment, special rules, and every available upgrade section and option with its cost (read-only — no selection controls), and activating it again collapses the panel. The expanded panel SHALL NOT repeat the unit's name, and SHALL NOT render as a bordered/boxed panel nested inside the roster row's own box — it is separated from the row above it by a divider only. A roster unit whose special rules include Hero SHALL show a "Hero" badge; a roster unit that is not Hero but whose special rules include Psyker SHALL show a "Psyker" badge.
+The system SHALL let the user choose a faction for the current list and SHALL display that faction's available units with their key stats for adding to the list. Each roster unit SHALL show a "Details" button, separate from its add control; activating it expands an inline panel showing that unit's baseline equipment, special rules, and every available upgrade section and option with its cost (read-only — no selection controls), and activating it again collapses the panel. The expanded panel SHALL NOT repeat the unit's name, and SHALL NOT render as a bordered/boxed panel nested inside the roster row's own box — it is separated from the row above it by a divider only. A roster unit whose special rules include Hero SHALL show a "Hero" badge; a roster unit that is not Hero but whose special rules include Psyker SHALL show a "Psyker" badge. Below the mobile breakpoint, the roster is one of the two panels the tab switcher toggles between.
 
 #### Scenario: Browse a faction roster
 
@@ -59,7 +59,7 @@ The system SHALL let the user choose a faction for the current list and SHALL di
 
 ### Requirement: Edit units and upgrades in the builder
 
-The system SHALL display each selected unit with its effective stats and SHALL provide controls to select that unit's available upgrade options and to remove the unit. The displayed equipment list SHALL reflect weapon additions, removals, and replacements from the unit's currently selected upgrades, not only its baseline loadout, with each weapon's range/attacks shown in brackets and its special rules shown as hoverable tooltips. If a unit's effective equipment (after all currently selected upgrades) contains no melee weapon, the displayed equipment list SHALL include a default `Light CCW` entry with its range/attacks bracket, per the rule that units without a melee weapon count as using Light CCWs/Claws. For a unit with more than one model, each equipment line SHALL be prefixed with the number of models in the unit currently carrying it (e.g. `4x Assault Rifle`), reflecting partial upgrades that replace only some of the unit's models' weapons; a single-model unit's equipment list SHALL NOT show this prefix.
+The system SHALL display each selected unit with its effective stats and SHALL provide controls to select that unit's available upgrade options and to remove the unit. The displayed equipment list SHALL reflect weapon additions, removals, and replacements from the unit's currently selected upgrades, not only its baseline loadout, with each weapon's range/attacks shown in brackets and its special rules shown as hoverable tooltips. If a unit's effective equipment (after all currently selected upgrades) contains no melee weapon, the displayed equipment list SHALL include a default `Light CCW` entry with its range/attacks bracket, per the rule that units without a melee weapon count as using Light CCWs/Claws. For a unit with more than one model, each equipment line SHALL be prefixed with the number of models in the unit currently carrying it (e.g. `4x Assault Rifle`), reflecting partial upgrades that replace only some of the unit's models' weapons; a single-model unit's equipment list SHALL NOT show this prefix. An upgrade option that adds one or more weapons SHALL show each added weapon's range/attacks bracket and rule chips next to the option itself, computed from that option's own equipment effect — visible as soon as the option is listed, before it is selected — rather than only once the weapon appears in the unit's effective equipment list; this applies identically to the read-only roster "Details" panel, since it lists upgrade options through the same rendering.
 
 #### Scenario: Upgrade controls reflect available groups
 
@@ -100,6 +100,21 @@ The system SHALL display each selected unit with its effective stats and SHALL p
 
 - **WHEN** a unit with exactly one model is displayed
 - **THEN** its equipment list shows no `Nx ` count prefix on any line
+
+#### Scenario: An unselected weapon-adding option shows the weapon's stats
+
+- **WHEN** the builder lists an upgrade option that adds a weapon (e.g. `Dark Lance`), before the user selects it
+- **THEN** the option's row shows that weapon's range/attacks in brackets and its rules as tooltipped chips, matching how the same weapon would be shown once equipped
+
+#### Scenario: A multi-weapon option shows stats for each weapon it adds
+
+- **WHEN** the builder lists an upgrade option whose effect adds more than one weapon (e.g. a pistol and a CCW)
+- **THEN** each added weapon's own range/attacks and rules are shown next to the option, in the same order the option's label names them
+
+#### Scenario: The roster details panel also shows inferred weapon stats
+
+- **WHEN** the user expands a roster unit's read-only "Details" panel and it lists an upgrade option that adds a weapon
+- **THEN** that option's row shows the same inferred range/attacks/rule chips as the equivalent option in a selected unit's upgrade panel, with no selection control
 
 ### Requirement: Live totals and validation display
 
@@ -191,4 +206,32 @@ The system SHALL show a control to combine a selected list entry with another en
 
 - **WHEN** a group card is displayed
 - **THEN** each member shows a control to remove just that member from the group
+
+### Requirement: Mobile tab switcher for Roster and Selected Units
+
+Below a mobile-width breakpoint, the system SHALL show a tab switcher letting the user view either the Roster or the Selected Units panel, one at a time, instead of both stacked in sequence. At and above that breakpoint, the system SHALL continue to show both panels side by side, with no tab switcher, exactly as without this requirement.
+
+#### Scenario: Tab switcher shown below the breakpoint
+
+- **WHEN** the builder is viewed at a mobile-width viewport
+- **THEN** a tab switcher for "Roster" and "Selected Units" is shown, and only the active tab's panel is visible
+
+#### Scenario: Switching tabs changes the visible panel
+
+- **WHEN** the user activates the other tab in the mobile tab switcher
+- **THEN** the previously-hidden panel becomes visible and the previously-visible panel becomes hidden
+
+#### Scenario: No tab switcher at desktop width
+
+- **WHEN** the builder is viewed at desktop width
+- **THEN** no tab switcher is shown, and both the Roster and Selected Units panels are visible side by side
+
+### Requirement: Touch-friendly control sizing in the builder
+
+The system SHALL size the builder's interactive controls (buttons and select dropdowns, in the roster and in selected-unit cards) for comfortable touch use rather than the smallest size a mouse-oriented layout would use.
+
+#### Scenario: Roster and selected-unit controls are touch-sized
+
+- **WHEN** the user views a roster row or a selected-unit card
+- **THEN** its buttons and select dropdowns (e.g. Details, Add, Split, Remove, Leave group, Detach, Combine/Attach/Group selects) render at the builder's touch-friendly control size, not the smallest available size
 

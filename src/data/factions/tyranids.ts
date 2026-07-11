@@ -38,8 +38,8 @@ export const tyranids = faction({
   upgradeGroups: [
     group('A', [
       section('Upgrade one model with one', 'one', [
-        { label: 'Venom Cannon (36”, A3p)', cost: 55, addEquipment: [customWeapon('Venom Cannon', { range: 36, attacks: '3', rules: rules('Piercing') })] },
-        { label: 'Barbed Strangler (36”, A9)', cost: 110, addEquipment: [customWeapon('Barbed Strangler', { range: 36, attacks: '9' })] },
+        { label: 'Venom Cannon', cost: 55, addEquipment: [customWeapon('Venom Cannon', { range: 36, attacks: '3', rules: rules('Piercing') })] },
+        { label: 'Barbed Strangler', cost: 110, addEquipment: [customWeapon('Barbed Strangler', { range: 36, attacks: '9' })] },
       ]),
     ]),
     group('B', [
@@ -55,7 +55,7 @@ export const tyranids = faction({
     group('C', [
       section('Upgrade with any', 'any', [
         { label: 'Toxin Sacs (Poison in Melee)', cost: 5 },
-        { label: 'Adrenal Glands (Furious)', cost: 5 },
+        { label: 'Adrenal Glands (Furious)', cost: 5, adds: ['Furious'] },
         { label: 'Acid Blood', cost: 5, adds: ['Acid Blood'] },
         { label: 'Regeneration', cost: 20, adds: ['Regeneration'] },
       ]),
@@ -72,13 +72,13 @@ export const tyranids = faction({
       section('Replace any Linked Pistol', 'any', [
         { label: 'Scything Talons (+1A in Melee)', cost: 0 },
         {
-          label: 'Devourer (18”, A3)',
+          label: 'Devourer',
           cost: 15,
           addEquipment: [customWeapon('Devourer', { range: 18, attacks: '3' })],
           removeOneEquipment: ['Linked Pistol'],
         },
         {
-          label: 'Deathspitter (18”, A3p)',
+          label: 'Deathspitter',
           cost: 20,
           addEquipment: [customWeapon('Deathspitter', { range: 18, attacks: '3', rules: rules('Piercing') })],
           removeOneEquipment: ['Linked Pistol'],
@@ -88,13 +88,13 @@ export const tyranids = faction({
     group('F', [
       section('Replace Acid Spray', 'one', [
         {
-          label: 'Rupture Cannon (48”, A2p, Rending)',
+          label: 'Rupture Cannon',
           cost: 0,
           addEquipment: [customWeapon('Rupture Cannon', { range: 48, attacks: '2', rules: rules('Piercing, Rending') })],
           removeEquipment: ['Acid Spray (18”, A6p)'],
         },
         {
-          label: 'Fleshborerer Hive (18”, A20)',
+          label: 'Fleshborerer Hive',
           cost: 50,
           addEquipment: [customWeapon('Fleshborerer Hive', { range: 18, attacks: '20' })],
           removeEquipment: ['Acid Spray (18”, A6p)'],
@@ -112,13 +112,13 @@ export const tyranids = faction({
       // Tyranid Cyst's `5x Deathspitters`), so this is a full swap despite size 1.
       section('Replace 5x Deathspitters', 'one', [
         {
-          label: '5x Venom Cannons (36”, A3p)',
+          label: '5x Venom Cannons',
           cost: 100,
           addEquipment: [customWeapon('Venom Cannons', { range: 36, attacks: '3', rules: rules('Piercing') }, { count: 5 })],
           removeEquipment: ['5x Deathspitters (18”, A3p)'],
         },
         {
-          label: '5x Barbed Stranglers (36”, A9)',
+          label: '5x Barbed Stranglers',
           cost: 305,
           addEquipment: [customWeapon('Barbed Stranglers', { range: 36, attacks: '9' }, { count: 5 })],
           removeEquipment: ['5x Deathspitters (18”, A3p)'],
@@ -131,15 +131,15 @@ export const tyranids = faction({
     ]),
     group('I', [
       section('Take one', 'one', [
-        { label: 'Spine Banks (6”, A3)', cost: 5, addEquipment: [customWeapon('Spine Banks', { range: 6, attacks: '3' })] },
-        { label: 'Bio-Plasma (12”, A3p)', cost: 15, addEquipment: [customWeapon('Bio-Plasma', { range: 12, attacks: '3', rules: rules('Piercing') })] },
+        { label: 'Spine Banks', cost: 5, addEquipment: [customWeapon('Spine Banks', { range: 6, attacks: '3' })] },
+        { label: 'Bio-Plasma', cost: 15, addEquipment: [customWeapon('Bio-Plasma', { range: 12, attacks: '3', rules: rules('Piercing') })] },
       ]),
     ]),
     group('J', [
       section('Upgrade with', 'one', [{ label: 'Crushing Claws (Piercing in Melee)', cost: 5 }]),
       section('Replace Stinger Salvo', 'one', [
         {
-          label: 'Cluster Spines (18”, A9)',
+          label: 'Cluster Spines',
           cost: 30,
           addEquipment: [customWeapon('Cluster Spines', { range: 18, attacks: '9' })],
           removeEquipment: ['Stinger Salvo (18”, A4)'],
@@ -148,13 +148,13 @@ export const tyranids = faction({
     ]),
     group('K', [
       section('Upgrade any model with', 'any', [
-        { label: 'Flesh Hooks (6”, A2)', cost: 5, addEquipment: [customWeapon('Flesh Hooks', { range: 6, attacks: '2' })] },
+        { label: 'Flesh Hooks', cost: 5, addEquipment: [customWeapon('Flesh Hooks', { range: 6, attacks: '2' })] },
       ]),
     ]),
     group('L', [
       section('Upgrade all models with any', 'any', [
         { label: 'Toxin Sacs (Poison in Melee)', cost: 5 },
-        { label: 'Adrenal Glands (Furious)', cost: 10 },
+        { label: 'Adrenal Glands (Furious)', cost: 10, adds: ['Furious'] },
       ]),
     ]),
     group('M', [
@@ -166,7 +166,7 @@ export const tyranids = faction({
     group('N', [
       section('Replace one Pistol', 'one', [
         {
-          label: 'Strangleweb (12”, A1, Target takes Morale Test)',
+          label: 'Strangleweb',
           cost: 15,
           addEquipment: [customWeapon('Strangleweb', { range: 12, attacks: '1', rules: rules('Target takes Morale Test') })],
           removeOneEquipment: ['Pistols'],
@@ -180,13 +180,13 @@ export const tyranids = faction({
           removeOneEquipment: ['Pistols'],
         },
         {
-          label: 'Spike Rifle (18”, A1)',
+          label: 'Spike Rifle',
           cost: 5,
           addEquipment: [customWeapon('Spike Rifle', { range: 18, attacks: '1' })],
           removeOneEquipment: ['Pistols'],
         },
         {
-          label: 'Devourer (18”, A3)',
+          label: 'Devourer',
           cost: 10,
           addEquipment: [customWeapon('Devourer', { range: 18, attacks: '3' })],
           removeOneEquipment: ['Pistols'],
@@ -202,7 +202,7 @@ export const tyranids = faction({
     group('P', [
       section('Replace any Impaler', 'any', [
         {
-          label: 'Shockcannon (18”, A3, Haywire)',
+          label: 'Shockcannon',
           cost: 5,
           addEquipment: [customWeapon('Shockcannon', { range: 18, attacks: '3', rules: rules('Haywire') })],
           removeOneEquipment: ['Impalers (24”, A2p, Indirect)'],
@@ -213,8 +213,8 @@ export const tyranids = faction({
       section('Upgrade any model with', 'any', [{ label: 'Rending Claws (Rending in Melee)', cost: 10 }]),
       section('Upgrade any model with one', 'one', [
         { label: 'Linked Pistols', cost: 5, addEquipment: [linked(weapon('pistol'), { label: 'Linked Pistols' })] },
-        { label: 'Devourer (18”, A3)', cost: 20, addEquipment: [customWeapon('Devourer', { range: 18, attacks: '3' })] },
-        { label: 'Deathspitter (18”, A3p)', cost: 25, addEquipment: [customWeapon('Deathspitter', { range: 18, attacks: '3', rules: rules('Piercing') })] },
+        { label: 'Devourer', cost: 20, addEquipment: [customWeapon('Devourer', { range: 18, attacks: '3' })] },
+        { label: 'Deathspitter', cost: 25, addEquipment: [customWeapon('Deathspitter', { range: 18, attacks: '3', rules: rules('Piercing') })] },
       ]),
     ]),
     group('R', [

@@ -36,7 +36,7 @@ export const spaceMarines = faction({
           removeOneEquipment: ['Assault Rifle'],
         },
         {
-          label: 'Stormbolter (24”, A2)',
+          label: 'Stormbolter',
           cost: 10,
           addEquipment: [customWeapon('Stormbolter', { range: 24, attacks: '2' })],
           removeOneEquipment: ['Assault Rifle'],
@@ -82,7 +82,7 @@ export const spaceMarines = faction({
           // On a single-model unit, replacing its one Assault Rifle leaves nothing to attach to.
           blockedBySelectingOnSingleModel: [
             'Pistol, Medium CCW',
-            'Stormbolter (24”, A2)',
+            'Stormbolter',
             'Plasma Pistol, Medium CCW',
           ],
           // Replacing ALL Assault Rifles (group F) removes them regardless of unit size.
@@ -101,14 +101,14 @@ export const spaceMarines = faction({
         { label: 'Dozer Blade (Strider)', cost: 5, adds: ['Strider'] },
         // Nested-parenthetical compound labels ("X (Y (Limited))") have no single resolvable weapon profile — left without equipment effects.
         { label: 'Hunter-Killer Missile (Missile Launcher (Limited))', cost: 10 },
-        { label: 'Pintle Mount (Stormbolter (24”, A2))', cost: 15 },
+        { label: 'Pintle Mount (Stormbolter)', cost: 15 },
       ]),
     ]),
     group('C', [
       section('Replace any Assault Rifle', 'any', [
         { label: 'Shotgun', cost: 0, addEquipment: [weapon('shotgun')], removeOneEquipment: ['Assault Rifle'] },
         {
-          label: 'Sniper Rifle (36”, A1p, Sniper)',
+          label: 'Sniper Rifle',
           cost: 40,
           adds: ['Sniper'],
           addEquipment: [customWeapon('Sniper Rifle', { range: 36, attacks: '1', rules: rules('Piercing, Sniper') })],
@@ -181,9 +181,9 @@ export const spaceMarines = faction({
         ],
         {
           // Captain/Librarian (group A + H) have no baseline Stormbolter — only group A's
-          // "Stormbolter (24”, A2)" option produces one. Terminators (group H only) already
+          // "Stormbolter" option produces one. Terminators (group H only) already
           // carry Stormbolters at baseline, so satisfiedByEquipment covers them directly.
-          requiresOneOfSelected: ['Stormbolter (24”, A2)'],
+          requiresOneOfSelected: ['Stormbolter'],
           satisfiedByEquipment: ['Stormbolters (24”, A2)'],
         },
       ),
@@ -214,7 +214,7 @@ export const spaceMarines = faction({
     group('J', [
       section('Replace all Medium CCWs', 'one', [
         {
-          label: 'Siege Drills (A2, Piercing, Rending)',
+          label: 'Siege Drills',
           cost: 30,
           adds: ['Piercing', 'Rending'],
           addEquipment: [customWeapon('Siege Drills', { range: null, attacks: '2', rules: rules('Piercing, Rending') })],
@@ -227,7 +227,7 @@ export const spaceMarines = faction({
         { label: 'Linked Lascannon', cost: 120, addEquipment: [linked(weapon('lascannon'))], removeOneEquipment: ['Linked Flamer'] },
       ]),
       section('Upgrade any model with one', 'one', [
-        { label: 'Hurricane Bolter (24”, A3, Linked)', cost: 30, addEquipment: [customWeapon('Hurricane Bolter', { range: 24, attacks: '3', rules: rules('Linked') })] },
+        { label: 'Hurricane Bolter', cost: 30, addEquipment: [customWeapon('Hurricane Bolter', { range: 24, attacks: '3', rules: rules('Linked') })] },
         { label: 'Missile Launcher', cost: 50, addEquipment: [weapon('missile-launcher')] },
       ]),
     ]),
@@ -262,7 +262,7 @@ export const spaceMarines = faction({
       ]),
       section('Replace Linked Heavy Flamer', 'one', [
         {
-          label: 'Hurricane Bolter (24”, A3, Linked)',
+          label: 'Hurricane Bolter',
           cost: 0,
           addEquipment: [customWeapon('Hurricane Bolter', { range: 24, attacks: '3', rules: rules('Linked') })],
           removeOneEquipment: ['Linked Heavy Flamer'],
@@ -281,7 +281,7 @@ export const spaceMarines = faction({
           removeOneEquipment: ['Linked Heavy Flamer'],
         },
         {
-          label: 'Stormbolter (24”, A2) and Master Powerfist',
+          label: 'Stormbolter and Master Powerfist',
           cost: 5,
           addEquipment: [customWeapon('Stormbolter', { range: 24, attacks: '2' }), meleeWeapon('Master', 'Powerfist')],
           removeOneEquipment: ['Linked Heavy Flamer'],
@@ -350,13 +350,13 @@ export const spaceMarines = faction({
     group('N', [
       section('Replace Autocannon', 'one', [
         {
-          label: 'Icarus Stormcannon (48”, A3p, Linked)',
+          label: 'Icarus Stormcannon',
           cost: 40,
           addEquipment: [customWeapon('Icarus Stormcannon', { range: 48, attacks: '3', rules: rules('Piercing, Linked') })],
           removeOneEquipment: ['Autocannon'],
         },
         {
-          label: 'Demolisher Cannon (24”, A9p, Rending)',
+          label: 'Demolisher Cannon',
           cost: 85,
           addEquipment: [customWeapon('Demolisher Cannon', { range: 24, attacks: '9', rules: rules('Piercing, Rending') })],
           removeOneEquipment: ['Autocannon'],
@@ -368,13 +368,13 @@ export const spaceMarines = faction({
           removeOneEquipment: ['Autocannon'],
         },
         {
-          label: 'Skyspear Missile Launcher (48”, A6x, Linked)',
+          label: 'Skyspear Missile Launcher',
           cost: 100,
           addEquipment: [customWeapon('Skyspear Missile Launcher', { range: 48, attacks: '6', rules: rules('Piercing, Single Target, Linked') })],
           removeOneEquipment: ['Autocannon'],
         },
         {
-          label: 'Whirlwind Missile Launcher (48”, A9, Indirect)',
+          label: 'Whirlwind Missile Launcher',
           cost: 130,
           addEquipment: [customWeapon('Whirlwind Missile Launcher', { range: 48, attacks: '9', rules: rules('Indirect') })],
           removeOneEquipment: ['Autocannon'],

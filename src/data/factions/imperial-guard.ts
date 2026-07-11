@@ -80,7 +80,7 @@ export const imperialGuard = faction({
       section('Replace up to two Assault Rifles', 'upToTwo', [
         { label: 'Shotgun', cost: 0, addEquipment: [weapon('shotgun')], removeOneEquipment: ['Assault Rifle'] },
         {
-          label: 'Sniper Rifle (36”, A1p, Sniper)',
+          label: 'Sniper Rifle',
           cost: 40,
           adds: ['Sniper'],
           addEquipment: [customWeapon('Sniper Rifle', { range: 36, attacks: '1', rules: rules('Piercing, Sniper') })],
@@ -95,7 +95,7 @@ export const imperialGuard = faction({
       section('Replace any Machinegun', 'any', [
         { label: 'Autocannon', cost: 5, addEquipment: [weapon('autocannon')], removeOneEquipment: ['Machinegun'] },
         { label: 'Missile Launcher', cost: 5, addEquipment: [weapon('missile-launcher')], removeOneEquipment: ['Machinegun'] },
-        { label: 'Mortar (48”, A3, Indirect)', cost: 10, addEquipment: [customWeapon('Mortar', { range: 48, attacks: '3', rules: rules('Indirect') })], removeOneEquipment: ['Machinegun'] },
+        { label: 'Mortar', cost: 10, addEquipment: [customWeapon('Mortar', { range: 48, attacks: '3', rules: rules('Indirect') })], removeOneEquipment: ['Machinegun'] },
         { label: 'Lascannon', cost: 40, addEquipment: [weapon('lascannon')], removeOneEquipment: ['Machinegun'] },
       ]),
     ]),
@@ -140,13 +140,13 @@ export const imperialGuard = faction({
       ]),
       section('Replace Chem Cannon', 'one', [
         {
-          label: 'Inferno Cannon (18”, A6p)',
+          label: 'Inferno Cannon',
           cost: 20,
           addEquipment: [customWeapon('Inferno Cannon', { range: 18, attacks: '6', rules: rules('Piercing') })],
           removeOneEquipment: ['Chem Cannon (12”, A6, Poison)'],
         },
         {
-          label: 'Melta Cannon (24”, A5p)',
+          label: 'Melta Cannon',
           cost: 25,
           addEquipment: [customWeapon('Melta Cannon', { range: 24, attacks: '5', rules: rules('Piercing') })],
           removeOneEquipment: ['Chem Cannon (12”, A6, Poison)'],
@@ -188,16 +188,16 @@ export const imperialGuard = faction({
         // "A" prefix) — also left without an equipment effect.
         { label: 'Deathstrike Missile', cost: 0, adds: ['Deathstrike Missile'] },
         {
-          label: 'Earthshaker Cannon (48”, A9p, Indirect, Rending)',
+          label: 'Earthshaker Cannon',
           cost: 135,
           addEquipment: [customWeapon('Earthshaker Cannon', { range: 48, attacks: '9', rules: rules('Piercing, Indirect, Rending') })],
         },
         {
-          label: '2x Stormshield Mortars (48”, A6p, Indirect, Linked)',
+          label: '2x Stormshield Mortars',
           cost: 265,
           addEquipment: [customWeapon('Stormshield Mortars', { range: 48, attacks: '6', rules: rules('Piercing, Indirect, Linked') }, { count: 2 })],
         },
-        { label: 'Eagle Rockets (48”, D3*9p, Indirect, Rending)', cost: 365 },
+        { label: 'Eagle Rockets', cost: 365 },
       ]),
     ]),
     group('L', [
@@ -225,31 +225,31 @@ export const imperialGuard = faction({
       ]),
       section('Replace Vanquisher Cannon', 'one', [
         {
-          label: 'Exterminator Cannon (48”, A4p, Linked)',
+          label: 'Exterminator Cannon',
           cost: 5,
           addEquipment: [customWeapon('Exterminator Cannon', { range: 48, attacks: '4', rules: rules('Piercing, Linked') })],
           removeOneEquipment: ['Vanquisher Cannon (48”, A6x)'],
         },
         {
-          label: 'Demolisher Cannon (24”, A9p, Rending)',
+          label: 'Demolisher Cannon',
           cost: 20,
           addEquipment: [customWeapon('Demolisher Cannon', { range: 24, attacks: '9', rules: rules('Piercing, Rending') })],
           removeOneEquipment: ['Vanquisher Cannon (48”, A6x)'],
         },
         {
-          label: 'Punisher Cannon (24”, A20)',
+          label: 'Punisher Cannon',
           cost: 30,
           addEquipment: [customWeapon('Punisher Cannon', { range: 24, attacks: '20' })],
           removeOneEquipment: ['Vanquisher Cannon (48”, A6x)'],
         },
         {
-          label: 'Executioner Cannon (36”, A9p)',
+          label: 'Executioner Cannon',
           cost: 30,
           addEquipment: [customWeapon('Executioner Cannon', { range: 36, attacks: '9', rules: rules('Piercing') })],
           removeOneEquipment: ['Vanquisher Cannon (48”, A6x)'],
         },
         {
-          label: 'Eradicator Cannon (36”, A9p, Ignores Cover)',
+          label: 'Eradicator Cannon',
           cost: 45,
           addEquipment: [customWeapon('Eradicator Cannon', { range: 36, attacks: '9', rules: rules('Piercing, Ignores Cover') })],
           removeOneEquipment: ['Vanquisher Cannon (48”, A6x)'],
@@ -270,7 +270,7 @@ export const imperialGuard = faction({
     ]),
     group('O', [
       section('Upgrade all models with one', 'one', [
-        { label: 'Demolitions (Demo Charge)', cost: 5 },
+        { label: 'Demolitions (Demo Charge)', cost: 5, adds: ['Demo Charge'] },
         { label: 'Sentries (Stealth)', cost: 10, adds: ['Stealth'] },
         { label: 'Grenadiers (Armored)', cost: 15, adds: ['Armored'] },
       ]),

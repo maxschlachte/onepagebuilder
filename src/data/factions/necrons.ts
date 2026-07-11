@@ -33,7 +33,15 @@ export const necrons = faction({
       section('Take up to two', 'upToTwo', [
         { label: 'Fabricator Claw Array', cost: 5, adds: ['Fabricator Claw Array'] },
         { label: 'Mindshackle Scarabs', cost: 5, adds: ['Mindshackle Scarabs'] },
-        { label: 'Nebuloscope (Ignores Cover)', cost: 5 },
+        // Ignores Cover has no precedent as a unit-wide rule anywhere in the dataset — it's
+        // always attached to a specific weapon. A Nebuloscope is a scope for this hero's own
+        // Staff of Light, so it re-issues that weapon with the rule attached instead.
+        {
+          label: 'Nebuloscope (Ignores Cover)',
+          cost: 5,
+          addEquipment: [customWeapon('Staff of Light', { range: 12, attacks: '3', rules: rules('Ignores Cover') })],
+          removeOneEquipment: ['Staff of Light'],
+        },
         { label: 'Resurrection Orb', cost: 5, adds: ['Resurrection Orb'] },
         { label: 'Shadowloom', cost: 20, adds: ['Shadowloom'] },
         { label: 'Chronometron', cost: 35, adds: ['Chronometron'] },
@@ -44,7 +52,7 @@ export const necrons = faction({
         // *type* rather than a profile, and "Gauntlet of Fire" isn't itself a known
         // global weapon — no resolvable equipment effect to record.
         { label: 'Gauntlet of Fire (Flamer)', cost: 25 },
-        { label: 'Tachyon Arrow (48”, A9x, Limited)', cost: 45, addEquipment: [customWeapon('Tachyon Arrow', { range: 48, attacks: '9', rules: rules('Piercing, Single Target, Limited') })] },
+        { label: 'Tachyon Arrow', cost: 45, addEquipment: [customWeapon('Tachyon Arrow', { range: 48, attacks: '9', rules: rules('Piercing, Single Target, Limited') })] },
       ]),
     ]),
     group('B', [
@@ -60,7 +68,7 @@ export const necrons = faction({
     group('C', [
       section('Replace Gauss Cannon', 'one', [
         {
-          label: 'Tesla Cannon (24”, A2p, Tesla)',
+          label: 'Tesla Cannon',
           cost: 5,
           addEquipment: [customWeapon('Tesla Cannon', { range: 24, attacks: '2', rules: rules('Piercing, Tesla') })],
           removeEquipment: ['Gauss Cannon (24”, A2, Rending)'],
@@ -81,7 +89,7 @@ export const necrons = faction({
     group('E', [
       section('Replace all Rods of Covenant and Medium CCWs', 'one', [
         {
-          label: 'Particle Casters (12”, A1p) and Medium CCWs (Rending)',
+          label: 'Particle Casters and Medium CCWs (Rending)',
           cost: 40,
           addEquipment: [customWeapon('Particle Casters', { range: 12, attacks: '1', rules: rules('Piercing') }), meleeWeapon('Medium', 'CCW', { label: 'Medium CCWs', rules: rules('Rending') })],
           removeEquipment: ['Rods of Covenant (12”, A1)', 'Medium CCWs'],
@@ -91,16 +99,16 @@ export const necrons = faction({
     group('F', [
       section('Take any', 'any', [
         { label: 'Fabricator Claw Array', cost: 5, adds: ['Fabricator Claw Array'] },
-        { label: 'Particle Beamer (24”, A3p)', cost: 25, addEquipment: [customWeapon('Particle Beamer', { range: 24, attacks: '3', rules: rules('Piercing') })] },
+        { label: 'Particle Beamer', cost: 25, addEquipment: [customWeapon('Particle Beamer', { range: 24, attacks: '3', rules: rules('Piercing') })] },
         { label: 'Gloom Prism', cost: 65, adds: ['Gloom Prism'] },
       ]),
     ]),
     group('G', [
       section('Upgrade all models with one', 'one', [
-        { label: 'Whip Coils (Fear)', cost: 10 },
-        { label: 'Particle Casters (12”, A1p)', cost: 20, addEquipment: [customWeapon('Particle Casters', { range: 12, attacks: '1', rules: rules('Piercing') })] },
+        { label: 'Whip Coils (Fear)', cost: 10, adds: ['Fear'] },
+        { label: 'Particle Casters', cost: 20, addEquipment: [customWeapon('Particle Casters', { range: 12, attacks: '1', rules: rules('Piercing') })] },
         {
-          label: 'Transdimensional Beamers (12”, A1, Rending)',
+          label: 'Transdimensional Beamers',
           cost: 20,
           addEquipment: [customWeapon('Transdimensional Beamers', { range: 12, attacks: '1', rules: rules('Rending') })],
         },
@@ -109,7 +117,7 @@ export const necrons = faction({
     group('H', [
       section('Replace any Gauss Cannon', 'any', [
         {
-          label: 'Heavy Gauss Cannon (36”, A6x, Rending)',
+          label: 'Heavy Gauss Cannon',
           cost: 85,
           addEquipment: [customWeapon('Heavy Gauss Cannon', { range: 36, attacks: '6', rules: rules('Piercing, Single Target, Rending') })],
           removeOneEquipment: ['Gauss Cannons (24”, A2, Rending)'],
@@ -124,7 +132,7 @@ export const necrons = faction({
         { label: 'Nightmare Shroud', cost: 5, adds: ['Nightmare Shroud'] },
         { label: 'Veil of Darkness', cost: 5, adds: ['Veil of Darkness'] },
         { label: 'Voidreaper (Rending and Piercing in Melee)', cost: 5 },
-        { label: 'Solar Staff (12”, A3)', cost: 10, addEquipment: [customWeapon('Solar Staff', { range: 12, attacks: '3' })] },
+        { label: 'Solar Staff', cost: 10, addEquipment: [customWeapon('Solar Staff', { range: 12, attacks: '3' })] },
       ]),
     ]),
     group('J', [
@@ -136,20 +144,20 @@ export const necrons = faction({
       ]),
       section('Take one', 'one', [
         {
-          label: 'Transdimensional Thunderbolt (24”, A6x, Tesla)',
+          label: 'Transdimensional Thunderbolt',
           cost: 85,
           addEquipment: [customWeapon('Transdimensional Thunderbolt', { range: 24, attacks: '6', rules: rules('Piercing, Single Target, Tesla') })],
         },
-        { label: 'Time’s Arrow (24”, A9x)', cost: 115, addEquipment: [customWeapon('Time’s Arrow', { range: 24, attacks: '9', rules: rules('Piercing, Single Target') })] },
-        { label: 'Antimatter Meteor (24”, A9p)', cost: 135, addEquipment: [customWeapon('Antimatter Meteor', { range: 24, attacks: '9', rules: rules('Piercing') })] },
+        { label: 'Time’s Arrow', cost: 115, addEquipment: [customWeapon('Time’s Arrow', { range: 24, attacks: '9', rules: rules('Piercing, Single Target') })] },
+        { label: 'Antimatter Meteor', cost: 135, addEquipment: [customWeapon('Antimatter Meteor', { range: 24, attacks: '9', rules: rules('Piercing') })] },
         {
-          label: 'Cosmic Fire (24”, A9p, Ignores Cover)',
+          label: 'Cosmic Fire',
           cost: 150,
           addEquipment: [customWeapon('Cosmic Fire', { range: 24, attacks: '9', rules: rules('Piercing, Ignores Cover') })],
         },
-        { label: 'Seismic Assault (24”, A10p)', cost: 150, addEquipment: [customWeapon('Seismic Assault', { range: 24, attacks: '10', rules: rules('Piercing') })] },
+        { label: 'Seismic Assault', cost: 150, addEquipment: [customWeapon('Seismic Assault', { range: 24, attacks: '10', rules: rules('Piercing') })] },
         {
-          label: 'Sky of Falling Stars (24”, A18p, Indirect)',
+          label: 'Sky of Falling Stars',
           cost: 340,
           addEquipment: [customWeapon('Sky of Falling Stars', { range: 24, attacks: '18', rules: rules('Piercing, Indirect') })],
         },
@@ -164,28 +172,36 @@ export const necrons = faction({
           removeEquipment: ['Linked Assault Rifles (Tesla)'],
         },
         {
-          label: 'Particle Beamers (24”, A3p)',
+          label: 'Particle Beamers',
           cost: 70,
           addEquipment: [customWeapon('Particle Beamers', { range: 24, attacks: '3', rules: rules('Piercing') })],
           removeEquipment: ['Linked Assault Rifles (Tesla)'],
         },
       ]),
       section('Equip all models with one', 'one', [
-        { label: 'Shadowlooms', cost: 5 },
+        { label: 'Shadowlooms', cost: 5, adds: ['Shadowloom'] },
         { label: 'Shield Vanes (Armored)', cost: 10, adds: ['Armored'] },
-        { label: 'Nebuloscopes (Ignores Cover)', cost: 15 },
+        // Ignores Cover has no precedent as a unit-wide rule anywhere in the dataset — it's
+        // always attached to a specific weapon, so this re-issues the unit's Linked Assault
+        // Rifles with the rule added, the same way the section above swaps that same weapon.
+        {
+          label: 'Nebuloscopes (Ignores Cover)',
+          cost: 15,
+          addEquipment: [linked(weapon('assault-rifle', { rules: rules('Tesla, Ignores Cover') }), { label: 'Linked Assault Rifles' })],
+          removeEquipment: ['Linked Assault Rifles (Tesla)'],
+        },
       ]),
     ]),
     group('L', [
       section('Replace Heat Ray', 'one', [
         {
-          label: 'Particle Shredder (24”, A9p)',
+          label: 'Particle Shredder',
           cost: 70,
           addEquipment: [customWeapon('Particle Shredder', { range: 24, attacks: '9', rules: rules('Piercing') })],
           removeEquipment: ['Heat Ray (24”, A3p)'],
         },
         {
-          label: 'Linked Heavy Gauss Cannon (36”, A6x, Rending)',
+          label: 'Linked Heavy Gauss Cannon',
           cost: 95,
           addEquipment: [customWeapon('Linked Heavy Gauss Cannon', { range: 36, attacks: '6', rules: rules('Piercing, Single Target, Rending, Linked') })],
           removeEquipment: ['Heat Ray (24”, A3p)'],

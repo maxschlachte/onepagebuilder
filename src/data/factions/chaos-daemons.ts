@@ -46,8 +46,8 @@ export const chaosDaemons = faction({
     group('B', [
       section('Take one', 'one', [
         { label: 'Locus of Fury (+1A in Melee when assaulting)', cost: 15 },
-        { label: 'Locus of Wrath (Linked)', cost: 25 },
-        { label: 'Locus of Abjuration (Fearless)', cost: 35 },
+        { label: 'Locus of Wrath (Linked)', cost: 25, adds: ['Linked'] },
+        { label: 'Locus of Abjuration (Fearless)', cost: 35, adds: ['Fearless'] },
       ]),
     ]),
     group('C', [
@@ -59,26 +59,26 @@ export const chaosDaemons = faction({
     ]),
     group('D', [
       section('Take one', 'one', [
-        { label: 'Locus of Virulence (Rending)', cost: 25 },
-        { label: 'Locus of Contagion (Impact(1))', cost: 25 },
-        { label: 'Locus of Fecundity (Regeneration)', cost: 30 },
+        { label: 'Locus of Virulence (Rending)', cost: 25, adds: ['Rending'] },
+        { label: 'Locus of Contagion (Impact(1))', cost: 25, adds: ['Impact(1)'] },
+        { label: 'Locus of Fecundity (Regeneration)', cost: 30, adds: ['Regeneration'] },
       ]),
     ]),
-    group('E', [section('Take one', 'one', [{ label: 'Chaos Icon (Beacon)', cost: 10 }])]),
+    group('E', [section('Take one', 'one', [{ label: 'Chaos Icon (Beacon)', cost: 10, adds: ['Beacon'] }])]),
     group('F', [
       section('Upgrade with', 'one', [
-        { label: 'Horror Crew (enemy units within 6” re-roll successful morale tests)', cost: 25 },
+        { label: 'Horror Crew', cost: 25 },
       ]),
     ]),
     group('G', [
       section('Take one', 'one', [
-        { label: 'Locus of Grace (Strider)', cost: 15 },
-        { label: 'Locus of Beguilement (Linked)', cost: 25 },
-        { label: 'Locus of Swiftness (Fear)', cost: 25 },
+        { label: 'Locus of Grace (Strider)', cost: 15, adds: ['Strider'] },
+        { label: 'Locus of Beguilement (Linked)', cost: 25, adds: ['Linked'] },
+        { label: 'Locus of Swiftness (Fear)', cost: 25, adds: ['Fear'] },
       ]),
     ]),
     group('H', [
-      section('Take one', 'one', [{ label: 'Blood Banner (+D6” when assaulting)', cost: 10 }]),
+      section('Take one', 'one', [{ label: 'Blood Banner', cost: 10 }]),
     ]),
     group('I', [
       section('Take one', 'one', [
@@ -98,7 +98,7 @@ export const chaosDaemons = faction({
       // "Equip all models with" is unconditional (every model in the unit swaps), like a
       // "Replace all X" section, regardless of unit size.
       section('Equip all models with one', 'one', [
-        { label: 'Death’s Heads (12”, A2, Poison)', cost: 25, addEquipment: [customWeapon('Death’s Heads', { range: 12, attacks: '2', rules: rules('Poison') })], removeEquipment: ['Heavy CCWs (Poison)'] },
+        { label: 'Death’s Heads', cost: 25, addEquipment: [customWeapon('Death’s Heads', { range: 12, attacks: '2', rules: rules('Poison') })], removeEquipment: ['Heavy CCWs (Poison)'] },
         { label: 'Rot Proboscis (Rending)', cost: 25, addEquipment: [gear('Rot Proboscis', { rules: rules('Rending') })], removeEquipment: ['Heavy CCWs (Poison)'] },
         { label: 'Venom Sting (Deadly)', cost: 80, addEquipment: [gear('Venom Sting', { rules: rules('Deadly') })], removeEquipment: ['Heavy CCWs (Poison)'] },
       ]),
@@ -121,16 +121,16 @@ export const chaosDaemons = faction({
     ]),
     group('O', [
       section('Take one', 'one', [
-        { label: 'Baleful Torrent (18”, A6p)', cost: 40, addEquipment: [customWeapon('Baleful Torrent', { range: 18, attacks: '6', rules: rules('Piercing') })] },
-        { label: 'Warp Gaze (24”, A6x)', cost: 45, addEquipment: [customWeapon('Warp Gaze', { range: 24, attacks: '6', rules: rules('Piercing, Single Target') })] },
-        { label: 'Phlegm Bombardment (36”, A9p)', cost: 120, addEquipment: [customWeapon('Phlegm Bombardment', { range: 36, attacks: '9', rules: rules('Piercing') })] },
+        { label: 'Baleful Torrent', cost: 40, addEquipment: [customWeapon('Baleful Torrent', { range: 18, attacks: '6', rules: rules('Piercing') })] },
+        { label: 'Warp Gaze', cost: 45, addEquipment: [customWeapon('Warp Gaze', { range: 24, attacks: '6', rules: rules('Piercing, Single Target') })] },
+        { label: 'Phlegm Bombardment', cost: 120, addEquipment: [customWeapon('Phlegm Bombardment', { range: 36, attacks: '9', rules: rules('Piercing') })] },
       ]),
       section('Take one', 'one', [{ label: 'Warpsword (Linked in Melee)', cost: 5 }]),
     ]),
     group('P', [
       section('Upgrade with', 'one', [
-        { label: 'Shredder (Impact(+D3))', cost: 5 },
-        { label: 'Flyer (Impact(+D6))', cost: 10 },
+        { label: 'Shredder (Impact(+D3))', cost: 5, adds: ['Impact(+D3)'] },
+        { label: 'Flyer (Impact(+D6))', cost: 10, adds: ['Impact(+D6)'] },
       ]),
     ]),
   ],

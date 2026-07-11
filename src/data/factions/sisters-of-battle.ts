@@ -37,7 +37,7 @@ export const sistersOfBattle = faction({
         'Replace Pistol',
         'one',
         [
-          { label: 'Inferno Pistol (6”, A3x)', cost: 5, addEquipment: [customWeapon('Inferno Pistol', { range: 6, attacks: '3', rules: rules('Piercing, Single Target') })], removeOneEquipment: ['Pistol'] },
+          { label: 'Inferno Pistol', cost: 5, addEquipment: [customWeapon('Inferno Pistol', { range: 6, attacks: '3', rules: rules('Piercing, Single Target') })], removeOneEquipment: ['Pistol'] },
           { label: 'Plasma Pistol', cost: 15, addEquipment: [weapon('plasma-pistol')], removeOneEquipment: ['Pistol'] },
         ],
         {
@@ -103,8 +103,8 @@ export const sistersOfBattle = faction({
     ]),
     group('H', [
       section('Replace one Linked Pistol', 'one', [
-        { label: 'Linked Inferno Pistol (6”, A3x)', cost: 5, addEquipment: [customWeapon('Linked Inferno Pistol', { range: 6, attacks: '3', rules: rules('Piercing, Single Target, Linked') })], removeOneEquipment: ['Linked Pistol'] },
-        { label: 'Linked Hand Flamer (12”, A4)', cost: 15, addEquipment: [customWeapon('Linked Hand Flamer', { range: 12, attacks: '4', rules: rules('Linked') })], removeOneEquipment: ['Linked Pistol'] },
+        { label: 'Linked Inferno Pistol', cost: 5, addEquipment: [customWeapon('Linked Inferno Pistol', { range: 6, attacks: '3', rules: rules('Piercing, Single Target, Linked') })], removeOneEquipment: ['Linked Pistol'] },
+        { label: 'Linked Hand Flamer', cost: 15, addEquipment: [customWeapon('Linked Hand Flamer', { range: 12, attacks: '4', rules: rules('Linked') })], removeOneEquipment: ['Linked Pistol'] },
       ]),
       section('Replace one Linked Pistol', 'one', [
         { label: 'Pistol and Medium CCW', cost: 5, addEquipment: [weapon('pistol'), meleeWeapon('Medium', 'CCW')], removeOneEquipment: ['Linked Pistol'] },
