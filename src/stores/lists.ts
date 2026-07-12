@@ -2,8 +2,10 @@
 // A small composable-based store (per design.md) keeps the bundle lean.
 
 import { computed, ref, watch } from 'vue'
-import { getFaction, getUnit, rulesDatabase } from '../data/index'
+import { rulesDatabase } from '../data/index'
 import { composition } from '../data/composition'
+import { chapters, getEffectiveFaction, type ChapterId } from '../data/chapters'
+import { remapLegacyChapterList } from '../data/legacy-chapter-migration'
 import {
   affectsAllModels,
   findSection,
@@ -38,14 +40,14 @@ function now(): string {
  * posture (design.md decision 6). Mutates and returns `list`.
  */
 function sanitizeLinks(list: ArmyList): ArmyList {
-  const faction = getFaction(list.factionId)
+  const faction = getEffectiveFaction(list.factionId, list.chapterId)
   const byId = new Map(list.units.map((u) => [u.instanceId, u]))
 
   for (const lu of list.units) {
     if (lu.combinedWith) {
       const partner = byId.get(lu.combinedWith)
-      const profile = faction && getUnit(list.factionId, lu.unitId)
-      const partnerProfile = faction && partner && getUnit(list.factionId, partner.unitId)
+      const profile = faction && findUnitInFaction(faction, lu.unitId)
+      const partnerProfile = faction && partner && findUnitInFaction(faction, partner.unitId)
       const valid =
         !!partner &&
         partner.combinedWith === lu.instanceId &&
@@ -58,8 +60,8 @@ function sanitizeLinks(list: ArmyList): ArmyList {
     }
     if (lu.joinedInfantryUnit) {
       const host = byId.get(lu.joinedInfantryUnit)
-      const profile = faction && getUnit(list.factionId, lu.unitId)
-      const hostProfile = faction && host && getUnit(list.factionId, host.unitId)
+      const profile = faction && findUnitInFaction(faction, lu.unitId)
+      const hostProfile = faction && host && findUnitInFaction(faction, host.unitId)
       const valid = !!host && !!hostProfile && isInfantry(hostProfile) && !!profile && hostProfile.quality === profile.quality
       if (!valid) lu.joinedInfantryUnit = undefined
     }
@@ -76,7 +78,7 @@ function sanitizeLinks(list: ArmyList): ArmyList {
     groups.set(lu.groupId, arr)
   }
   for (const [, members] of groups) {
-    if (!groupIsValid(faction, list.factionId, members)) {
+    if (!groupIsValid(faction, members)) {
       for (const m of members) m.groupId = undefined
     }
   }
@@ -84,10 +86,15 @@ function sanitizeLinks(list: ArmyList): ArmyList {
   return list
 }
 
+/** Find a unit profile by id within an already-resolved (possibly chapter-assembled) faction. */
+function findUnitInFaction(faction: Faction | undefined, unitId: string): UnitProfile | undefined {
+  return faction?.units.find((u) => u.id === unitId)
+}
+
 /** Whether a group's members still resolve to valid profiles sharing a common group-deploy rule within its cap. */
-function groupIsValid(faction: Faction | undefined, factionId: string, members: ListUnit[]): boolean {
+function groupIsValid(faction: Faction | undefined, members: ListUnit[]): boolean {
   if (!faction || members.length < 2) return false
-  const profiles = members.map((m) => getUnit(factionId, m.unitId)).filter((p): p is UnitProfile => !!p)
+  const profiles = members.map((m) => findUnitInFaction(faction, m.unitId)).filter((p): p is UnitProfile => !!p)
   if (profiles.length !== members.length) return false
 
   const eligibleIds = groupDeployRuleIds(faction)
@@ -105,7 +112,7 @@ function load(): ArmyList[] {
     if (!raw) return []
     const parsed = JSON.parse(raw)
     if (!Array.isArray(parsed)) return []
-    return (parsed as ArmyList[]).map(sanitizeLinks)
+    return (parsed as ArmyList[]).map(remapLegacyChapterList).map(sanitizeLinks)
   } catch {
     return []
   }
@@ -134,12 +141,18 @@ function touch(list: ArmyList) {
   list.updatedAt = now()
 }
 
-function createList(name: string, factionId: string, pointsCap = composition.defaultPointsCap): ArmyList {
+function createList(
+  name: string,
+  factionId: string,
+  pointsCap = composition.defaultPointsCap,
+  chapterId?: ChapterId,
+): ArmyList {
   const list: ArmyList = {
     schemaVersion: LIST_SCHEMA_VERSION,
     id: uid(),
     name: name.trim() || 'Untitled List',
     factionId,
+    chapterId: factionId === 'space-marines' ? chapterId : undefined,
     pointsCap,
     units: [],
     createdAt: now(),
@@ -233,8 +246,8 @@ function combineUnits(listId: string, instanceIdA: string, instanceIdB: string) 
   const b = list.units.find((u) => u.instanceId === instanceIdB)
   if (!a || !b || a.unitId !== b.unitId) return
 
-  const faction = getFaction(list.factionId)
-  const profile = faction && getUnit(list.factionId, a.unitId)
+  const faction = getEffectiveFaction(list.factionId, list.chapterId)
+  const profile = faction && findUnitInFaction(faction, a.unitId)
   if (!faction || !profile || !isInfantry(profile)) return
 
   const wholeIds = wholeUnitOptionIds(faction)
@@ -272,9 +285,9 @@ function attachToUnit(listId: string, instanceId: string, hostInstanceId: string
   const host = list.units.find((u) => u.instanceId === hostInstanceId)
   if (!unit || !host) return
 
-  const faction = getFaction(list.factionId)
-  const unitProfile = faction && getUnit(list.factionId, unit.unitId)
-  const hostProfile = faction && getUnit(list.factionId, host.unitId)
+  const faction = getEffectiveFaction(list.factionId, list.chapterId)
+  const unitProfile = faction && findUnitInFaction(faction, unit.unitId)
+  const hostProfile = faction && findUnitInFaction(faction, host.unitId)
   if (!unitProfile || !hostProfile || !isInfantry(hostProfile)) return
   if (hostProfile.quality !== unitProfile.quality) return
 
@@ -307,9 +320,9 @@ function joinGroup(listId: string, instanceId: string, otherInstanceId: string) 
   if (!a || !b) return
   if (a.groupId && b.groupId && a.groupId !== b.groupId) return
 
-  const faction = getFaction(list.factionId)
-  const profileA = faction && getUnit(list.factionId, a.unitId)
-  const profileB = faction && getUnit(list.factionId, b.unitId)
+  const faction = getEffectiveFaction(list.factionId, list.chapterId)
+  const profileA = faction && findUnitInFaction(faction, a.unitId)
+  const profileB = faction && findUnitInFaction(faction, b.unitId)
   if (!faction || !profileA || !profileB) return
 
   const ruleId = sharedGroupDeployRuleId(profileA, profileB, faction)
@@ -326,7 +339,7 @@ function joinGroup(listId: string, instanceId: string, otherInstanceId: string) 
   let totalSize = 0
   for (const id of resultMemberIds) {
     const member = list.units.find((u) => u.instanceId === id)!
-    const profile = getUnit(list.factionId, member.unitId)
+    const profile = findUnitInFaction(faction, member.unitId)
     totalSize += profile?.size ?? 0
   }
   if (totalSize > cap) return
@@ -409,8 +422,8 @@ function toggleUpgrade(listId: string, instanceId: string, optionId: string) {
   const unit = list?.units.find((u) => u.instanceId === instanceId)
   if (!list || !unit) return
 
-  const faction = getFaction(list.factionId)
-  const profile = faction && getUnit(list.factionId, unit.unitId)
+  const faction = getEffectiveFaction(list.factionId, list.chapterId)
+  const profile = faction && findUnitInFaction(faction, unit.unitId)
   const owning = faction && findSection(faction, optionId)
   const partner = unit.combinedWith ? list.units.find((u) => u.instanceId === unit.combinedWith) : undefined
 
@@ -450,7 +463,16 @@ export function validateImported(raw: unknown): ArmyList {
   const obj = raw as Record<string, unknown>
   if (typeof obj.name !== 'string') throw new Error('List is missing a name.')
   if (typeof obj.factionId !== 'string') throw new Error('List is missing a faction.')
-  const faction = getFaction(obj.factionId)
+  if (obj.chapterId !== undefined) {
+    if (typeof obj.chapterId !== 'string' || !chapters.some((c) => c.id === obj.chapterId)) {
+      throw new Error(`Unknown chapter: "${String(obj.chapterId)}".`)
+    }
+    if (obj.factionId !== 'space-marines') {
+      throw new Error(`Chapter "${obj.chapterId}" is only valid for the Space Marines faction.`)
+    }
+  }
+  const chapterId = obj.chapterId as ChapterId | undefined
+  const faction = getEffectiveFaction(obj.factionId, chapterId)
   if (!faction) throw new Error(`Unknown faction: "${obj.factionId}".`)
   if (!Array.isArray(obj.units)) throw new Error('List is missing its units array.')
 
@@ -508,6 +530,7 @@ export function validateImported(raw: unknown): ArmyList {
     id: uid(),
     name: obj.name,
     factionId: obj.factionId,
+    chapterId,
     pointsCap: cap,
     units,
     createdAt: typeof obj.createdAt === 'string' ? obj.createdAt : now(),
@@ -532,6 +555,8 @@ export function useListsStore() {
   return {
     lists: computed(() => lists.value),
     rulesDatabase,
+    chapters,
+    getEffectiveFaction,
     find,
     createList,
     duplicateList,

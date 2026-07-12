@@ -5,12 +5,32 @@ TBD - created by archiving change army-builder-1p40k. Update Purpose after archi
 ## Requirements
 ### Requirement: Faction selection and unit roster
 
-The system SHALL let the user choose a faction for the current list and SHALL display that faction's available units with their key stats for adding to the list. Each roster unit SHALL show a "Details" button, separate from its add control; activating it expands an inline panel showing that unit's baseline equipment, special rules, and every available upgrade section and option with its cost (read-only — no selection controls), and activating it again collapses the panel. The expanded panel SHALL NOT repeat the unit's name, and SHALL NOT render as a bordered/boxed panel nested inside the roster row's own box — it is separated from the row above it by a divider only. A roster unit whose special rules include Hero SHALL show a "Hero" badge; a roster unit that is not Hero but whose special rules include Psyker SHALL show a "Psyker" badge. Below the mobile breakpoint, the roster is one of the two panels the tab switcher toggles between.
+The system SHALL let the user choose a faction for the current list and SHALL display that faction's available units with their key stats for adding to the list. For a Space Marines list with a chapter selected, the roster SHALL also include that chapter's extra units alongside the base Space Marines units, ordered by category — Heroes/Psykers first, then Infantry, then Vehicles, then any other category — with each chapter unit placed within the same category as its base-faction peers rather than appended as a separate block after all base units; within a category, base units SHALL keep their existing relative order followed by the chapter's units of that category in their existing relative order. Each roster unit SHALL show a "Details" button, separate from its add control; activating it expands an inline panel showing that unit's baseline equipment, special rules, and every available upgrade section and option with its cost (read-only — no selection controls), and activating it again collapses the panel. The expanded panel SHALL NOT repeat the unit's name, and SHALL NOT render as a bordered/boxed panel nested inside the roster row's own box — it is separated from the row above it by a divider only. A roster unit whose special rules include Hero SHALL show a "Hero" badge; a roster unit that is not Hero but whose special rules include Psyker SHALL show a "Psyker" badge. Below the mobile breakpoint, the roster is one of the two panels the tab switcher toggles between.
 
 #### Scenario: Browse a faction roster
 
 - **WHEN** the user views the builder for a list with a chosen faction
 - **THEN** the faction's units are listed with name, size, quality, cost, a "Details" control, and an add control
+
+#### Scenario: A chapter list's roster includes chapter units
+
+- **WHEN** the user views the builder for a Space Marines list with a chapter selected
+- **THEN** the roster shows the base Space Marines units plus that chapter's extra units
+
+#### Scenario: A chapter list's roster is grouped by category
+
+- **WHEN** the user views the builder for a Space Marines list with a chapter selected
+- **THEN** the roster lists every Hero/Psyker unit (base and chapter) first, then every Infantry unit (base and chapter), then every Vehicle unit (base and chapter), with the chapter's units of each category appearing alongside — not after all of — the base units of that same category
+
+#### Scenario: Within a category, base and chapter relative order is preserved
+
+- **WHEN** the user views a chapter list's roster
+- **THEN** the base Space Marines units within a category appear in their existing order, followed by that chapter's units of the same category in their existing order
+
+#### Scenario: A chapter-less Space Marines list's roster is unchanged
+
+- **WHEN** the user views the builder for a Space Marines list with no chapter selected
+- **THEN** the roster shows exactly the base Space Marines units, with no chapter-specific units, in their original (non-category-grouped) order
 
 #### Scenario: Add from the roster
 
@@ -234,4 +254,43 @@ The system SHALL size the builder's interactive controls (buttons and select dro
 
 - **WHEN** the user views a roster row or a selected-unit card
 - **THEN** its buttons and select dropdowns (e.g. Details, Add, Split, Remove, Leave group, Detach, Combine/Attach/Group selects) render at the builder's touch-friendly control size, not the smallest available size
+
+### Requirement: Chapter Tactics options in the builder
+
+For a Space Marines list with a chapter selected, the system SHALL show that chapter's rule-modifier option(s) as an additional upgrade choice on every base Space Marines unit the modifier applies to (by unit category — Infantry, Vehicle, Hero — or by specific unit name, per the chapter's printed modifiers), alongside the unit's normal upgrade groups, with the option's point cost and granted rule following the same display and selection behavior as any other upgrade option. The chapter's own extra units SHALL NOT show that chapter's own Chapter Tactics options, even when the unit's category or name would otherwise match. The Chapter Tactics section heading SHALL NOT display the synthesized group's internal id — unlike a real lettered upgrade group's heading (e.g. "A. Replace one Assault Rifle"), it SHALL show only the section title ("Chapter Tactics").
+
+#### Scenario: A category-wide Chapter Tactics option appears on every eligible base unit
+
+- **WHEN** the user views a Blood Angels list's roster or a selected base Space Marines Infantry unit's upgrade controls
+- **THEN** a "Furious" option at +10pts is shown, available on that unit and on every other base Space Marines Infantry-eligible unit in the list
+
+#### Scenario: A named-unit Chapter Tactics option appears only on that unit
+
+- **WHEN** the user views a Dark Angels list's selected Terminators unit
+- **THEN** a "Deathwing" option at +20pts is shown on that unit, and is not shown on units other than Terminators
+
+#### Scenario: A chapter's own unit never shows that chapter's own Chapter Tactics options
+
+- **WHEN** the user views a Blood Angels list's roster or a selected Death Company unit (a Blood Angels-specific unit that already carries Rage, implying Furious)
+- **THEN** no Chapter Tactics section is shown for Death Company, even though it is Infantry-eligible
+
+#### Scenario: Selecting a Chapter Tactics option updates cost and rules like any other option
+
+- **WHEN** the user selects a Chapter Tactics option on an eligible unit
+- **THEN** the unit's special rules include the granted rule and its cost includes the option's point delta, and the option's rule label shows the same hover tooltip as any other rule reference
+
+#### Scenario: No Chapter Tactics options without a chapter
+
+- **WHEN** the user views the builder for a Space Marines list with no chapter selected
+- **THEN** no Chapter Tactics options are shown on any unit
+
+#### Scenario: Chapter Tactics heading omits the internal group id
+
+- **WHEN** the user views a unit's Chapter Tactics section, in either a selected unit's upgrade controls or the read-only roster Details panel
+- **THEN** the section heading shows only "Chapter Tactics", with no group id prefix
+
+#### Scenario: A real lettered group's heading is unaffected
+
+- **WHEN** the user views any other (non-Chapter-Tactics) upgrade group's heading
+- **THEN** it continues to show the group's letter id followed by the section title, exactly as before this change
 

@@ -157,6 +157,10 @@ export interface UpgradeGroup {
   /** Group letter as printed (e.g. "A"). */
   id: string
   sections: UpgradeSection[]
+  /** When true, the UI omits the `id` prefix from section headings (for synthesized groups whose id isn't player-facing, e.g. Chapter Tactics). */
+  hideId?: boolean
+  /** Display letter shown instead of `id` in section headings, when `id` itself isn't player-facing (e.g. a chapter's own re-namespaced groups) but a real letter should still be shown. */
+  displayId?: string
 }
 
 export interface Faction {

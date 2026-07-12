@@ -427,7 +427,7 @@ export function section(
  * Any section prerequisite is resolved later, in `faction()`, once every
  * group's options (and their ids) are known.
  */
-export function group(id: string, sections: SectionInput[]): UpgradeGroup {
+export function group(id: string, sections: SectionInput[], opts?: { hideId?: boolean }): UpgradeGroup {
   let idx = 0
   const built: UpgradeSection[] = sections.map((s) => {
     const sec: UpgradeSection = {
@@ -438,7 +438,7 @@ export function group(id: string, sections: SectionInput[]): UpgradeGroup {
     if (s.prerequisite) pendingPrerequisites.set(sec, s.prerequisite)
     return sec
   })
-  return { id, sections: built }
+  return { id, sections: built, hideId: opts?.hideId }
 }
 
 export function armyRule(name: string, text: string): SpecialRule {

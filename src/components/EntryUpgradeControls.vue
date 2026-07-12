@@ -116,7 +116,7 @@ function unavailableReason(section: UpgradeSection): string | undefined {
   >
     <div v-for="(section, sIdx) in group.sections" :key="sIdx" class="mb-1">
       <template v-if="optionsFor(section).length">
-        <div class="text-xs font-semibold text-gray-500">{{ group.id }}. {{ section.title }}</div>
+        <div class="text-xs font-semibold text-gray-500">{{ group.hideId ? section.title : `${group.displayId ?? group.id}. ${section.title}` }}</div>
         <div v-if="isSectionUnavailable(section)" class="text-xs italic text-gray-400">
           {{ unavailableReason(section) }}
         </div>

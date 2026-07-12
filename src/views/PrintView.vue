@@ -1,7 +1,8 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 import { useListsStore } from '../stores/lists'
-import { getFaction, rulesDatabase } from '../data/index'
+import { rulesDatabase } from '../data/index'
+import { getEffectiveFaction } from '../data/chapters'
 import { applyUpgrades, combinedEffectiveUnit, groupEffectiveUnit, totalPoints } from '../domain/calc'
 import { createResolver } from '../domain/resolve'
 import PrintUnitStats from '../components/PrintUnitStats.vue'
@@ -14,7 +15,9 @@ const emit = defineEmits<{ back: [] }>()
 const store = useListsStore()
 
 const list = computed(() => store.find(props.listId))
-const faction = computed(() => (list.value ? getFaction(list.value.factionId) : undefined))
+const faction = computed(() =>
+  list.value ? getEffectiveFaction(list.value.factionId, list.value.chapterId) : undefined,
+)
 const total = computed(() =>
   list.value && faction.value ? totalPoints(list.value, faction.value) : 0,
 )

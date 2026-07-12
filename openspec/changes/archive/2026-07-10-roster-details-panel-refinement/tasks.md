@@ -13,10 +13,10 @@
 
 ## 3. Roster toggle button label
 
-- [x] 3.1 In `BuilderView.vue`, change the roster row's toggle button text from "ⓘ" to "Details" (expanded state: "Hide details"), relying on the button's own text as its accessible name instead of a separate `aria-label`
+- [x] 3.1 In `BuilderView.vue`, change the roster row's toggle button text from "ⓘ" to "Details" (expanded state: "Hide"), relying on the button's own text as its accessible name instead of a separate `aria-label`
 
 ## 4. Tests & verification
 
 - [x] 4.1 Update the existing roster-info-toggle integration test for the new button text/label and assert the expanded panel includes at least one upgrade section/option (not just equipment/special rules)
-- [x] 4.2 Manually run the app: expand a roster unit's "Details" panel and confirm it shows equipment, special rules, and the full upgrade catalog with costs and tooltips but no checkboxes, no repeated unit name, and no nested box; confirm "Add" and "Details" remain independent — verified via Playwright against the running dev server; all confirmed (full A/D/E/F group catalog shown, 0 checkboxes, name appears once, "Hide details" toggle text updates correctly)
+- [x] 4.2 Manually run the app: expand a roster unit's "Details" panel and confirm it shows equipment, special rules, and the full upgrade catalog with costs and tooltips but no checkboxes, no repeated unit name, and no nested box; confirm "Add" and "Details" remain independent — verified via Playwright against the running dev server; all confirmed (full A/D/E/F group catalog shown, 0 checkboxes, name appears once, "Hide" toggle text updates correctly)
 - [x] 4.3 Run the full test suite, `tsc`, and `npm run build`; confirm no regressions — 173/173 tests pass, `vue-tsc --noEmit` clean, `npm run build` succeeds

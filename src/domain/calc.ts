@@ -40,6 +40,16 @@ export function isInfantry(profile: UnitProfile): boolean {
   return !profile.specialRules.some((r) => NON_INFANTRY_RULES.has(r.ruleId))
 }
 
+/** A unit carries the Vehicle special rule. */
+export function isVehicle(profile: UnitProfile): boolean {
+  return profile.specialRules.some((r) => r.ruleId === 'vehicle')
+}
+
+/** A unit carries the Hero special rule (equivalent to `UnitProfile.isHero`, exposed as a predicate for symmetry with `isInfantry`/`isVehicle`). */
+export function isHero(profile: UnitProfile): boolean {
+  return profile.specialRules.some((r) => r.ruleId === 'hero')
+}
+
 /**
  * Rule ids (and their stated model cap) for army rules matching the
  * rulebook's "deploy up to N models with this rule together as one unit"

@@ -4,8 +4,8 @@ import { createResolver } from '../domain/resolve'
 import { maxHeroes } from './composition'
 
 describe('rules database integrity', () => {
-  it('contains all 16 factions', () => {
-    expect(rulesDatabase.factions).toHaveLength(16)
+  it('contains all 15 factions', () => {
+    expect(rulesDatabase.factions).toHaveLength(15)
   })
 
   it('has unique faction ids', () => {

@@ -88,6 +88,51 @@ describe('import validation', () => {
   })
 })
 
+describe('Space Marine chapter selection', () => {
+  it('createList persists and round-trips a chapter', () => {
+    const store = useListsStore()
+    const list = store.createList('Blood Angels Test', 'space-marines', 750, 'blood-angels')
+    expect(list.chapterId).toBe('blood-angels')
+    expect(store.find(list.id)?.chapterId).toBe('blood-angels')
+  })
+
+  it('createList ignores a chapter for a non-Space-Marines faction', () => {
+    const store = useListsStore()
+    const list = store.createList('Necrons Test', 'necrons', 750, 'blood-angels' as never)
+    expect(list.chapterId).toBeUndefined()
+  })
+
+  it('addUnit can add a chapter-specific unit once a chapter is selected', () => {
+    const store = useListsStore()
+    const list = store.createList('BA Roster Test', 'space-marines', 750, 'blood-angels')
+    const sanguinaryPriest = store.getEffectiveFaction('space-marines', 'blood-angels')!.units.find(
+      (u) => u.name === 'Sanguinary Priest',
+    )!
+    store.addUnit(list.id, sanguinaryPriest.id)
+    expect(list.units[0].unitId).toBe(sanguinaryPriest.id)
+  })
+
+  it('validateImported accepts a valid chapter export and round-trips it', () => {
+    const chapterSample: ArmyList = { ...sample, chapterId: 'blood-angels' }
+    const json = exportListToJson(chapterSample)
+    const imported = validateImported(JSON.parse(json))
+    expect(imported.factionId).toBe('space-marines')
+    expect(imported.chapterId).toBe('blood-angels')
+  })
+
+  it('validateImported rejects an unknown chapter', () => {
+    expect(() =>
+      validateImported({ name: 'x', factionId: 'space-marines', chapterId: 'not-a-chapter', units: [] }),
+    ).toThrow(/Unknown chapter/)
+  })
+
+  it('validateImported rejects a chapter on a non-Space-Marines faction', () => {
+    expect(() =>
+      validateImported({ name: 'x', factionId: 'necrons', chapterId: 'blood-angels', units: [] }),
+    ).toThrow(/only valid for the Space Marines faction/)
+  })
+})
+
 describe('toggleUpgrade selection enforcement', () => {
   it('radio behavior: selecting a second option in a "one" section deselects the first', () => {
     const store = useListsStore()

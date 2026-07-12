@@ -24,7 +24,7 @@ Alternative considered: a separate `ReadOnlyUpgradeList.vue` duplicating the gro
 Drop the `<strong>{{ profile.name }}</strong>` line (redundant with the row header). Replace the `rounded border border-gray-300 bg-white p-2 ...` wrapper with a plain `border-t border-gray-100 pt-1 dark:border-gray-800` divider — visually separates the expanded content from the row header without nesting a second box inside the roster row's existing border. No explicit `text-xs`/font-size override on the wrapper either, since `EquipmentList`/`RuleChips`/`EntryUpgradeControls` already carry their own `text-sm` sizing (the same sizing the "selected units" panel already uses) — letting that apply directly is what makes this "just the selected-units UI" rather than a visually distinct, smaller preview.
 
 **3. Toggle button label changes from "ⓘ" to the word "Details"; `aria-label` simplifies accordingly.**
-`{{ expandedRosterIds.has(unit.id) ? 'Hide details' : 'Details' }}` as the button's visible text (doubling as its accessible name — no separate `aria-label` needed once the text itself is descriptive); `aria-expanded` stays as-is.
+`{{ expandedRosterIds.has(unit.id) ? 'Hide' : 'Details' }}` as the button's visible text (doubling as its accessible name — no separate `aria-label` needed once the text itself is descriptive); `aria-expanded` stays as-is.
 
 ## Risks / Trade-offs
 

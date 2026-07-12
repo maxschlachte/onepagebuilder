@@ -3,10 +3,15 @@ import { mount } from '@vue/test-utils'
 import { describe, expect, it } from 'vitest'
 import EntryUpgradeControls from './EntryUpgradeControls.vue'
 import { getFaction } from '../data/index'
+import { getEffectiveFaction } from '../data/chapters'
 import type { ListUnit } from '../domain/list'
 
 const sm = getFaction('space-marines')!
 const tacticals = sm.units.find((u) => u.name === 'Tactical Marines')!
+
+function headingTexts(wrapper: ReturnType<typeof mount>) {
+  return wrapper.findAll('div.text-xs.font-semibold.text-gray-500').map((d) => d.text())
+}
 
 function mountControls() {
   const listUnit: ListUnit = { instanceId: 'u1', unitId: tacticals.id, selectedUpgrades: [] }
@@ -59,5 +64,33 @@ describe('EntryUpgradeControls read-only mode', () => {
   it('an interactive invocation (listId + listUnit passed) is unaffected', () => {
     const wrapper = mountControls()
     expect(wrapper.find('input[type=checkbox]').exists()).toBe(true)
+  })
+})
+
+describe('EntryUpgradeControls section headings', () => {
+  it('a real lettered group shows its id prefix', () => {
+    const wrapper = mount(EntryUpgradeControls, { props: { profile: tacticals, faction: sm } })
+    expect(headingTexts(wrapper)).toContain('A. Replace one Assault Rifle')
+  })
+
+  it('the Chapter Tactics group omits its internal id prefix', () => {
+    const chapterFaction = getEffectiveFaction('space-marines', 'blood-angels')!
+    const chapterTacticals = chapterFaction.units.find((u) => u.name === 'Tactical Marines')!
+    const wrapper = mount(EntryUpgradeControls, { props: { profile: chapterTacticals, faction: chapterFaction } })
+    const headings = headingTexts(wrapper)
+    expect(headings).toContain('Chapter Tactics')
+    expect(headings.some((h) => h.includes('blood-angels-tactics'))).toBe(false)
+  })
+
+  it("a chapter unit's own group shows its continuing display letter, not its internal id", () => {
+    const chapterFaction = getEffectiveFaction('space-marines', 'blood-angels')!
+    // Death Company's own group is Blood Angels' second bundle group (ba-b),
+    // so it continues the base faction's A-O sequence at 'Q' (Sanguinary
+    // Priest's ba-a takes 'P').
+    const deathCompany = chapterFaction.units.find((u) => u.name === 'Death Company')!
+    const wrapper = mount(EntryUpgradeControls, { props: { profile: deathCompany, faction: chapterFaction } })
+    const headings = headingTexts(wrapper)
+    expect(headings).toContain('Q. Replace any Pistol')
+    expect(headings.some((h) => h.startsWith('ba-b'))).toBe(false)
   })
 })

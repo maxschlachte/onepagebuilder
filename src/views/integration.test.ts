@@ -79,7 +79,7 @@ describe('roster info toggle', () => {
     expect(tacticalsRow.find('input[type=checkbox]').exists()).toBe(false)
     // The unit's own name isn't repeated inside the expanded panel.
     expect(tacticalsRow.text().match(/Tactical Marines/g)).toHaveLength(1)
-    expect(tacticalsRow.text()).toContain('Hide details')
+    expect(tacticalsRow.text()).toContain('Hide')
 
     // Clicking Add does not toggle the panel.
     const addButton = tacticalsRow.findAll('button').find((b) => b.text() === 'Add')!
@@ -327,6 +327,58 @@ describe('Psychic Powers print section', () => {
     const printWithoutPsyker = mount(PrintView, { props: { listId: withoutPsyker.id } })
     await nextTick()
     expect(printWithoutPsyker.text()).not.toContain('Psychic Powers')
+  })
+})
+
+describe('Space Marine chapter specialization', () => {
+  it('shows chapter units in the roster and lets the user add and build with one', async () => {
+    const store = useListsStore()
+    const list = store.createList('Blood Angels Test', 'space-marines', 750, 'blood-angels')
+
+    const builder = mount(BuilderView, { props: { listId: list.id } })
+    await nextTick()
+    expect(builder.text()).toContain('Sanguinary Priest')
+    expect(builder.text()).toContain('Captain') // base Space Marines units still present
+
+    const priest = store.getEffectiveFaction('space-marines', 'blood-angels')!.units.find(
+      (u) => u.name === 'Sanguinary Priest',
+    )!
+    store.addUnit(list.id, priest.id)
+    await nextTick()
+    expect(builder.text()).toContain(`${priest.cost} / 750 pts`)
+  })
+
+  it('a Chapter Tactics option appears on an eligible unit and updates cost/rules when selected', async () => {
+    const store = useListsStore()
+    const list = store.createList('BA Tactics Test', 'space-marines', 750, 'blood-angels')
+    const tacticalMarines = sm.units.find((u) => u.name === 'Tactical Marines')!
+    store.addUnit(list.id, tacticalMarines.id)
+    const instanceId = list.units[0].instanceId
+
+    const builder = mount(BuilderView, { props: { listId: list.id } })
+    await nextTick()
+    expect(builder.text()).toContain('Furious')
+
+    const faction = store.getEffectiveFaction('space-marines', 'blood-angels')!
+    const tacticalProfile = faction.units.find((u) => u.name === 'Tactical Marines')!
+    const tacticsGroupId = tacticalProfile.upgradeGroups.find((id) => id.startsWith('blood-angels-tactics-'))!
+    const furiousOption = faction.upgradeGroups
+      .find((g) => g.id === tacticsGroupId)!
+      .sections.flatMap((s) => s.options)
+      .find((o) => o.label === 'Furious')!
+
+    store.toggleUpgrade(list.id, instanceId, furiousOption.id)
+    await nextTick()
+    expect(builder.text()).toContain(`${tacticalMarines.cost + 10} / 750 pts`)
+  })
+
+  it('a chapter-less Space Marines list shows no chapter units or Chapter Tactics options', async () => {
+    const store = useListsStore()
+    const list = store.createList('Plain SM Test', 'space-marines', 750)
+    const builder = mount(BuilderView, { props: { listId: list.id } })
+    await nextTick()
+    expect(builder.text()).not.toContain('Sanguinary Priest')
+    expect(builder.text()).not.toContain('Furious')
   })
 })
 

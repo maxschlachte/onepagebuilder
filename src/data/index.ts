@@ -1,5 +1,7 @@
-// Assembles the full typed RulesDatabase from the global tables and all 16
+// Assembles the full typed RulesDatabase from the global tables and all 15
 // faction modules. All content is sourced from `1p40k - Main Rulebook v3.3.1.pdf`.
+// Space Marine Chapters is not one of these — its data extends the Space
+// Marines faction as an optional specialization (see `./chapters.ts`).
 
 import type { RulesDatabase } from '../domain/types'
 import { glossary } from './glossary'
@@ -16,7 +18,6 @@ import { necrons } from './factions/necrons'
 import { tyranids } from './factions/tyranids'
 import { darkEldar } from './factions/dark-eldar'
 import { chaosDaemons } from './factions/chaos-daemons'
-import { spaceMarineChapters } from './factions/space-marine-chapters'
 import { sistersOfBattle } from './factions/sisters-of-battle'
 import { inquisition } from './factions/inquisition'
 import { harlequins } from './factions/harlequins'
@@ -35,7 +36,6 @@ export const rulesDatabase: RulesDatabase = {
     tyranids,
     darkEldar,
     chaosDaemons,
-    spaceMarineChapters,
     sistersOfBattle,
     inquisition,
     harlequins,

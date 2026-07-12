@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue'
 import { useListsStore } from '../stores/lists'
-import { getFaction } from '../data/index'
+import { getEffectiveFaction } from '../data/chapters'
 import {
   applyUpgrades,
   combinedEffectiveUnit,
@@ -28,7 +28,9 @@ const emit = defineEmits<{ back: []; print: [] }>()
 const store = useListsStore()
 
 const list = computed(() => store.find(props.listId))
-const faction = computed(() => (list.value ? getFaction(list.value.factionId) : undefined))
+const faction = computed(() =>
+  list.value ? getEffectiveFaction(list.value.factionId, list.value.chapterId) : undefined,
+)
 
 const total = computed(() =>
   list.value && faction.value ? totalPoints(list.value, faction.value) : 0,
@@ -325,7 +327,7 @@ function onGroupSelect(lu: ListUnit, event: Event) {
                   :aria-expanded="expandedRosterIds.has(unit.id)"
                   @click="toggleRosterInfo(unit.id)"
                 >
-                  {{ expandedRosterIds.has(unit.id) ? 'Hide details' : 'Details' }}
+                  {{ expandedRosterIds.has(unit.id) ? 'Hide' : 'Details' }}
                 </button>
                 <button class="rounded bg-blue-600 px-3 py-1.5 text-sm text-white hover:bg-blue-700" @click="store.addUnit(list.id, unit.id)">Add</button>
               </span>

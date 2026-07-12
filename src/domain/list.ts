@@ -1,7 +1,7 @@
 // Army list model and storage schema version.
 
 /** Bump when the persisted ArmyList shape changes in a non-backward-compatible way. */
-export const LIST_SCHEMA_VERSION = 1
+export const LIST_SCHEMA_VERSION = 2
 
 /** A unit added to a list, with the upgrade-option ids the user selected. */
 export interface ListUnit {
@@ -28,6 +28,8 @@ export interface ArmyList {
   id: string
   name: string
   factionId: string
+  /** Optional Space Marine chapter specialization (only meaningful when `factionId === 'space-marines'`). */
+  chapterId?: string
   pointsCap: number
   units: ListUnit[]
   /** ISO timestamps. */
