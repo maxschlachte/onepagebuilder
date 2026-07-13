@@ -16,7 +16,7 @@ function openList(id: string) {
 </script>
 
 <template>
-  <div class="min-h-full bg-white text-gray-900 dark:bg-gray-900 dark:text-gray-100">
+  <div class="min-h-full bg-stone-100 text-stone-900 dark:bg-slate-950 dark:text-slate-200">
     <ListsView v-if="view === 'lists'" @open="openList" />
     <BuilderView
       v-else-if="view === 'builder' && currentListId"

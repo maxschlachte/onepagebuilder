@@ -9,6 +9,7 @@ import PrintUnitStats from '../components/PrintUnitStats.vue'
 import PrintGroupStats from '../components/PrintGroupStats.vue'
 import type { CombinedUnit, EffectiveUnit, GroupUnit } from '../domain/calc'
 import type { UnitProfile } from '../domain/types'
+import BackIcon from "../components/icons/BackIcon.vue";
 
 const props = defineProps<{ listId: string }>()
 const emit = defineEmits<{ back: [] }>()
@@ -153,18 +154,20 @@ function printPage() {
 <template>
   <div v-if="list && faction" class="print-page mx-auto max-w-4xl p-4">
     <div class="no-print mb-4 flex gap-2">
-      <button class="rounded border border-gray-300 px-4 py-2 text-base hover:bg-gray-100 dark:border-gray-600 dark:hover:bg-gray-800" @click="emit('back')">← Back</button>
-      <button class="rounded bg-gray-700 px-4 py-2 text-base text-white hover:bg-gray-800" @click="printPage">Print / Save as PDF</button>
+      <button class="rounded border border-stone-300 px-4 py-2 font-display text-base uppercase tracking-wide hover:bg-stone-100 dark:border-slate-700 dark:hover:bg-slate-800" @click="emit('back')">
+        <BackIcon />
+      </button>
+      <button class="rounded bg-yellow-700 px-4 py-2 font-display text-base uppercase tracking-wide text-stone-50 hover:bg-yellow-500 dark:bg-yellow-500 dark:text-slate-950 dark:hover:bg-yellow-700" @click="printPage">Print / Save as PDF</button>
     </div>
 
-    <header class="mb-4 border-b border-gray-400 pb-2">
-      <h1 class="text-2xl font-bold">{{ list.name }}</h1>
-      <p class="text-sm text-gray-600">{{ faction.name }} · {{ total }} / {{ list.pointsCap }} pts · {{ units.length }} units</p>
+    <header class="mb-4 border-b border-yellow-700 pb-2">
+      <h1 class="font-display text-2xl font-bold uppercase tracking-wide text-stone-900 dark:text-slate-200">{{ list.name }}</h1>
+      <p class="text-sm text-stone-600 dark:text-slate-400">{{ faction.name }} · {{ total }} / {{ list.pointsCap }} pts · {{ units.length }} units</p>
     </header>
 
     <!-- Units -->
     <section class="columns-2 gap-3">
-      <div v-for="(row, i) in printRows" :key="i" class="print-unit mb-3 break-inside-avoid rounded border border-gray-300 p-2">
+      <div v-for="(row, i) in printRows" :key="i" class="print-unit mb-3 break-inside-avoid rounded border border-stone-300 dark:border-slate-700 p-2">
         <PrintGroupStats v-if="row.kind === 'group'" :group="row.group" :faction="faction" />
         <PrintUnitStats
           v-else
@@ -177,7 +180,7 @@ function printPage() {
           :tag="row.combined ? 'Combined' : undefined"
         />
 
-        <div v-if="row.attached.length" class="mt-2 space-y-2 border-t border-dashed border-gray-300 pt-2">
+        <div v-if="row.attached.length" class="mt-2 space-y-2 border-t border-dashed border-stone-300 dark:border-slate-700 pt-2">
           <PrintUnitStats
             v-for="(apu, j) in row.attached"
             :key="j"
@@ -196,22 +199,22 @@ function printPage() {
 
     <!-- Deduplicated rule reference -->
     <section class="mt-6">
-      <h2 class="mb-2 border-b border-gray-400 pb-1 text-lg font-bold">Rule Reference</h2>
+      <h2 class="mb-2 border-b border-yellow-700 pb-1 font-display text-lg font-bold uppercase tracking-wide text-stone-900 dark:text-slate-200">Rule Reference</h2>
       <dl class="columns-2 gap-x-6 text-sm">
         <div v-for="r in reference" :key="r.id" class="print-unit mb-1 break-inside-avoid-column">
-          <dt class="inline font-semibold">{{ r.name }}:</dt>
+          <dt class="inline font-semibold text-yellow-700">{{ r.name }}:</dt>
           <dd class="inline"> {{ r.text }}</dd>
         </div>
       </dl>
-      <p v-if="!reference.length" class="text-sm text-gray-500">No rules referenced.</p>
+      <p v-if="!reference.length" class="text-sm text-stone-600 dark:text-slate-400">No rules referenced.</p>
     </section>
 
     <!-- Deduplicated psychic powers, shown only when the list contains a Psyker -->
     <section v-if="psychicPowersReference.length" class="mt-6">
-      <h2 class="mb-2 border-b border-gray-400 pb-1 text-lg font-bold">Psychic Powers</h2>
+      <h2 class="mb-2 border-b border-yellow-700 pb-1 font-display text-lg font-bold uppercase tracking-wide text-stone-900 dark:text-slate-200">Psychic Powers</h2>
       <dl class="columns-2 gap-x-6 text-sm">
         <div v-for="r in psychicPowersReference" :key="r.id" class="print-unit mb-1 break-inside-avoid-column">
-          <dt class="inline font-semibold">{{ r.name }}:</dt>
+          <dt class="inline font-semibold text-yellow-700">{{ r.name }}:</dt>
           <dd class="inline"> {{ r.text }}</dd>
         </div>
       </dl>
@@ -219,6 +222,6 @@ function printPage() {
   </div>
   <div v-else class="p-4">
     <p>List not found.</p>
-    <button class="mt-2 rounded border px-4 py-2 text-base" @click="emit('back')">← Back</button>
+    <button class="mt-2 rounded border border-stone-300 px-4 py-2 font-display text-base uppercase tracking-wide hover:bg-stone-100 dark:border-slate-700 dark:hover:bg-slate-800" @click="emit('back')">← Back</button>
   </div>
 </template>

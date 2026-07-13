@@ -14,6 +14,15 @@ body,
 
 body {
   margin: 0;
+  background: theme('colors.stone.100');
+  color: theme('colors.stone.900');
+}
+
+@media (prefers-color-scheme: dark) {
+  body {
+    background: theme('colors.slate.950');
+    color: theme('colors.slate.200');
+  }
 }
 
 /* Print styling: hide interactive chrome and present a clean, paper-friendly reference. */

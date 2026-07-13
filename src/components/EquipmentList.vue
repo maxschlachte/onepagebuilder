@@ -24,7 +24,7 @@ function modelCount(e: EquipmentEntry): number {
   <ul class="space-y-0.5">
     <li v-for="(e, i) in equipment" :key="i" class="text-sm">
       <span v-if="unitSize > 1" class="font-medium">{{ modelCount(e) }}x </span><span class="font-medium">{{ e.label }}</span>
-      <span v-if="e.weapon" class="ml-1 text-xs text-gray-500">({{ profile(e) }})</span>
+      <span v-if="e.weapon" class="ml-1 text-xs text-stone-600 dark:text-slate-400">({{ profile(e) }})</span>
       <span v-if="e.weapon && e.weapon.rules.length" class="ml-1 text-xs">
         — <RuleChips :rules="e.weapon.rules" :faction="faction" />
       </span>
@@ -32,6 +32,6 @@ function modelCount(e: EquipmentEntry): number {
         — <RuleChips :rules="e.rules" :faction="faction" />
       </span>
     </li>
-    <li v-if="!equipment.length" class="text-sm text-gray-400">—</li>
+    <li v-if="!equipment.length" class="text-sm text-stone-600 dark:text-slate-400">—</li>
   </ul>
 </template>

@@ -7,6 +7,7 @@ import { totalPoints } from '../domain/calc'
 import CreateListDialog from '../components/CreateListDialog.vue'
 import type { ArmyList } from '../domain/list'
 import type { ChapterId } from '../data/chapters'
+import DotsVerticalIcon from "../components/icons/DotsVerticalIcon.vue";
 
 const emit = defineEmits<{ open: [id: string] }>()
 const store = useListsStore()
@@ -124,38 +125,46 @@ async function onImportFile(e: Event) {
 
 <template>
   <div class="mx-auto max-w-3xl p-4">
-    <h1 class="mb-4 text-2xl font-bold">One Page 40k — Army Lists</h1>
+    <div
+      class="relative mb-[38px] overflow-hidden rounded border border-stone-300 bg-gradient-to-b from-stone-50 to-stone-100 px-[34px] py-[30px] before:pointer-events-none before:absolute before:inset-0 before:content-[''] before:bg-[repeating-linear-gradient(45deg,transparent,transparent_22px,rgba(234,179,8,.04)_22px,rgba(234,179,8,.04)_23px)] dark:border-slate-700 dark:from-slate-900 dark:to-slate-950"
+    >
+      <div class="relative">
+        <div class="text-[0.7rem] uppercase tracking-[.35em] text-yellow-700 dark:text-yellow-500">One Page Rules · Army List Builder</div>
+        <h1 class="mb-[4px] mt-[6px] font-display text-[2.9rem] font-bold uppercase leading-[.95] tracking-[.02em] text-stone-900 dark:text-slate-200">
+          One Page <span class="text-yellow-700 dark:text-yellow-500">40k</span>
+        </h1>
+        <p class="mt-2.5 max-w-[70ch] text-stone-600 dark:text-slate-400">Build, upgrade, and print army lists for every faction and chapter.</p>
 
-    <section class="mb-6 rounded border border-gray-300 p-4 dark:border-gray-700">
-      <div class="flex flex-wrap items-center gap-2">
-        <button
-          ref="createButtonRef"
-          type="button"
-          class="rounded bg-blue-600 px-4 py-2 text-base text-white hover:bg-blue-700"
-          @click="showCreateDialog = true"
-        >
-          Create Army List
-        </button>
-        <button
-          type="button"
-          class="rounded border border-gray-300 px-4 py-2 text-base hover:bg-gray-100 dark:border-gray-600 dark:hover:bg-gray-800"
-          @click="fileInput?.click()"
-        >
-          Import JSON
-        </button>
-        <input ref="fileInput" type="file" accept="application/json,.json" class="hidden" @change="onImportFile" />
+        <div class="mt-4 flex flex-wrap items-center justify-end gap-2">
+          <button
+            ref="createButtonRef"
+            type="button"
+            class="rounded bg-yellow-700 px-4 py-2 font-display text-base uppercase tracking-wide text-stone-50 hover:bg-yellow-500 dark:bg-yellow-500 dark:text-slate-950 dark:hover:bg-yellow-700"
+            @click="showCreateDialog = true"
+          >
+            Create Army List
+          </button>
+          <button
+            type="button"
+            class="rounded border border-stone-300 px-4 py-2 font-display text-base uppercase tracking-wide hover:bg-stone-100 dark:border-slate-700 dark:hover:bg-slate-800"
+            @click="fileInput?.click()"
+          >
+            Import JSON
+          </button>
+          <input ref="fileInput" type="file" accept="application/json,.json" class="hidden" @change="onImportFile" />
+        </div>
+        <p v-if="importError" class="mt-2 text-right text-sm text-red-800">{{ importError }}</p>
       </div>
-      <p v-if="importError" class="mt-2 text-sm text-red-600">{{ importError }}</p>
-    </section>
+    </div>
 
     <section>
-      <h2 class="mb-2 font-semibold">Saved lists ({{ store.lists.value.length }})</h2>
-      <p v-if="!store.lists.value.length" class="text-gray-500">No lists yet. Create one above.</p>
+      <h2 class="mb-2 font-display font-semibold uppercase tracking-wide text-yellow-700 dark:text-yellow-500">Saved lists ({{ store.lists.value.length }})</h2>
+      <p v-if="!store.lists.value.length" class="text-stone-600 dark:text-slate-400">No lists yet. Create one above.</p>
       <ul class="space-y-2">
         <li
           v-for="list in store.lists.value"
           :key="list.id"
-          class="relative flex cursor-pointer items-center justify-between gap-3 rounded border border-gray-300 p-3 hover:bg-gray-50 dark:border-gray-700 dark:hover:bg-gray-800/50"
+          class="relative flex cursor-pointer items-center justify-between gap-3 rounded border border-stone-300 bg-stone-50 p-3 hover:bg-stone-100 dark:border-slate-700 dark:bg-slate-900 dark:hover:bg-slate-800"
           @click="emit('open', list.id)"
         >
           <div class="min-w-0 flex-1">
@@ -163,16 +172,16 @@ async function onImportFile(e: Event) {
               <input
                 v-model="renameValue"
                 type="text"
-                class="rounded border border-gray-300 px-2 py-1 text-sm dark:border-gray-600 dark:bg-gray-900"
+                class="rounded border border-stone-300 px-2 py-1 text-sm dark:border-slate-700 dark:bg-slate-950"
                 @keydown.enter="confirmRename(list)"
                 @keydown.escape="cancelRename"
               />
-              <button type="button" class="rounded bg-blue-600 px-2 py-1 text-xs text-white hover:bg-blue-700" @click="confirmRename(list)">
+              <button type="button" class="rounded bg-yellow-700 px-2 py-1 font-display text-xs uppercase text-stone-50 hover:bg-yellow-500 dark:bg-yellow-500 dark:text-slate-950" @click="confirmRename(list)">
                 Save
               </button>
               <button
                 type="button"
-                class="rounded border border-gray-300 px-2 py-1 text-xs hover:bg-gray-100 dark:border-gray-600 dark:hover:bg-gray-700"
+                class="rounded border border-stone-300 px-2 py-1 font-display text-xs uppercase hover:bg-stone-100 dark:border-slate-700 dark:hover:bg-slate-800"
                 @click="cancelRename"
               >
                 Cancel
@@ -180,9 +189,9 @@ async function onImportFile(e: Event) {
             </div>
             <template v-else>
               <div class="truncate font-medium">{{ list.name }}</div>
-              <div class="text-sm text-gray-500">
+              <div class="text-sm text-stone-600 dark:text-slate-400">
                 {{ factionName(list.factionId) }}<template v-if="chapterName(list.chapterId)"> ({{ chapterName(list.chapterId) }})</template>
-                · {{ listTotal(list) }}/{{ list.pointsCap }}pts · {{ list.units.length }} units
+                · {{ listTotal(list) }} / {{ list.pointsCap }}pts · {{ list.units.length }} units
               </div>
             </template>
           </div>
@@ -190,30 +199,30 @@ async function onImportFile(e: Event) {
           <div class="list-menu relative shrink-0">
             <button
               type="button"
-              class="rounded-full w-10 h-10 px-2 py-1 text-lg leading-none hover:bg-gray-100 dark:hover:bg-gray-700"
+              class="rounded-full px-2 py-2 text-lg leading-none hover:bg-stone-100 dark:hover:bg-slate-800"
               aria-label="List actions"
               :aria-expanded="openMenuId === list.id"
               @click.stop="toggleMenu(list.id)"
             >
-              ⋮
+              <DotsVerticalIcon />
             </button>
             <div
               v-if="openMenuId === list.id"
-              class="absolute right-0 top-full z-10 mt-1 w-36 rounded border border-gray-300 bg-white py-1 shadow-lg dark:border-gray-600 dark:bg-gray-800"
+              class="absolute right-0 top-full z-10 mt-1 w-36 rounded border border-stone-300 bg-stone-50 py-1 shadow-lg dark:border-slate-700 dark:bg-slate-900"
               @click.stop
             >
-              <button type="button" class="block w-full px-3 py-1.5 text-left text-sm hover:bg-gray-100 dark:hover:bg-gray-700" @click="startRename(list)">
+              <button type="button" class="block w-full px-3 py-1.5 text-left text-sm hover:bg-stone-100 dark:hover:bg-slate-800" @click="startRename(list)">
                 Rename
               </button>
-              <button type="button" class="block w-full px-3 py-1.5 text-left text-sm hover:bg-gray-100 dark:hover:bg-gray-700" @click="doDuplicate(list)">
+              <button type="button" class="block w-full px-3 py-1.5 text-left text-sm hover:bg-stone-100 dark:hover:bg-slate-800" @click="doDuplicate(list)">
                 Duplicate
               </button>
-              <button type="button" class="block w-full px-3 py-1.5 text-left text-sm hover:bg-gray-100 dark:hover:bg-gray-700" @click="doExport(list)">
+              <button type="button" class="block w-full px-3 py-1.5 text-left text-sm hover:bg-stone-100 dark:hover:bg-slate-800" @click="doExport(list)">
                 Export
               </button>
               <button
                 type="button"
-                class="block w-full px-3 py-1.5 text-left text-sm text-red-700 hover:bg-red-50 dark:hover:bg-red-950"
+                class="block w-full px-3 py-1.5 text-left text-sm text-red-800 hover:bg-blood/10"
                 @click="doDelete(list)"
               >
                 Delete

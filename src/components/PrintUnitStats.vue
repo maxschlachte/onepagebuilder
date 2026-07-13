@@ -51,17 +51,17 @@ function otherEquipment(): EquipmentEntry[] {
 <template>
   <div>
     <div class="flex items-baseline justify-between">
-      <component :is="nested ? 'h3' : 'h2'" :class="nested ? 'text-sm font-semibold' : 'font-semibold'">
-        {{ profile.name }} <span class="font-normal text-gray-600">[{{ size }}]</span>
-        <span v-if="tag" class="ml-1 text-xs font-normal text-gray-500">({{ tag }})</span>
+      <component :is="nested ? 'h3' : 'h2'" class="font-display uppercase tracking-wide" :class="nested ? 'text-sm font-semibold' : 'font-semibold'">
+        {{ profile.name }} <span class="font-normal normal-case text-stone-600 dark:text-slate-400">[{{ size }}]</span>
+        <span v-if="tag" class="ml-1 text-xs font-normal normal-case text-stone-600 dark:text-slate-400">({{ tag }})</span>
       </component>
-      <span :class="nested ? 'text-xs' : 'text-sm'">Quality {{ profile.quality }} · {{ cost }}pts</span>
+      <span :class="nested ? 'text-xs' : 'text-sm'"><span class="text-slate-500">Quality {{ profile.quality }}</span> · <span class="text-yellow-700">{{ cost }}pts</span></span>
     </div>
 
     <table v-if="weaponRows('ranged').length" class="mt-1 w-full text-sm">
       <caption class="sr-only">Ranged Weapons</caption>
       <thead>
-        <tr class="border-b border-gray-300 text-left text-xs text-gray-600">
+        <tr class="border-b border-yellow-700 text-left font-display text-xs uppercase tracking-wide text-yellow-700">
           <th v-if="size > 1" class="pr-2 font-normal">Qty</th>
           <th class="pr-2 font-normal">Ranged Weapon</th>
           <th class="pr-2 font-normal">Range</th>
@@ -69,7 +69,7 @@ function otherEquipment(): EquipmentEntry[] {
           <th class="font-normal">Rules</th>
         </tr>
       </thead>
-      <tbody class="divide-y divide-gray-100">
+      <tbody class="divide-y divide-stone-300 dark:divide-slate-700">
         <tr v-for="(row, j) in weaponRows('ranged')" :key="j">
           <td v-if="size > 1" class="pr-2">{{ row.qty }}x</td>
           <td class="pr-2">{{ row.label }}</td>
@@ -83,14 +83,14 @@ function otherEquipment(): EquipmentEntry[] {
     <table v-if="weaponRows('melee').length" class="mt-1 w-full text-sm">
       <caption class="sr-only">Melee Weapons</caption>
       <thead>
-        <tr class="border-b border-gray-300 text-left text-xs text-gray-600">
+        <tr class="border-b border-yellow-700 text-left font-display text-xs uppercase tracking-wide text-yellow-700">
           <th v-if="size > 1" class="pr-2 font-normal">Qty</th>
           <th class="pr-2 font-normal">Melee Weapon</th>
           <th class="pr-2 font-normal">Attacks</th>
           <th class="font-normal">Rules</th>
         </tr>
       </thead>
-      <tbody class="divide-y divide-gray-100">
+      <tbody class="divide-y divide-stone-300 dark:divide-slate-700">
         <tr v-for="(row, j) in weaponRows('melee')" :key="j">
           <td v-if="size > 1" class="pr-2">{{ row.qty }}x</td>
           <td class="pr-2">{{ row.label }}</td>
@@ -101,14 +101,14 @@ function otherEquipment(): EquipmentEntry[] {
     </table>
 
     <p v-if="otherEquipment().length" class="mt-1 text-sm">
-      <span class="text-gray-600">Other:</span>
+      <span class="text-stone-600 dark:text-slate-400">Other:</span>
       <span v-for="(e, j) in otherEquipment()" :key="j">
         {{ e.label }}<span v-if="e.rules && e.rules.length"> [{{ ruleNames(e.rules) }}]</span><span v-if="j < otherEquipment().length - 1">; </span>
       </span>
     </p>
 
-    <p v-if="!equipment.length" class="mt-1 text-sm text-gray-400">—</p>
+    <p v-if="!equipment.length" class="mt-1 text-sm text-stone-600 dark:text-slate-400">—</p>
 
-    <p class="mt-1 text-sm"><span class="text-gray-600">Special Rules:</span> {{ ruleNames(specialRules) || '—' }}</p>
+    <p class="mt-1 text-sm"><span class="text-stone-600 dark:text-slate-400">Special Rules:</span> {{ ruleNames(specialRules) || '—' }}</p>
   </div>
 </template>

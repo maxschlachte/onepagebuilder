@@ -188,7 +188,7 @@ describe('combine/split and attach/detach UI flows', () => {
 
     // Exactly the two qualifying groups render a divider wrapper — A and E
     // render nothing.
-    expect(wholePanel.findAll('div.border-t')).toHaveLength(2)
+    expect(wholePanel.findAll('div.border-l-4')).toHaveLength(2)
   })
 
   it('attaches a Librarian to a same-Quality Tactical Marines unit and renders it nested, then detaches', async () => {

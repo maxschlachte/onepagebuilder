@@ -10,7 +10,7 @@ const sm = getFaction('space-marines')!
 const tacticals = sm.units.find((u) => u.name === 'Tactical Marines')!
 
 function headingTexts(wrapper: ReturnType<typeof mount>) {
-  return wrapper.findAll('div.text-xs.font-semibold.text-gray-500').map((d) => d.text())
+  return wrapper.findAll('div.text-xs.font-display.font-semibold').map((d) => d.text())
 }
 
 function badgeTexts(wrapper: ReturnType<typeof mount>) {

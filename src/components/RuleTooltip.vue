@@ -15,12 +15,12 @@ const resolved = computed(() =>
 </script>
 
 <template>
-  <span class="group relative inline-block cursor-help border-b border-dotted border-gray-400" tabindex="0">
+  <span class="group relative inline-block cursor-help border-b border-dotted border-yellow-700 dark:border-yellow-500" tabindex="0">
     <span class="whitespace-nowrap">{{ resolved.name }}</span>
     <span
-      class="pointer-events-none absolute left-0 top-full z-20 mt-1 hidden w-64 rounded border border-gray-300 bg-white p-2 text-left text-xs font-normal leading-snug text-gray-800 shadow-lg group-hover:block group-focus:block dark:border-gray-600 dark:bg-gray-800 dark:text-gray-100"
+      class="pointer-events-none absolute left-0 top-full z-20 mt-1 hidden w-64 rounded border border-stone-300 bg-stone-50 p-2 text-left text-xs font-normal leading-snug text-stone-900 shadow-lg group-hover:block group-focus:block dark:border-slate-700 dark:bg-slate-900 dark:text-slate-200"
     >
-      <strong class="block">{{ resolved.name }}</strong>
+      <strong class="block text-yellow-700 dark:text-yellow-500">{{ resolved.name }}</strong>
       {{ resolved.text }}
     </span>
   </span>

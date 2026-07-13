@@ -14,5 +14,5 @@ defineProps<{
       <RuleTooltip :ref-data="r" :faction="faction" /><span v-if="i < rules.length - 1">, </span>
     </template>
   </span>
-  <span v-else class="text-gray-400">—</span>
+  <span v-else class="text-stone-600 dark:text-slate-400">—</span>
 </template>

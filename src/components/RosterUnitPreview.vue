@@ -11,10 +11,10 @@ defineProps<{
 </script>
 
 <template>
-  <div class="mt-1 border-t border-gray-100 pt-1 dark:border-gray-800">
+  <div class="mt-1 border-t border-stone-300 pt-1 dark:border-slate-700">
     <EquipmentList :equipment="profile.equipment" :unit-size="profile.size" :faction="faction" />
     <div v-if="profile.specialRules.length" class="mt-1 text-sm">
-      <span class="text-gray-500">Special:</span> <RuleChips :rules="profile.specialRules" :faction="faction" />
+      <span class="text-stone-600 dark:text-slate-400">Special:</span> <RuleChips :rules="profile.specialRules" :faction="faction" />
     </div>
     <EntryUpgradeControls :profile="profile" :faction="faction" />
   </div>

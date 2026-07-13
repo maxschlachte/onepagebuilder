@@ -112,24 +112,27 @@ function unavailableReason(section: UpgradeSection): string | undefined {
   <div
     v-for="group in groups().filter(hasVisibleContent)"
     :key="group.id"
-    class="relative mt-3 border-t border-gray-100 pt-2 dark:border-gray-800"
+    class="relative mt-4 rounded border border-stone-300 border-l-4 border-l-brass-dim bg-stone-50 p-3 dark:border-slate-700 dark:border-l-brass dark:bg-slate-900"
   >
     <span
       v-if="!group.hideId"
-      class="absolute left-0 top-0 flex h-5 w-5 -translate-y-1/2 items-center justify-center rounded-full border border-gray-100 bg-white text-[10px] font-semibold text-gray-500 dark:border-gray-800 dark:bg-gray-900"
+      class="absolute left-[5px] top-0 flex h-5 w-5 uppercase -translate-y-1/2 items-center justify-center rounded-full border border-yellow-700 bg-stone-50 text-[10px] font-display font-semibold text-yellow-700 dark:border-slate-700 dark:bg-slate-900 dark:text-yellow-500"
       >{{ group.displayId ?? group.id }}</span
     >
     <div v-for="(section, sIdx) in group.sections" :key="sIdx" class="mb-1">
       <template v-if="optionsFor(section).length">
-        <div class="text-xs font-semibold text-gray-500">{{ section.title }}</div>
-        <div v-if="isSectionUnavailable(section)" class="text-xs italic text-gray-400">
+        <div class="text-xs font-display font-semibold uppercase tracking-wide text-yellow-700 dark:text-yellow-500">{{ section.title }}</div>
+        <div v-if="isSectionUnavailable(section)" class="text-xs italic text-stone-600 dark:text-slate-400">
           {{ unavailableReason(section) }}
         </div>
         <label
-          v-for="opt in optionsFor(section)"
+          v-for="(opt, oIdx) in optionsFor(section)"
           :key="opt.id"
-          class="flex items-center gap-2 text-sm"
-          :class="readonly ? '' : isOptionDisabled(section, opt.id) ? 'cursor-not-allowed opacity-50' : 'cursor-pointer'"
+          class="flex items-center gap-2 border-dotted border-stone-300 py-0.5 text-sm dark:border-slate-700"
+          :class="[
+            readonly ? '' : isOptionDisabled(section, opt.id) ? 'cursor-not-allowed opacity-50' : 'cursor-pointer',
+            oIdx < optionsFor(section).length - 1 ? 'border-b' : '',
+          ]"
         >
           <input
             v-if="!readonly"
@@ -145,11 +148,11 @@ function unavailableReason(section: UpgradeSection): string | undefined {
             </template>
             <template v-else>{{ opt.label }}</template>
             <template v-for="(w, wi) in weaponsFor(opt)" :key="wi">
-              <span class="ml-1 text-xs text-gray-500">({{ formatWeaponProfile(w) }})</span>
+              <span class="ml-1 text-xs text-stone-600 dark:text-slate-400">({{ formatWeaponProfile(w) }})</span>
               <span v-if="w.rules.length" class="ml-1 text-xs">— <RuleChips :rules="w.rules" :faction="faction" /></span>
             </template>
           </span>
-          <span class="text-gray-500">{{ opt.costDelta === 0 ? 'Free' : `+${opt.costDelta}pts` }}</span>
+          <span :class="opt.costDelta === 0 ? 'text-steel' : 'text-yellow-700 dark:text-brass'">{{ opt.costDelta === 0 ? 'Free' : `+${opt.costDelta}pts` }}</span>
         </label>
       </template>
     </div>
