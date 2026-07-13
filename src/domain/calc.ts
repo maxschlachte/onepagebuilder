@@ -295,6 +295,12 @@ export function isSectionAvailable(
     )
     if (!metBySelection && !metByEquipment) return false
   }
+  if (prereq.requiresBaselineRule?.length) {
+    const hasBaselineRule = prereq.requiresBaselineRule.some((req) =>
+      unit.specialRules.some((r) => r.ruleId === req.ruleId && r.param === req.param),
+    )
+    if (!hasBaselineRule) return false
+  }
   return true
 }
 

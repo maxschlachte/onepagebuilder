@@ -32,6 +32,14 @@ const faction = computed(() =>
   list.value ? getEffectiveFaction(list.value.factionId, list.value.chapterId) : undefined,
 )
 
+const listSubtitle = computed(() => {
+  if (!faction.value) return ''
+  const chapterName = list.value?.chapterId
+    ? store.chapters.find((c) => c.id === list.value!.chapterId)?.name
+    : undefined
+  return chapterName ? `${faction.value.name} (${chapterName})` : faction.value.name
+})
+
 const total = computed(() =>
   list.value && faction.value ? totalPoints(list.value, faction.value) : 0,
 )
@@ -245,24 +253,30 @@ function onGroupSelect(lu: ListUnit, event: Event) {
   <div v-if="list && faction" class="mx-auto max-w-6xl p-4">
     <!-- Header -->
     <div class="mb-4 flex flex-wrap items-center gap-3">
-      <button class="rounded border border-gray-300 px-4 py-2 text-base hover:bg-gray-100 dark:border-gray-600 dark:hover:bg-gray-800" @click="emit('back')">← Lists</button>
-      <input
-        :value="list.name"
-        class="flex-1 rounded border border-transparent px-1 text-xl font-bold hover:border-gray-300 focus:border-gray-300 dark:bg-transparent dark:hover:border-gray-600"
-        @change="store.renameList(list.id, ($event.target as HTMLInputElement).value)"
-      />
-      <label class="text-sm">
-        Cap:
+      <button class="rounded border border-gray-300 px-4 py-2 text-base hover:bg-gray-100 dark:border-gray-600 dark:hover:bg-gray-800" @click="emit('back')">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" height="20">
+          <title>arrow-left</title><path d="M20,11V13H8L13.5,18.5L12.08,19.92L4.16,12L12.08,4.08L13.5,5.5L8,11H20Z" />
+        </svg>
+      </button>
+      <div class="flex flex-1 flex-col">
         <input
+            :value="list.name"
+            class="w-full rounded border border-transparent px-1 text-xl font-bold hover:border-gray-300 focus:border-gray-300 dark:bg-transparent dark:hover:border-gray-600"
+            @change="store.renameList(list.id, ($event.target as HTMLInputElement).value)"
+        />
+        <div class="px-1 text-sm text-gray-500 dark:text-gray-400">{{ listSubtitle }}</div>
+      </div>
+      <input
           type="number"
           :value="list.pointsCap"
           min="0"
           step="50"
           class="w-24 rounded border border-gray-300 px-2 py-1 dark:border-gray-600 dark:bg-gray-800"
           @change="store.setPointsCap(list.id, Number(($event.target as HTMLInputElement).value))"
-        />
-      </label>
-      <button class="rounded bg-gray-700 px-4 py-2 text-base text-white hover:bg-gray-800" @click="emit('print')">Print view</button>
+      />
+      <button class="rounded bg-gray-700 px-4 py-2 text-base text-white hover:bg-gray-800" @click="emit('print')">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" height="20"><title>printer</title><path d="M18,3H6V7H18M19,12A1,1 0 0,1 18,11A1,1 0 0,1 19,10A1,1 0 0,1 20,11A1,1 0 0,1 19,12M16,19H8V14H16M19,8H5A3,3 0 0,0 2,11V17H6V21H18V17H22V11A3,3 0 0,0 19,8Z" /></svg>
+      </button>
     </div>
 
     <!-- Live summary -->

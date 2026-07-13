@@ -13,6 +13,10 @@ function headingTexts(wrapper: ReturnType<typeof mount>) {
   return wrapper.findAll('div.text-xs.font-semibold.text-gray-500').map((d) => d.text())
 }
 
+function badgeTexts(wrapper: ReturnType<typeof mount>) {
+  return wrapper.findAll('span.rounded-full').map((s) => s.text())
+}
+
 function mountControls() {
   const listUnit: ListUnit = { instanceId: 'u1', unitId: tacticals.id, selectedUpgrades: [] }
   return mount(EntryUpgradeControls, {
@@ -68,21 +72,26 @@ describe('EntryUpgradeControls read-only mode', () => {
 })
 
 describe('EntryUpgradeControls section headings', () => {
-  it('a real lettered group shows its id prefix', () => {
+  it('a real lettered group shows its id once as a badge, not as a text prefix on the heading', () => {
     const wrapper = mount(EntryUpgradeControls, { props: { profile: tacticals, faction: sm } })
-    expect(headingTexts(wrapper)).toContain('A. Replace one Assault Rifle')
+    // Section headline shows only the title — no "A. " prefix.
+    expect(headingTexts(wrapper)).toContain('Replace one Assault Rifle')
+    expect(headingTexts(wrapper).some((h) => h.startsWith('A.'))).toBe(false)
+    // The id renders exactly once, as the group's badge.
+    expect(badgeTexts(wrapper).filter((t) => t === 'A')).toHaveLength(1)
   })
 
-  it('the Chapter Tactics group omits its internal id prefix', () => {
+  it('the Chapter Tactics group omits its internal id prefix and renders no badge', () => {
     const chapterFaction = getEffectiveFaction('space-marines', 'blood-angels')!
     const chapterTacticals = chapterFaction.units.find((u) => u.name === 'Tactical Marines')!
     const wrapper = mount(EntryUpgradeControls, { props: { profile: chapterTacticals, faction: chapterFaction } })
     const headings = headingTexts(wrapper)
     expect(headings).toContain('Chapter Tactics')
     expect(headings.some((h) => h.includes('blood-angels-tactics'))).toBe(false)
+    expect(badgeTexts(wrapper).some((t) => t.includes('blood-angels-tactics'))).toBe(false)
   })
 
-  it("a chapter unit's own group shows its continuing display letter, not its internal id", () => {
+  it("a chapter unit's own group shows its continuing display letter as a badge, not its internal id", () => {
     const chapterFaction = getEffectiveFaction('space-marines', 'blood-angels')!
     // Death Company's own group is Blood Angels' second bundle group (ba-b),
     // so it continues the base faction's A-O sequence at 'Q' (Sanguinary
@@ -90,7 +99,9 @@ describe('EntryUpgradeControls section headings', () => {
     const deathCompany = chapterFaction.units.find((u) => u.name === 'Death Company')!
     const wrapper = mount(EntryUpgradeControls, { props: { profile: deathCompany, faction: chapterFaction } })
     const headings = headingTexts(wrapper)
-    expect(headings).toContain('Q. Replace any Pistol')
-    expect(headings.some((h) => h.startsWith('ba-b'))).toBe(false)
+    expect(headings).toContain('Replace any Pistol')
+    expect(headings.some((h) => h.startsWith('Q.') || h.startsWith('ba-b'))).toBe(false)
+    expect(badgeTexts(wrapper).filter((t) => t === 'Q')).toHaveLength(1)
+    expect(badgeTexts(wrapper).some((t) => t.startsWith('ba-b'))).toBe(false)
   })
 })

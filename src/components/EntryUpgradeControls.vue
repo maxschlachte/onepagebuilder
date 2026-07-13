@@ -112,11 +112,16 @@ function unavailableReason(section: UpgradeSection): string | undefined {
   <div
     v-for="group in groups().filter(hasVisibleContent)"
     :key="group.id"
-    class="mt-2 border-t border-gray-100 pt-2 dark:border-gray-800"
+    class="relative mt-3 border-t border-gray-100 pt-2 dark:border-gray-800"
   >
+    <span
+      v-if="!group.hideId"
+      class="absolute left-0 top-0 flex h-5 w-5 -translate-y-1/2 items-center justify-center rounded-full border border-gray-100 bg-white text-[10px] font-semibold text-gray-500 dark:border-gray-800 dark:bg-gray-900"
+      >{{ group.displayId ?? group.id }}</span
+    >
     <div v-for="(section, sIdx) in group.sections" :key="sIdx" class="mb-1">
       <template v-if="optionsFor(section).length">
-        <div class="text-xs font-semibold text-gray-500">{{ group.hideId ? section.title : `${group.displayId ?? group.id}. ${section.title}` }}</div>
+        <div class="text-xs font-semibold text-gray-500">{{ section.title }}</div>
         <div v-if="isSectionUnavailable(section)" class="text-xs italic text-gray-400">
           {{ unavailableReason(section) }}
         </div>

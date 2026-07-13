@@ -138,6 +138,15 @@ export interface SectionPrerequisite {
    * unlock the section).
    */
   satisfiedByEquipment?: string[]
+  /**
+   * This section is only available if the unit's baseline `specialRules` include at
+   * least one of these rules (matched by `ruleId` and `param` both equal). Unlike
+   * `requiresOneOfSelected`/`satisfiedByEquipment`, this is never satisfiable by a
+   * selection — it's an unconditional gate on the unit's printed baseline profile
+   * (e.g. an "Upgrade Psyker(1)" section should only be available to a unit that
+   * already has `Psyker(1)` at baseline, not one that merely selects it).
+   */
+  requiresBaselineRule?: RuleRef[]
 }
 
 /**

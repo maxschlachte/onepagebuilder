@@ -257,7 +257,7 @@ The system SHALL size the builder's interactive controls (buttons and select dro
 
 ### Requirement: Chapter Tactics options in the builder
 
-For a Space Marines list with a chapter selected, the system SHALL show that chapter's rule-modifier option(s) as an additional upgrade choice on every base Space Marines unit the modifier applies to (by unit category — Infantry, Vehicle, Hero — or by specific unit name, per the chapter's printed modifiers), alongside the unit's normal upgrade groups, with the option's point cost and granted rule following the same display and selection behavior as any other upgrade option. The chapter's own extra units SHALL NOT show that chapter's own Chapter Tactics options, even when the unit's category or name would otherwise match. The Chapter Tactics section heading SHALL NOT display the synthesized group's internal id — unlike a real lettered upgrade group's heading (e.g. "A. Replace one Assault Rifle"), it SHALL show only the section title ("Chapter Tactics").
+For a Space Marines list with a chapter selected, the system SHALL show that chapter's rule-modifier option(s) as an additional upgrade choice on every base Space Marines unit the modifier applies to (by unit category — Infantry, Vehicle, Hero — or by specific unit name, per the chapter's printed modifiers), alongside the unit's normal upgrade groups, with the option's point cost and granted rule following the same display and selection behavior as any other upgrade option. The chapter's own extra units SHALL NOT show that chapter's own Chapter Tactics options, even when the unit's category or name would otherwise match. A real lettered upgrade group's id SHALL render once per group, as a badge overlaid on the divider above the group's sections, rather than as a text prefix on each section's headline; the Chapter Tactics section heading SHALL NOT display the synthesized group's internal id — it renders no id badge on its divider, and its section heading SHALL show only the section title ("Chapter Tactics").
 
 #### Scenario: A category-wide Chapter Tactics option appears on every eligible base unit
 
@@ -287,10 +287,43 @@ For a Space Marines list with a chapter selected, the system SHALL show that cha
 #### Scenario: Chapter Tactics heading omits the internal group id
 
 - **WHEN** the user views a unit's Chapter Tactics section, in either a selected unit's upgrade controls or the read-only roster Details panel
-- **THEN** the section heading shows only "Chapter Tactics", with no group id prefix
+- **THEN** the section heading shows only "Chapter Tactics", with no group id prefix, and the divider above it renders with no id badge
 
-#### Scenario: A real lettered group's heading is unaffected
+#### Scenario: A real lettered group's id renders once as a badge on the divider
 
-- **WHEN** the user views any other (non-Chapter-Tactics) upgrade group's heading
-- **THEN** it continues to show the group's letter id followed by the section title, exactly as before this change
+- **WHEN** the user views any other (non-Chapter-Tactics) upgrade group with more than one section, in either a selected unit's upgrade controls or the read-only roster Details panel
+- **THEN** the group's letter id appears exactly once, as a badge overlaid on the divider above the group's first section, and every section's headline within that group shows only its own title with no id prefix
+
+### Requirement: Chapter units' own upgrade groups display with a continuing letter
+
+For a Space Marines list with a chapter selected, a chapter's own extra unit's own upgrade group heading SHALL show its computed display letter (continuing the base Space Marines faction's own lettering sequence), not its internal namespaced id, in both a selected unit's upgrade controls and the read-only roster Details panel.
+
+#### Scenario: A chapter unit's own group heading shows a continuing letter, not its internal id
+
+- **WHEN** the user views a Blood Angels list's selected Death Company unit's upgrade controls
+- **THEN** its own upgrade group headings show single letters (e.g. "P. Replace any Pistol"), not the internal namespaced id (e.g. not "ba-b. Replace any Pistol")
+
+#### Scenario: The roster Details panel shows the same continuing letter
+
+- **WHEN** the user expands a chapter unit's read-only roster Details panel
+- **THEN** its own upgrade group headings show the same continuing letter as the selected-unit upgrade controls would
+
+### Requirement: Builder header shows the list's faction and chapter
+
+The builder header SHALL show the open list's faction name below the editable list-name field, and, when the list has a Space Marine chapter selected, the chapter name alongside it in parentheses — matching the "Faction Name (Chapter Name)" format already used for each list on the saved-lists screen. A list with no chapter selected, or for a faction other than Space Marines, SHALL show only the faction name.
+
+#### Scenario: A Space Marines list with a chapter selected
+
+- **WHEN** the user opens a Space Marines list that has a chapter selected (e.g. Blood Angels)
+- **THEN** the builder header shows "Space Marines (Blood Angels)" below the list-name field
+
+#### Scenario: A list with no chapter
+
+- **WHEN** the user opens a Space Marines list with no chapter selected, or a list for any other faction
+- **THEN** the builder header shows only the faction name below the list-name field, with no parenthetical
+
+#### Scenario: Renaming the list does not affect the faction/chapter line
+
+- **WHEN** the user edits the list-name field
+- **THEN** the faction/chapter line below it is unaffected, since it reflects the list's faction and chapter, not its name
 

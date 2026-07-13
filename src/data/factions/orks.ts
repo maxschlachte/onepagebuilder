@@ -63,7 +63,9 @@ export const orks = faction({
       ]),
     ]),
     group('B', [
-      section('Upgrade Psyker(1)', 'one', [{ label: 'Psyker(2)', cost: 5, adds: ['Psyker(2)'] }]),
+      section('Upgrade Psyker(1)', 'one', [{ label: 'Psyker(2)', cost: 5, adds: ['Psyker(2)'] }], {
+        requiresBaselineRule: ['Psyker(1)'],
+      }),
     ]),
     group('C', [
       section('Take one', 'one', [

@@ -86,6 +86,18 @@ describe('import validation', () => {
       }),
     ).toThrow(/prerequisite/)
   })
+
+  it('rejects a baseline-rule-gated Psyker upgrade on a unit lacking that baseline rule', () => {
+    const tacticals = sm.units.find((u) => u.name === 'Tactical Marines')!
+    const [psykerUpgrade] = optionsIn('space-marines', 'A', 'Upgrade Psyker(1)')
+    expect(() =>
+      validateImported({
+        name: 'x',
+        factionId: 'space-marines',
+        units: [{ unitId: tacticals.id, selectedUpgrades: [psykerUpgrade.id] }],
+      }),
+    ).toThrow(/prerequisite/)
+  })
 })
 
 describe('Space Marine chapter selection', () => {
@@ -666,5 +678,23 @@ describe('toggleUpgrade prerequisite enforcement', () => {
 
     store.toggleUpgrade(list.id, instanceId, pistolCombo.id) // deselect the pistol-producing option
     expect(list.units[0].selectedUpgrades).toEqual([])
+  })
+
+  it('rejects a baseline-rule-gated option on a unit lacking that baseline rule, but allows it for a qualifying unit', () => {
+    const store = useListsStore()
+    const list = store.createList('Psyker Prereq Test', 'space-marines', 750)
+    const tacticals = sm.units.find((u) => u.name === 'Tactical Marines')!
+    const librarian = sm.units.find((u) => u.name === 'Librarian')! // baseline Psyker(1)
+    store.addUnit(list.id, tacticals.id)
+    store.addUnit(list.id, librarian.id)
+    const tacticalsInstanceId = list.units[0].instanceId
+    const librarianInstanceId = list.units[1].instanceId
+    const [psykerUpgrade] = optionsIn('space-marines', 'A', 'Upgrade Psyker(1)')
+
+    store.toggleUpgrade(list.id, tacticalsInstanceId, psykerUpgrade.id) // no baseline Psyker(1): rejected
+    expect(list.units[0].selectedUpgrades).toEqual([])
+
+    store.toggleUpgrade(list.id, librarianInstanceId, psykerUpgrade.id) // baseline Psyker(1): accepted
+    expect(list.units[1].selectedUpgrades).toEqual([psykerUpgrade.id])
   })
 })

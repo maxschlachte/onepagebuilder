@@ -37,11 +37,18 @@ export const chaosDaemons = faction({
   ],
   upgradeGroups: [
     group('A', [
-      section('Upgrade Psyker(1)', 'one', [
-        { label: 'Psyker(2)', cost: 5, adds: ['Psyker(2)'] },
-        { label: 'Psyker(3)', cost: 10, adds: ['Psyker(3)'] },
-      ]),
-      section('Upgrade Psyker(2)', 'one', [{ label: 'Psyker(3)', cost: 5, adds: ['Psyker(3)'] }]),
+      section(
+        'Upgrade Psyker(1)',
+        'one',
+        [
+          { label: 'Psyker(2)', cost: 5, adds: ['Psyker(2)'] },
+          { label: 'Psyker(3)', cost: 10, adds: ['Psyker(3)'] },
+        ],
+        { requiresBaselineRule: ['Psyker(1)'] },
+      ),
+      section('Upgrade Psyker(2)', 'one', [{ label: 'Psyker(3)', cost: 5, adds: ['Psyker(3)'] }], {
+        requiresBaselineRule: ['Psyker(2)'],
+      }),
     ]),
     group('B', [
       section('Take one', 'one', [

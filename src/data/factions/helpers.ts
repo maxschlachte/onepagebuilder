@@ -396,6 +396,14 @@ export interface SectionPrerequisiteInput {
    * them rather than resolving them to an option id.
    */
   satisfiedByEquipment?: string[]
+  /**
+   * This section is only available if the unit's baseline `special` rules
+   * include at least one of these rule tokens (e.g. `'Psyker(1)'`), parsed the
+   * same way baseline `special` strings are (via `parseRule`). Unlike the
+   * other fields, never satisfiable by a selection — see
+   * {@link SectionPrerequisite.requiresBaselineRule}.
+   */
+  requiresBaselineRule?: string[]
 }
 
 export interface SectionInput {
@@ -488,6 +496,7 @@ export function faction(input: FactionInput): Faction {
         blockedBySelectingOnSingleModel: resolveLabels(raw.blockedBySelectingOnSingleModel),
         requiresOneOfSelected: resolveLabels(raw.requiresOneOfSelected),
         satisfiedByEquipment: raw.satisfiedByEquipment?.map(equipmentKeyOf),
+        requiresBaselineRule: raw.requiresBaselineRule?.map(parseRule),
       }
       sec.prerequisite = prerequisite
     }

@@ -22,6 +22,7 @@ import type { Faction, UnitProfile, UpgradeOption, UpgradeSection } from './type
 const sm = getFaction('space-marines')!
 const captain = sm.units.find((u) => u.name === 'Captain')!
 const tacticals = sm.units.find((u) => u.name === 'Tactical Marines')!
+const librarian = sm.units.find((u) => u.name === 'Librarian')! // baseline Psyker(1)
 const tyranids = getFaction('tyranids')!
 const carnifex = tyranids.units.find((u) => u.name === 'Carnifex')! // Monster
 const hiveTyrant = tyranids.units.find((u) => u.name === 'Hive Tyrant')! // Hero, Monster, Psyker
@@ -348,6 +349,39 @@ describe('isSectionAvailable', () => {
 
     it('a selected option still satisfies the requirement even when satisfiedByEquipment is also declared', () => {
       expect(isSectionAvailable(boyz, carbineAttachmentSection, [carbine])).toBe(true)
+    })
+  })
+
+  describe('requiresBaselineRule (Psyker level-up sections)', () => {
+    const psykerSection = findSection(sm, optionId(sm, 'A', 'Psyker(2)'))!.section
+
+    it('blocks a unit without the required baseline rule, regardless of selections', () => {
+      expect(isSectionAvailable(captain, psykerSection, [])).toBe(false)
+      expect(isSectionAvailable(tacticals, psykerSection, [])).toBe(false)
+    })
+
+    it('is available to a unit with the exact matching baseline rule', () => {
+      expect(isSectionAvailable(librarian, psykerSection, [])).toBe(true)
+    })
+
+    it('is not satisfied by the unit having the same rule at a different level', () => {
+      const daemons = getFaction('chaos-daemons')!
+      const lordOfChange = daemons.units.find((u) => u.name === 'Lord of Change')! // baseline Psyker(2)
+      const greatUncleanOne = daemons.units.find((u) => u.name === 'Great Unclean One')! // baseline Psyker(1)
+      const upgradeFromOneSection = findSection(daemons, optionId(daemons, 'A', 'Psyker(2)'))!.section
+      const upgradeFromTwoSection = daemons.upgradeGroups
+        .find((g) => g.id === 'A')!
+        .sections.find((s) => s.title === 'Upgrade Psyker(2)')!
+
+      // Lord of Change (Psyker(2)) doesn't qualify for the Psyker(1)-gated section...
+      expect(isSectionAvailable(lordOfChange, upgradeFromOneSection, [])).toBe(false)
+      // ...and Great Unclean One (Psyker(1)) doesn't qualify for the Psyker(2)-gated section.
+      expect(isSectionAvailable(greatUncleanOne, upgradeFromTwoSection, [])).toBe(false)
+      expect(isSectionAvailable(lordOfChange, upgradeFromTwoSection, [])).toBe(true)
+    })
+
+    it('cannot be satisfied by a selection, only by the unit’s baseline specialRules', () => {
+      expect(isSectionAvailable(tacticals, psykerSection, [optionId(sm, 'A', 'Stormbolter')])).toBe(false)
     })
   })
 })

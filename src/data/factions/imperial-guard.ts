@@ -65,7 +65,9 @@ export const imperialGuard = faction({
           requiresOneOfSelected: ['Pistol and Medium CCW', 'Plasma Pistol and Medium CCW'],
         },
       ),
-      section('Upgrade Psyker(1)', 'one', [{ label: 'Psyker(2)', cost: 5, adds: ['Psyker(2)'] }]),
+      section('Upgrade Psyker(1)', 'one', [{ label: 'Psyker(2)', cost: 5, adds: ['Psyker(2)'] }], {
+        requiresBaselineRule: ['Psyker(1)'],
+      }),
     ]),
     group('B', [
       section('Replace up to two Assault Rifles/Carbines', 'upToTwo', [

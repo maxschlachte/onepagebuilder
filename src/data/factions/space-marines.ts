@@ -94,7 +94,9 @@ export const spaceMarines = faction({
         { label: 'Bike (Linked Assault Rifle, Fast)', cost: 15, adds: ['Fast'], addEquipment: [linked(weapon('assault-rifle'))] },
         { label: 'Terminator Armor (Armored, Deep Strike)', cost: 15, adds: ['Armored', 'Deep Strike'] },
       ]),
-      section('Upgrade Psyker(1)', 'one', [{ label: 'Psyker(2)', cost: 5, adds: ['Psyker(2)'] }]),
+      section('Upgrade Psyker(1)', 'one', [{ label: 'Psyker(2)', cost: 5, adds: ['Psyker(2)'] }], {
+        requiresBaselineRule: ['Psyker(1)'],
+      }),
     ]),
     group('B', [
       section('Upgrade with any', 'any', [

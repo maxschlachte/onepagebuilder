@@ -16,7 +16,9 @@ export const harlequins = faction({
   ],
   upgradeGroups: [
     group('A', [
-      section('Upgrade Psyker(1)', 'one', [{ label: 'Psyker(2)', cost: 5, adds: ['Psyker(2)'] }]),
+      section('Upgrade Psyker(1)', 'one', [{ label: 'Psyker(2)', cost: 5, adds: ['Psyker(2)'] }], {
+        requiresBaselineRule: ['Psyker(1)'],
+      }),
       section('Replace Pistol', 'one', [
         { label: 'Pistol (Piercing)', cost: 0, addEquipment: [weapon('pistol', { rules: rules('Piercing') })], removeOneEquipment: ['Pistol (Rending)'] },
       ]),

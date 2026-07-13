@@ -104,10 +104,15 @@ export const chaosSpaceMarines = faction({
         },
         { label: 'Terminator Armor (Armored, Deep Strike)', cost: 15, adds: ['Armored', 'Deep Strike'] },
       ]),
-      section('Upgrade Psyker(1)', 'one', [
-        { label: 'Psyker(2)', cost: 5, adds: ['Psyker(2)'] },
-        { label: 'Psyker(3)', cost: 10, adds: ['Psyker(3)'] },
-      ]),
+      section(
+        'Upgrade Psyker(1)',
+        'one',
+        [
+          { label: 'Psyker(2)', cost: 5, adds: ['Psyker(2)'] },
+          { label: 'Psyker(3)', cost: 10, adds: ['Psyker(3)'] },
+        ],
+        { requiresBaselineRule: ['Psyker(1)'] },
+      ),
     ]),
     group('C', [
       section('Replace all Assault Rifles', 'one', [
