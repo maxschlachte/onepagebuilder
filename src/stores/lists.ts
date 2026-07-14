@@ -18,9 +18,10 @@ import {
   wholeUnitOptionIds,
 } from '../domain/calc'
 import { LIST_SCHEMA_VERSION, type ArmyList, type ListUnit } from '../domain/list'
-import type { Faction, UnitProfile } from '../domain/types'
+import type { Faction, GameSystem, UnitProfile } from '../domain/types'
 
 const STORAGE_KEY = 'opr40k.lists.v1'
+const SYSTEM_STORAGE_KEY = 'opr40k.activeSystem.v1'
 
 function uid(): string {
   return typeof crypto !== 'undefined' && 'randomUUID' in crypto
@@ -132,6 +133,29 @@ watch(
   },
   { deep: true },
 )
+
+function loadSystem(): GameSystem {
+  try {
+    const raw = localStorage.getItem(SYSTEM_STORAGE_KEY)
+    return raw === 'system-fantasy' ? 'system-fantasy' : 'system-40k'
+  } catch {
+    return 'system-40k'
+  }
+}
+
+const activeSystem = ref<GameSystem>(loadSystem())
+
+watch(activeSystem, (value) => {
+  try {
+    localStorage.setItem(SYSTEM_STORAGE_KEY, value)
+  } catch {
+    /* storage may be unavailable (private mode); ignore */
+  }
+})
+
+function setActiveSystem(system: GameSystem): void {
+  activeSystem.value = system
+}
 
 function find(id: string): ArmyList | undefined {
   return lists.value.find((l) => l.id === id)
@@ -556,6 +580,8 @@ export function useListsStore() {
     lists: computed(() => lists.value),
     rulesDatabase,
     chapters,
+    activeSystem: computed(() => activeSystem.value),
+    setActiveSystem,
     getEffectiveFaction,
     find,
     createList,

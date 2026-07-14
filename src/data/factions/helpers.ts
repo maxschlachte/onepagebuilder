@@ -5,6 +5,7 @@
 import type {
   EquipmentEntry,
   Faction,
+  GameSystem,
   PsychicPower,
   RuleRef,
   SectionPrerequisite,
@@ -25,14 +26,20 @@ const weaponById = new Map(weapons.map((w) => [w.id, w]))
 const meleeTierNames = new Set(weapons.filter((w) => w.range === null).map((w) => w.name.toLowerCase()))
 
 /**
- * Innate rules for a close-combat weapon *type* word, per the rulebook's general
- * weapons table: `CCW`/`Claws` carry no special rules (and so are absent here —
- * any type word not listed defaults to no innate rules), `Powersword` counts as
- * Piercing, and `Powerfist` counts as Piercing and Rending.
+ * Innate rules for a close-combat weapon *type* word, per each system's general
+ * weapons table: any type word not listed here defaults to no innate rules.
+ * Grimdark Future (`1p40k` rulebook): `CCW`/`Claws` carry none, `Powersword`
+ * counts as Piercing, `Powerfist` counts as Piercing and Rending. Age of Fantasy
+ * (`one-page-fantasy-rules.md`'s Weapons section): `Sword`/`Claws` carry none,
+ * `Halberd` counts as Piercing, `Mace` counts as Piercing and Poison, `Lance`
+ * counts as Impact(1). Shared here since neither system's type words collide.
  */
 const meleeTypeRules: Record<string, RuleRef[]> = {
   powersword: [{ ruleId: 'piercing' }],
   powerfist: [{ ruleId: 'piercing' }, { ruleId: 'rending' }],
+  halberd: [{ ruleId: 'piercing' }],
+  mace: [{ ruleId: 'piercing' }, { ruleId: 'poison' }],
+  lance: [{ ruleId: 'impact', param: 1 }],
 }
 
 /** Clone `tier` with its type's innate rules (if any) attached. */
@@ -460,6 +467,8 @@ export function power(name: string, castValue: number, text: string): PsychicPow
 export interface FactionInput {
   id: string
   name: string
+  /** Which ruleset this faction belongs to; defaults to `'system-40k'` (all existing 40k-style factions). */
+  system?: GameSystem
   units: UnitInput[]
   upgradeGroups: UpgradeGroup[]
   armyRules: SpecialRule[]
@@ -505,6 +514,7 @@ export function faction(input: FactionInput): Faction {
   return {
     id: input.id,
     name: input.name,
+    system: input.system ?? 'system-40k',
     units: input.units.map((u) => unit(input.id, u)),
     upgradeGroups: input.upgradeGroups,
     armyRules: input.armyRules,

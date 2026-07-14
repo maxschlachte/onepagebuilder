@@ -55,7 +55,7 @@ function otherEquipment(): EquipmentEntry[] {
         {{ profile.name }} <span class="font-normal normal-case text-stone-600 dark:text-slate-400">[{{ size }}]</span>
         <span v-if="tag" class="ml-1 text-xs font-normal normal-case text-stone-600 dark:text-slate-400">({{ tag }})</span>
       </component>
-      <span :class="nested ? 'text-xs' : 'text-sm'"><span class="text-slate-500">Quality {{ profile.quality }}</span> · <span class="text-yellow-700">{{ cost }}pts</span></span>
+      <span class="text-sm"><span class="text-slate-500">Quality {{ profile.quality }}</span> · <span class="text-yellow-700">{{ cost }}pts</span></span>
     </div>
 
     <table v-if="weaponRows('ranged').length" class="mt-1 w-full text-sm">

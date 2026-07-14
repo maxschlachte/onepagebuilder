@@ -138,7 +138,7 @@ const reference = computed(() => {
  */
 const psychicPowersReference = computed(() => {
   if (!faction.value) return []
-  const hasPsyker = units.value.some((eff) => eff.specialRules.some((r) => r.ruleId === 'psyker'))
+  const hasPsyker = units.value.some((eff) => eff.specialRules.some((r) => r.ruleId === 'psyker' || r.ruleId === 'wizard'))
   if (!hasPsyker) return []
   const resolver = createResolver(rulesDatabase, faction.value)
   return faction.value.psychicPowers
@@ -209,9 +209,9 @@ function printPage() {
       <p v-if="!reference.length" class="text-sm text-stone-600 dark:text-slate-400">No rules referenced.</p>
     </section>
 
-    <!-- Deduplicated psychic powers, shown only when the list contains a Psyker -->
+    <!-- Deduplicated psychic powers/spells, shown only when the list contains a Psyker/Wizard -->
     <section v-if="psychicPowersReference.length" class="mt-6">
-      <h2 class="mb-2 border-b border-yellow-700 pb-1 font-display text-lg font-bold uppercase tracking-wide text-stone-900 dark:text-slate-200">Psychic Powers</h2>
+      <h2 class="mb-2 border-b border-yellow-700 pb-1 font-display text-lg font-bold uppercase tracking-wide text-stone-900 dark:text-slate-200">{{ faction?.system === 'system-fantasy' ? 'Magic Spells' : 'Psychic Powers' }}</h2>
       <dl class="columns-2 gap-x-6 text-sm">
         <div v-for="r in psychicPowersReference" :key="r.id" class="print-unit mb-1 break-inside-avoid-column">
           <dt class="inline font-semibold text-yellow-700">{{ r.name }}:</dt>

@@ -5,7 +5,7 @@ TBD - created by archiving change army-builder-1p40k. Update Purpose after archi
 ## Requirements
 ### Requirement: Faction selection and unit roster
 
-The system SHALL let the user choose a faction for the current list and SHALL display that faction's available units with their key stats for adding to the list. For a Space Marines list with a chapter selected, the roster SHALL also include that chapter's extra units alongside the base Space Marines units, ordered by category — Heroes/Psykers first, then Infantry, then Vehicles, then any other category — with each chapter unit placed within the same category as its base-faction peers rather than appended as a separate block after all base units; within a category, base units SHALL keep their existing relative order followed by the chapter's units of that category in their existing relative order. Each roster unit SHALL show a "Details" button, separate from its add control; activating it expands an inline panel showing that unit's baseline equipment, special rules, and every available upgrade section and option with its cost (read-only — no selection controls), and activating it again collapses the panel. The expanded panel SHALL NOT repeat the unit's name, and SHALL NOT render as a bordered/boxed panel nested inside the roster row's own box — it is separated from the row above it by a divider only. A roster unit whose special rules include Hero SHALL show a "Hero" badge; a roster unit that is not Hero but whose special rules include Psyker SHALL show a "Psyker" badge. Below the mobile breakpoint, the roster is one of the two panels the tab switcher toggles between.
+The system SHALL let the user choose a faction for the current list and SHALL display that faction's available units with their key stats for adding to the list. For a Space Marines list with a chapter selected, the roster SHALL also include that chapter's extra units alongside the base Space Marines units, ordered by category — Heroes/Psykers first, then Infantry, then Vehicles, then any other category — with each chapter unit placed within the same category as its base-faction peers rather than appended as a separate block after all base units; within a category, base units SHALL keep their existing relative order followed by the chapter's units of that category in their existing relative order. Each roster unit SHALL show a "Details" button, separate from its add control; activating it expands an inline panel showing that unit's baseline equipment, special rules, and every available upgrade section and option with its cost (read-only — no selection controls), and activating it again collapses the panel. The expanded panel SHALL NOT repeat the unit's name, and SHALL NOT render as a bordered/boxed panel nested inside the roster row's own box — it is separated from the row above it by a divider only. A roster unit whose special rules include Hero SHALL show a "Hero" badge; a roster unit that is not Hero but whose special rules include a caster rule (Warhammer 40k's `Psyker` or Warhammer Fantasy's `Wizard`) SHALL show a badge labeled with that rule's own name ("Psyker" or "Wizard" respectively). Below the mobile breakpoint, the roster is one of the two panels the tab switcher toggles between.
 
 #### Scenario: Browse a faction roster
 
@@ -67,14 +67,19 @@ The system SHALL let the user choose a faction for the current list and SHALL di
 - **WHEN** a roster unit's special rules include Hero
 - **THEN** the roster entry shows a "Hero" badge
 
-#### Scenario: Psyker badge
+#### Scenario: Psyker badge in Warhammer 40k
 
-- **WHEN** a roster unit's special rules include Psyker and do not include Hero
+- **WHEN** a Warhammer 40k roster unit's special rules include Psyker and do not include Hero
 - **THEN** the roster entry shows a "Psyker" badge
 
-#### Scenario: A Hero Psyker shows only the Hero badge
+#### Scenario: Wizard badge in Warhammer Fantasy
 
-- **WHEN** a roster unit's special rules include both Hero and Psyker
+- **WHEN** a Warhammer Fantasy roster unit's special rules include the `Wizard` rule and do not include Hero
+- **THEN** the roster entry shows a "Wizard" badge, not "Psyker"
+
+#### Scenario: A Hero Psyker/Wizard shows only the Hero badge
+
+- **WHEN** a roster unit's special rules include both Hero and a caster rule (Psyker or Wizard)
 - **THEN** the roster entry shows only the "Hero" badge, not both
 
 ### Requirement: Edit units and upgrades in the builder

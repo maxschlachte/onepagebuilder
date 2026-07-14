@@ -172,9 +172,14 @@ export interface UpgradeGroup {
   displayId?: string
 }
 
+/** A supported ruleset: the 40k-style *Grimdark Future* or the fantasy *Age of Fantasy*. */
+export type GameSystem = 'system-40k' | 'system-fantasy'
+
 export interface Faction {
   id: string
   name: string
+  /** Which ruleset this faction belongs to. */
+  system: GameSystem
   units: UnitProfile[]
   upgradeGroups: UpgradeGroup[]
   armyRules: SpecialRule[]
@@ -198,7 +203,8 @@ export interface CompositionRules {
 
 export interface RulesDatabase {
   factions: Faction[]
-  glossary: SpecialRule[]
+  /** Each game system's own special-rule glossary — never merged, since some rule names carry different wording or mechanics between systems (e.g. `Poison`). */
+  glossaries: Record<GameSystem, SpecialRule[]>
   weapons: Weapon[]
   composition: CompositionRules
 }

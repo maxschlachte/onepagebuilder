@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { onMounted, onUnmounted, ref } from 'vue'
+import { computed, onMounted, onUnmounted, ref } from 'vue'
 import { useListsStore } from '../stores/lists'
 import { getFaction } from '../data/index'
 import { getEffectiveFaction } from '../data/chapters'
@@ -102,6 +102,21 @@ function factionName(id: string): string {
   return getFaction(id)?.name ?? id
 }
 
+const systemOptions: { id: 'system-40k' | 'system-fantasy'; name: string }[] = [
+  { id: 'system-40k', name: 'Warhammer 40k' },
+  { id: 'system-fantasy', name: 'Warhammer Fantasy' },
+]
+
+/** Saved lists belonging to the active game system — a list's system is derived from its faction, never stored separately. */
+const visibleLists = computed(() =>
+  store.lists.value.filter((list) => (getFaction(list.factionId)?.system ?? 'system-40k') === store.activeSystem.value),
+)
+
+/** Factions offered by the Create Army List dialog, scoped to the active game system. */
+const systemFactions = computed(() =>
+  store.rulesDatabase.factions.filter((f) => f.system === store.activeSystem.value),
+)
+
 function chapterName(id: string | undefined): string | undefined {
   return id ? store.chapters.find((c) => c.id === id)?.name : undefined
 }
@@ -131,38 +146,54 @@ async function onImportFile(e: Event) {
       <div class="relative">
         <div class="text-[0.7rem] uppercase tracking-[.35em] text-yellow-700 dark:text-yellow-500">One Page Rules · Army List Builder</div>
         <h1 class="mb-[4px] mt-[6px] font-display text-[2.9rem] font-bold uppercase leading-[.95] tracking-[.02em] text-stone-900 dark:text-slate-200">
-          One Page <span class="text-yellow-700 dark:text-yellow-500">40k</span>
+          One Page <span class="text-yellow-700 dark:text-yellow-500">{{ systemOptions.find(s => s.id === store.activeSystem.value)?.name?.split(' ')[1] }}</span>
         </h1>
         <p class="mt-2.5 max-w-[70ch] text-stone-600 dark:text-slate-400">Build, upgrade, and print army lists for every faction and chapter.</p>
 
-        <div class="mt-4 flex flex-wrap items-center justify-end gap-2">
-          <button
-            ref="createButtonRef"
-            type="button"
-            class="rounded bg-yellow-700 px-4 py-2 font-display text-base uppercase tracking-wide text-stone-50 hover:bg-yellow-500 dark:bg-yellow-500 dark:text-slate-950 dark:hover:bg-yellow-700"
-            @click="showCreateDialog = true"
-          >
-            Create Army List
-          </button>
-          <button
-            type="button"
-            class="rounded border border-stone-300 px-4 py-2 font-display text-base uppercase tracking-wide hover:bg-stone-100 dark:border-slate-700 dark:hover:bg-slate-800"
-            @click="fileInput?.click()"
-          >
-            Import JSON
-          </button>
-          <input ref="fileInput" type="file" accept="application/json,.json" class="hidden" @change="onImportFile" />
+        <div class="mt-4 flex flex-wrap items-center justify-between gap-2">
+          <div class="flex gap-1 rounded border border-stone-300 p-1 dark:border-slate-700" role="tablist" aria-label="Game system">
+            <button
+              v-for="sys in systemOptions"
+              :key="sys.id"
+              type="button"
+              role="tab"
+              :aria-selected="store.activeSystem.value === sys.id"
+              class="rounded px-3 py-1.5 font-display text-sm uppercase tracking-wide"
+              :class="store.activeSystem.value === sys.id ? 'bg-yellow-700 text-stone-50 dark:bg-yellow-500 dark:text-slate-950' : 'hover:bg-stone-100 dark:hover:bg-slate-800'"
+              @click="store.setActiveSystem(sys.id)"
+            >
+              {{ sys.name }}
+            </button>
+          </div>
+          <div class="flex flex-wrap items-center gap-2">
+            <button
+              ref="createButtonRef"
+              type="button"
+              class="rounded bg-yellow-700 px-4 py-2 font-display text-base uppercase tracking-wide text-stone-50 hover:bg-yellow-500 dark:bg-yellow-500 dark:text-slate-950 dark:hover:bg-yellow-700"
+              @click="showCreateDialog = true"
+            >
+              Create Army List
+            </button>
+            <button
+              type="button"
+              class="rounded border border-stone-300 px-4 py-2 font-display text-base uppercase tracking-wide hover:bg-stone-100 dark:border-slate-700 dark:hover:bg-slate-800"
+              @click="fileInput?.click()"
+            >
+              Import JSON
+            </button>
+            <input ref="fileInput" type="file" accept="application/json,.json" class="hidden" @change="onImportFile" />
+          </div>
         </div>
         <p v-if="importError" class="mt-2 text-right text-sm text-red-800">{{ importError }}</p>
       </div>
     </div>
 
     <section>
-      <h2 class="mb-2 font-display font-semibold uppercase tracking-wide text-yellow-700 dark:text-yellow-500">Saved lists ({{ store.lists.value.length }})</h2>
-      <p v-if="!store.lists.value.length" class="text-stone-600 dark:text-slate-400">No lists yet. Create one above.</p>
+      <h2 class="mb-2 font-display font-semibold uppercase tracking-wide text-yellow-700 dark:text-yellow-500">Saved lists ({{ visibleLists.length }})</h2>
+      <p v-if="!visibleLists.length" class="text-stone-600 dark:text-slate-400">No lists yet. Create one above.</p>
       <ul class="space-y-2">
         <li
-          v-for="list in store.lists.value"
+          v-for="list in visibleLists"
           :key="list.id"
           class="relative flex cursor-pointer items-center justify-between gap-3 rounded border border-stone-300 bg-stone-50 p-3 hover:bg-stone-100 dark:border-slate-700 dark:bg-slate-900 dark:hover:bg-slate-800"
           @click="emit('open', list.id)"
@@ -235,7 +266,7 @@ async function onImportFile(e: Event) {
 
     <CreateListDialog
       v-if="showCreateDialog"
-      :factions="store.rulesDatabase.factions"
+      :factions="systemFactions"
       :chapters="store.chapters"
       @create="onCreate"
       @cancel="onCancelCreate"

@@ -2,7 +2,7 @@
 // looking through the global glossary, the active faction's army rules, and any
 // extra rule sources. The same resolver feeds tooltips and the print view.
 
-import type { Faction, RuleRef, RulesDatabase, SpecialRule } from './types'
+import type { Faction, GameSystem, RuleRef, RulesDatabase, SpecialRule } from './types'
 
 export interface ResolvedRule {
   id: string
@@ -28,11 +28,15 @@ export function formatRuleName(
 
 /**
  * Build a resolver bound to a database and (optionally) a faction so army-rule
- * and psychic-power references resolve alongside the global glossary.
+ * and psychic-power references resolve alongside the glossary for the
+ * faction's game system (each system has its own glossary — see
+ * `RulesDatabase.glossaries` — since some rule names carry different wording
+ * or mechanics between systems, e.g. `Poison`).
  */
 export function createResolver(db: RulesDatabase, faction?: Faction) {
+  const system: GameSystem = faction?.system ?? 'system-40k'
   const index = new Map<string, SpecialRule>()
-  for (const rule of db.glossary) index.set(rule.id, rule)
+  for (const rule of db.glossaries[system]) index.set(rule.id, rule)
   if (faction) {
     for (const rule of faction.armyRules) index.set(rule.id, rule)
     // Psychic powers are resolvable too (for tooltips and the print reference).

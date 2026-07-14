@@ -4,8 +4,9 @@ import { createResolver } from '../domain/resolve'
 import { maxHeroes } from './composition'
 
 describe('rules database integrity', () => {
-  it('contains all 15 factions', () => {
-    expect(rulesDatabase.factions).toHaveLength(15)
+  it('contains all 15 Grimdark Future factions and all 16 Age of Fantasy factions', () => {
+    expect(rulesDatabase.factions.filter((f) => f.system === 'system-40k')).toHaveLength(15)
+    expect(rulesDatabase.factions.filter((f) => f.system === 'system-fantasy')).toHaveLength(16)
   })
 
   it('has unique faction ids', () => {

@@ -50,6 +50,6 @@ describe('rule-granting option audit', () => {
   })
 
   it('every option whose label names a glossary rule references it in its effects', () => {
-    expect(findUnreferenced(() => rulesDatabase.glossary, 'glossary rule')).toEqual([])
+    expect(findUnreferenced((f) => rulesDatabase.glossaries[f.system], 'glossary rule')).toEqual([])
   })
 })

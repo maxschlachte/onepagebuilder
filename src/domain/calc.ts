@@ -27,13 +27,17 @@ export interface EffectiveUnit {
   cost: number
 }
 
-/** Special rules that disqualify a unit from being Infantry-eligible (per the rulebook's "Unit Types" section). */
-const NON_INFANTRY_RULES = new Set(['hero', 'psyker', 'monster', 'vehicle'])
+/**
+ * Special rules that disqualify a unit from being Infantry-eligible (per the
+ * rulebook's "Unit Types" section). `wizard` is Age of Fantasy's own caster
+ * rule, mechanically parallel to (but distinct from) Grimdark Future's `psyker`.
+ */
+const NON_INFANTRY_RULES = new Set(['hero', 'psyker', 'wizard', 'monster', 'vehicle'])
 
 /**
  * A unit is Infantry-eligible ("Any non-Vehicle unit") when it carries none of
- * Hero, Psyker, Monster, or Vehicle — derived from its special rules rather
- * than tagged per-unit, since the rulebook never prints "Infantry" as an
+ * Hero, Psyker/Wizard, Monster, or Vehicle — derived from its special rules
+ * rather than tagged per-unit, since the rulebook never prints "Infantry" as an
  * explicit per-unit special rule (see design.md decision 2).
  */
 export function isInfantry(profile: UnitProfile): boolean {

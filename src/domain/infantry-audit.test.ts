@@ -10,12 +10,12 @@ import { getFaction, rulesDatabase } from '../data/index'
 import { affectsAllModels, isInfantry } from './calc'
 
 describe('isInfantry database audit', () => {
-  it('excludes every current Hero/Psyker/Monster/Vehicle unit', () => {
+  it('excludes every current Hero/Psyker/Wizard/Monster/Vehicle unit', () => {
     const problems: string[] = []
     for (const faction of rulesDatabase.factions) {
       for (const unit of faction.units) {
         const excludingRule = unit.specialRules.find((r) =>
-          ['hero', 'psyker', 'monster', 'vehicle'].includes(r.ruleId),
+          ['hero', 'psyker', 'wizard', 'monster', 'vehicle'].includes(r.ruleId),
         )
         if (excludingRule && isInfantry(unit)) {
           problems.push(`${faction.id}/${unit.name}: has "${excludingRule.ruleId}" but isInfantry() returned true`)

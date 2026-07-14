@@ -2,7 +2,7 @@ import { describe, expect, it } from 'vitest'
 import { isInfantry, isVehicle } from '../domain/calc'
 import { getFaction } from './index'
 import { getEffectiveFaction } from './chapters'
-import { bloodAngelsBundle } from './factions/space-marine-chapters'
+import { bloodAngelsBundle } from './factions/40k/space-marine-chapters.ts'
 import type { Faction, UnitProfile } from '../domain/types'
 
 function optionsOf(unit: UnitProfile, faction: Faction) {

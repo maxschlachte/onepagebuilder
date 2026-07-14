@@ -112,6 +112,7 @@ describe('applyUpgrades — size-aware equipment effects', () => {
     return {
       id: 'test',
       name: 'Test',
+      system: 'system-40k',
       units: [],
       upgradeGroups: [{ id: 'A', sections: [{ title: 'x', selection: 'one', options: [opt] }] }],
       armyRules: [],
@@ -198,6 +199,7 @@ describe('applyUpgrades — default melee weapon', () => {
   const noOpFaction: Faction = {
     id: 'test',
     name: 'Test',
+    system: 'system-40k',
     units: [],
     upgradeGroups: [],
     armyRules: [],

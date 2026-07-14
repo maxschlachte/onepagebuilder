@@ -16,7 +16,7 @@ import {
   greyKnightsBundle,
   spaceWolvesBundle,
   type ChapterBundle,
-} from './factions/space-marine-chapters'
+} from './factions/40k/space-marine-chapters.ts'
 
 export type ChapterId = 'blood-angels' | 'dark-angels' | 'grey-knights' | 'space-wolves'
 
@@ -152,6 +152,7 @@ export function getEffectiveFaction(factionId: string, chapterId?: string): Fact
   return {
     id: base.id,
     name: base.name,
+    system: base.system,
     units,
     upgradeGroups: [...base.upgradeGroups, ...bundleGroups, ...chapterTacticsGroups],
     armyRules,
