@@ -34,7 +34,7 @@ export const beastmen = faction({
         { label: "Heavy Mace", cost: 15, addEquipment: [customWeapon("Heavy Mace", { range: null, attacks: '3', rules: rules("Piercing, Poison") })], removeEquipment: ["Heavy Sword"] }
       ]),
       section("Equip with:", 'any', [
-        { label: "Heavy Armor (Armored)", cost: 10, adds: ["Armored"] }
+        { label: "Heavy Armor", cost: 10, adds: ["Armored"] }
       ]),
       section("Mount on:", 'any', [
         { label: "Tuskgor Chariot", cost: 60, addEquipment: [gear("Tuskgor Chariot")] },
@@ -47,7 +47,7 @@ export const beastmen = faction({
         { label: "Master Mace", cost: 20, addEquipment: [customWeapon("Master Mace", { range: null, attacks: '4', rules: rules("Piercing, Poison") })], removeEquipment: ["Master Sword"] }
       ]),
       section("Equip with:", 'any', [
-        { label: "Heavy Armor (Armored)", cost: 10, adds: ["Armored"] }
+        { label: "Heavy Armor", cost: 10, adds: ["Armored"] }
       ])
     ]),
     group("C", [
@@ -72,7 +72,7 @@ export const beastmen = faction({
     group("E", [
       section("Upgrade with:", 'any', [
         { label: "Poison", cost: 15, adds: ["Poison"] },
-        { label: "Scaly Skin (Armored)", cost: 15, adds: ["Armored"] }
+        { label: "Scaly Skin", cost: 15, adds: ["Armored"] }
       ])
     ]),
     group("F", [

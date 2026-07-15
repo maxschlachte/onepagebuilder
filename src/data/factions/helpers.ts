@@ -18,9 +18,11 @@ import type {
   Weapon,
 } from '../../domain/types'
 import { weapons, type WeaponId } from '../weapons'
+import { weaponsFantasy, type FantasyWeaponId } from '../weapons-fantasy'
 
 const weaponByName = new Map(weapons.map((w) => [w.name.toLowerCase(), w]))
 const weaponById = new Map(weapons.map((w) => [w.id, w]))
+const weaponFantasyById = new Map(weaponsFantasy.map((w) => [w.id, w]))
 
 /** Ids of the melee attack tiers (`Light`/`Medium`/`Heavy`/`Master`/`Force`), keyed by lowercase name. */
 const meleeTierNames = new Set(weapons.filter((w) => w.range === null).map((w) => w.name.toLowerCase()))
@@ -201,6 +203,20 @@ export interface EquipmentOpts {
 /** Reference a global weapon-table entry by id — the id is checked at compile time against {@link WeaponId}. */
 export function weapon(id: WeaponId, opts: EquipmentOpts = {}): EquipmentEntry {
   const base = weaponById.get(id)!
+  const weaponRules = [...base.rules]
+  for (const r of opts.rules ?? []) addUniqueRule(weaponRules, r)
+  return {
+    key: opts.key ?? id,
+    label: opts.label ?? withCountPrefix(base.name, opts.count),
+    count: opts.count ?? 1,
+    unitCount: opts.unitCount,
+    weapon: { ...base, rules: weaponRules },
+  }
+}
+
+/** Reference a Fantasy weapon-table entry by id — the id is checked at compile time against {@link FantasyWeaponId}. */
+export function weaponFantasy(id: FantasyWeaponId, opts: EquipmentOpts = {}): EquipmentEntry {
+  const base = weaponFantasyById.get(id)!
   const weaponRules = [...base.rules]
   for (const r of opts.rules ?? []) addUniqueRule(weaponRules, r)
   return {

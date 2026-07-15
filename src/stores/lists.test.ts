@@ -303,7 +303,7 @@ describe('toggleUpgrade on a combined pair', () => {
     // (some carry no equipment effect at all) but only ever apply to one model —
     // the case that was previously miscategorized as whole-unit.
     const leaderOption = optionsIn('space-marines', 'A', 'Upgrade one model with one').find(
-      (o) => o.label === 'Jump Pack (Deep Strike, Flying)',
+      (o) => o.label === 'Jump Pack',
     )!
     store.toggleUpgrade(list.id, a.instanceId, leaderOption.id)
     expect(a.selectedUpgrades).toContain(leaderOption.id)

@@ -1,4 +1,4 @@
-import { faction, customWeapon, meleeWeapon, gear, rules, armyRule, section, group, type UnitInput } from '../helpers'
+import { faction, customWeapon, weaponFantasy, meleeWeapon, gear, rules, armyRule, section, group, type UnitInput } from '../helpers'
 
 const units: UnitInput[] = [
     { name: "Lord", size: 1, quality: "3+", equipment: [meleeWeapon('Medium', 'Sword', { key: 'medium-sword', label: "Medium Sword" })], special: "Armored, Fearless, Furious, Hero, Shieldwall, Slow,Tough(3)", upgrades: "A, F", cost: 45 },
@@ -18,7 +18,7 @@ const units: UnitInput[] = [
     { name: "Gyrocopter", size: 1, quality: "4+", equipment: [customWeapon("Steam Gun", { range: 12, attacks: "6", rules: rules("Piercing") }), meleeWeapon('Medium', 'Sword', { key: 'medium-sword', label: "Medium Sword" })], special: "Armored, Dive Bomb, Fearless, Flying, Furious, Tough(3)", upgrades: "D", cost: 80 },
     { name: "Gyrobomber", size: 1, quality: "4+", equipment: [customWeapon("Clattergun", { range: 24, attacks: "4", rules: rules("Piercing") }), meleeWeapon('Medium', 'Sword', { key: 'medium-sword', label: "Medium Sword" })], special: "Armored, Bombing Run, Fearless, Flying, Furious, Tough(3)", upgrades: "-", cost: 160 },
     { name: "Flame Cannon", size: 1, quality: "4+", equipment: [customWeapon("Fire Thrower", { range: 18, attacks: "6", rules: rules("") })], special: "Armored, Fearless, Ordnance, Slow, Tough(3)", upgrades: "H", cost: 50 },
-    { name: "Bolt Thrower", size: 1, quality: "4+", equipment: [customWeapon("Bolt Thrower", { range: 48, attacks: "3", rules: rules("Piercing") })], special: "Armored, Fearless, Ordnance, Slow, Tough(3)", upgrades: "H", cost: 75 },
+    { name: "Bolt Thrower", size: 1, quality: "4+", equipment: [weaponFantasy('bolt-thrower')], special: "Armored, Fearless, Ordnance, Slow, Tough(3)", upgrades: "H", cost: 75 },
     { name: "Grudge Thrower", size: 1, quality: "4+", equipment: [customWeapon("Stone Thrower", { range: 48, attacks: "3", rules: rules("Piercing, Indirect") })], special: "Armored, Fearless, Ordnance, Slow, Tough(3)", upgrades: "H", cost: 100 },
     { name: "Dwarf Cannon", size: 1, quality: "4+", equipment: [customWeapon("Cannon", { range: 48, attacks: "D3+3", rules: rules("Piercing") })], special: "Armored, Fearless, Ordnance, Slow, Tough(3)", upgrades: "H", cost: 120 },
     { name: "Organ Gun", size: 1, quality: "4+", equipment: [customWeapon("Organ Gun", { range: 30, attacks: "12", rules: rules("Piercing") })], special: "Armored, Fearless, Ordnance, Slow, Tough(3)", upgrades: "H", cost: 165 },
@@ -57,13 +57,13 @@ export const dwarfs = faction({
     ]),
     group("K", [
       section("Equip one model with any:", 'any', [
-        { label: "Steam Drill (Deadly)", cost: 10, adds: ["Deadly"] },
+        { label: "Steam Drill", cost: 10, adds: ["Deadly"] },
         { label: "Blasting Charges", cost: 15, addEquipment: [customWeapon("Blasting Charges", { range: 6, attacks: "6", rules: rules("Piercing") })] }
       ])
     ]),
     group("L", [
       section("Equip all models with:", 'any', [
-        { label: "Throwing Weapons", cost: 15, addEquipment: [customWeapon("Throwing Weapons", { range: null, attacks: '1', rules: rules('') })] }
+        { label: "Throwing Weapons", cost: 15, addEquipment: [weaponFantasy('throwing-weapon', { label: "Throwing Weapons" })] }
       ])
     ]),
     group("B", [
@@ -99,26 +99,26 @@ export const dwarfs = faction({
     ]),
     group("F", [
       section("Equip one model with one:", 'one', [
-        { label: "Rune of Slaying (Piercing in Melee)", cost: 5, adds: ["Piercing in Melee"] },
+        { label: "Rune of Slaying", cost: 5, adds: ["Piercing in Melee"] },
         { label: "Rune of Flight", cost: 10, addEquipment: [customWeapon("Rune of Flight", { range: 12, attacks: "1", rules: rules("Sniper") })] },
-        { label: "Rune of Fortitude (Regeneration)", cost: 10, adds: ["Regeneration"] },
-        { label: "Rune of Adamant (Ignore Piercing)", cost: 20, adds: ["Ignore Piercing"] },
-        { label: "Rune of Smiting (Deadly in Melee)", cost: 20, adds: ["Deadly in Melee"] },
-        { label: "Rune of Gromril (Tough(+3))", cost: 35, adds: ["Tough(+3)"] }
+        { label: "Rune of Fortitude", cost: 10, adds: ["Regeneration"] },
+        { label: "Rune of Adamant", cost: 20, adds: ["Ignore Piercing"] },
+        { label: "Rune of Smiting", cost: 20, adds: ["Deadly in Melee"] },
+        { label: "Rune of Gromril", cost: 35, adds: ["Tough(+3)"] }
       ])
     ]),
     group("G", [
       section("Equip one model with one:", 'one', [
         { label: "Rune of Battle", cost: 10, adds: ["Rune of Battle"] },
         { label: "Rune of Slowness", cost: 25, adds: ["Rune of Slowness"] },
-        { label: "Rune of Sanctuary (Resistance)", cost: 25, adds: ["Resistance"] }
+        { label: "Rune of Sanctuary", cost: 25, adds: ["Resistance"] }
       ])
     ]),
     group("H", [
       section("Equip with one:", 'one', [
         { label: "Rune of Disguise", cost: 5, adds: ["Rune of Disguise"] },
         { label: "Rune of Immolation", cost: 10, adds: ["Rune of Immolation"] },
-        { label: "Rune of Accuracy (Rapid)", cost: 45, adds: ["Rapid"] }
+        { label: "Rune of Accuracy", cost: 45, adds: ["Rapid"] }
       ])
     ]),
     group("I", [

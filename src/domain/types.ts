@@ -12,6 +12,7 @@ export interface SpecialRule {
   name: string
   text: string
   hasParameter?: boolean
+  isAdditive?: boolean
 }
 
 /**
@@ -205,6 +206,7 @@ export interface RulesDatabase {
   factions: Faction[]
   /** Each game system's own special-rule glossary — never merged, since some rule names carry different wording or mechanics between systems (e.g. `Poison`). */
   glossaries: Record<GameSystem, SpecialRule[]>
-  weapons: Weapon[]
+  /** Each game system's own weapon table — never merged, since some weapon names carry different stats between systems (e.g. `Pistol`, `Rifle`). */
+  weapons: Record<GameSystem, Weapon[]>
   composition: CompositionRules
 }

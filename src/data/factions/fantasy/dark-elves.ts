@@ -43,7 +43,7 @@ export const darkelves = faction({
         { label: "Master Mace", cost: 20, addEquipment: [meleeWeapon('Master', 'Mace', { key: 'master-mace', label: "Master Mace", rules: rules('Piercing, Poison') })], removeEquipment: ["Master Sword"] }
       ]),
       section("Equip with one:", 'one', [
-        { label: "Sea Dragon Cloak (Armored)", cost: 10, adds: ["Armored"] },
+        { label: "Sea Dragon Cloak", cost: 10, adds: ["Armored"] },
         { label: "Rapid Pistol", cost: 10, addEquipment: [customWeapon("Rapid Pistol", { range: 12, attacks: '1', rules: rules("Piercing, Rapid") })] },
         { label: "Rapid Crossbow", cost: 20, addEquipment: [customWeapon("Rapid Crossbow", { range: 30, attacks: '1', rules: rules("Piercing, Rapid") })] }
       ]),
@@ -58,7 +58,7 @@ export const darkelves = faction({
     ]),
     group("G", [
       section("Equip all models with:", 'any', [
-        { label: "Shields (Armored)", cost: 15, adds: ["Armored"] }
+        { label: "Shields", cost: 15, adds: ["Armored"] }
       ])
     ]),
     group("I", [
@@ -96,8 +96,8 @@ export const darkelves = faction({
     ]),
     group("E", [
       section("Upgrade with any:", 'any', [
-        { label: "Blind Rage (+D3 Melee attacks)", cost: 25, adds: ["+D3 Melee attacks"] },
-        { label: "Iron Hard Skin (Tough(+3))", cost: 25, adds: ["Tough(+3)"] }
+        { label: "Blind Rage", cost: 25, adds: ["+D3 Melee attacks"] },
+        { label: "Iron Hard Skin", cost: 25, adds: ["Tough(+3)"] }
       ])
     ]),
     group("F", [

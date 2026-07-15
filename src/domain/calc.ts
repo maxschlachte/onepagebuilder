@@ -331,6 +331,50 @@ export function pruneInvalidSelections(
 }
 
 /**
+ * Resolve one same-`ruleId` group of duplicate special rules into a single
+ * entry, per `RuleRef.param`'s own convention: a plain number is a tier level
+ * (keep the highest), a `+N` string is an additive bonus (sum onto the
+ * group's absolute value, defaulting to 0). A group mixing either shape with
+ * an unmergeable one (dice expressions, `note`-only rules) has no defined
+ * combination — not reachable from current faction data — and collapses to
+ * its first entry rather than growing merge logic for a case that can't
+ * occur (see design.md decision 1 of merge-parameterized-rule-upgrades).
+ */
+function mergeRuleGroup(group: RuleRef[]): RuleRef {
+  if (group.length === 1) return group[0]
+
+  const additive = group.filter((r): r is RuleRef & { param: string } => typeof r.param === 'string' && /^\+\d+$/.test(r.param))
+  const absolute = group.filter((r): r is RuleRef & { param: number } => typeof r.param === 'number')
+
+  if (additive.length + absolute.length !== group.length) return group[0]
+
+  if (additive.length) {
+    const base = absolute.length ? Math.max(...absolute.map((r) => r.param)) : 0
+    const bonus = additive.reduce((sum, r) => sum + Number(r.param.slice(1)), 0)
+    return { ruleId: group[0].ruleId, param: base + bonus }
+  }
+
+  return absolute.reduce((max, r) => (r.param > max.param ? r : max))
+}
+
+/** Collapse duplicate same-`ruleId` parameterized rules (see `mergeRuleGroup`), keeping first-occurrence order. */
+function mergeParameterizedRules(rules: RuleRef[]): RuleRef[] {
+  const byId = new Map<string, RuleRef[]>()
+  for (const r of rules) {
+    if (!byId.has(r.ruleId)) byId.set(r.ruleId, [])
+    byId.get(r.ruleId)!.push(r)
+  }
+
+  const result: RuleRef[] = []
+  for (const r of rules) {
+    const group = byId.get(r.ruleId)!
+    if (group[0] !== r) continue
+    result.push(mergeRuleGroup(group))
+  }
+  return result
+}
+
+/**
  * Apply the selected upgrade options to a unit profile, producing its effective
  * equipment, special rules, and cost.
  */
@@ -383,7 +427,7 @@ export function applyUpgrades(
     equipment = [...equipment, { key: lightCcw.id, label: 'Light CCW', count: 1, weapon: lightCcw }]
   }
 
-  return { profile: unit, equipment, specialRules, upgradeLabels, cost }
+  return { profile: unit, equipment, specialRules: mergeParameterizedRules(specialRules), upgradeLabels, cost }
 }
 
 function findUnit(faction: Faction, unitId: string): UnitProfile | undefined {

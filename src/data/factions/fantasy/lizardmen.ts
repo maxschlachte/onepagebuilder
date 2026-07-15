@@ -1,4 +1,4 @@
-import { faction, customWeapon, meleeWeapon, gear, rules, armyRule, power, section, group, type UnitInput } from '../helpers'
+import { faction, customWeapon, weaponFantasy, meleeWeapon, gear, rules, armyRule, power, section, group, type UnitInput } from '../helpers'
 
 const units: UnitInput[] = [
     { name: "Slann Mage-Priest", size: 1, quality: "3+", equipment: [meleeWeapon('Light', 'Sword', { key: 'light-sword', label: "Light Sword" })], special: "Armored, Fearless, Hero, Tough(6), Wizard(3)", upgrades: "-", cost: 105 },
@@ -40,7 +40,7 @@ export const lizardmen = faction({
         { label: "Master Mace", cost: 20, addEquipment: [meleeWeapon('Master', 'Mace', { key: 'master-mace', label: "Master Mace" })] }
       ]),
       section("Equip with:", 'any', [
-        { label: "Heavy Armor (Armored)", cost: 10, adds: ["Armored"] }
+        { label: "Heavy Armor", cost: 10, adds: ["Armored"] }
       ]),
       section("Mount on:", 'any', [
         { label: "Cold One", cost: 15, addEquipment: [gear("Cold One")] },
@@ -49,7 +49,7 @@ export const lizardmen = faction({
     ]),
     group("J", [
       section("Upgrade with:", 'any', [
-        { label: "Lustrian Venom (Poison in Melee)", cost: 15, adds: ["Poison in Melee"] }
+        { label: "Lustrian Venom", cost: 15, adds: ["Poison in Melee"] }
       ]),
       section("Replace all Throwing Weapons:", 'any', [
         { label: "Blowpipes", cost: 20, addEquipment: [customWeapon("Blowpipes", { range: 12, attacks: "2", rules: rules("Poison") })], removeEquipment: ["Throwing Weapons"] }
@@ -61,9 +61,9 @@ export const lizardmen = faction({
         { label: "Master Sword", cost: 5, addEquipment: [meleeWeapon('Master', 'Sword', { key: 'master-sword', label: "Master Sword" })] }
       ]),
       section("Equip with one:", 'one', [
-        { label: "Throwing Weapon (Poison)", cost: 5, adds: ["Poison"], addEquipment: [customWeapon("Throwing Weapon", { range: null, attacks: '1', rules: rules("Poison") })] },
+        { label: "Throwing Weapon", cost: 5, adds: ["Poison"], addEquipment: [weaponFantasy('throwing-weapon', { rules: rules("Poison") })] },
         { label: "Blowpipe", cost: 10, addEquipment: [customWeapon("Blowpipe", { range: 12, attacks: "2", rules: rules("Poison") })] },
-        { label: "Shield (Armored)", cost: 10, adds: ["Armored"] }
+        { label: "Shield", cost: 10, adds: ["Armored"] }
       ]),
       section("Mount on:", 'any', [
         { label: "Terradon", cost: 15, addEquipment: [gear("Terradon")] },
@@ -79,13 +79,13 @@ export const lizardmen = faction({
     ]),
     group("D", [
       section("Upgrade with:", 'any', [
-        { label: "Throwing Weapons", cost: 5, addEquipment: [customWeapon("Throwing Weapons", { range: null, attacks: '1', rules: rules('') })] }
+        { label: "Throwing Weapons", cost: 5, addEquipment: [weaponFantasy('throwing-weapon', { label: "Throwing Weapons" })] }
       ])
     ]),
     group("E", [
       section("Upgrade with:", 'any', [
-        { label: "Unstoppable Stampede (Furious)", cost: 5, adds: ["Furious"] },
-        { label: "Sharp Horns (Impact(+3))", cost: 10, adds: ["Sharp Horns (Impact(+3))"] }
+        { label: "Unstoppable Stampede", cost: 5, adds: ["Furious"] },
+        { label: "Sharp Horns", cost: 10, adds: ["Impact(+3)"] }
       ]),
       section("Take one:", 'one', [
         { label: "Giant Bow", cost: 35, addEquipment: [customWeapon("Giant Bow", { range: 36, attacks: "3", rules: rules("Piercing, Single Target, Poison") })] },
@@ -101,7 +101,7 @@ export const lizardmen = faction({
     ]),
     group("G", [
       section("Upgrade with:", 'any', [
-        { label: "Loping Stride (Fast)", cost: 5, adds: ["Fast"] },
+        { label: "Loping Stride", cost: 5, adds: ["Fast"] },
         { label: "Blood Roar", cost: 5, adds: ["Blood Roar"] }
       ])
     ]),

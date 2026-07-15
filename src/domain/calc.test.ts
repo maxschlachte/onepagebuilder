@@ -73,6 +73,41 @@ describe('applyUpgrades', () => {
   })
 })
 
+describe('applyUpgrades — parameterized rule merging', () => {
+  it('a Psyker(2) upgrade replaces baseline Psyker(1), not both', () => {
+    const psykerTwo = optionId(sm, 'A', 'Psyker(2)')
+    const eff = applyUpgrades(librarian, [psykerTwo], sm)
+    expect(eff.specialRules).toContainEqual({ ruleId: 'psyker', param: 2 })
+    expect(eff.specialRules).not.toContainEqual({ ruleId: 'psyker', param: 1 })
+    expect(eff.specialRules.filter((r) => r.ruleId === 'psyker')).toHaveLength(1)
+  })
+
+  it('a Wizard(3) upgrade replaces baseline Wizard(1), not both', () => {
+    const highElves = getFaction('high-elves')!
+    const mage = highElves.units.find((u) => u.name === 'Mage')! // baseline Wizard(1)
+    const wizardThree = optionId(highElves, 'B', 'Wizard(3)')
+    const eff = applyUpgrades(mage, [wizardThree], highElves)
+    expect(eff.specialRules).toContainEqual({ ruleId: 'wizard', param: 3 })
+    expect(eff.specialRules).not.toContainEqual({ ruleId: 'wizard', param: 1 })
+    expect(eff.specialRules.filter((r) => r.ruleId === 'wizard')).toHaveLength(1)
+  })
+
+  it('a Tough(+3) upgrade sums onto baseline Tough(3) into one entry', () => {
+    const eldar = getFaction('eldar')!
+    const vyper = eldar.units.find((u) => u.name === 'Vyper')! // baseline Tough(3)
+    const powerField = optionId(eldar, 'C', 'Power-Field')
+    const eff = applyUpgrades(vyper, [powerField], eldar)
+    expect(eff.specialRules).toContainEqual({ ruleId: 'tough', param: 6 })
+    expect(eff.specialRules.filter((r) => r.ruleId === 'tough')).toHaveLength(1)
+  })
+
+  it('leaves baseline rules unmodified when no upgrades are selected', () => {
+    const eff = applyUpgrades(librarian, [], sm)
+    expect(eff.specialRules).toContainEqual({ ruleId: 'psyker', param: 1 })
+    expect(eff.specialRules).toEqual(librarian.specialRules)
+  })
+})
+
 describe('applyUpgrades — size-aware equipment effects', () => {
   const replaceOneOption: UpgradeOption = {
     id: 'A.0',
@@ -301,7 +336,7 @@ describe('validate', () => {
 })
 
 describe('isSectionAvailable', () => {
-  const attachmentSection = findSection(sm, optionId(sm, 'A', 'Flamer (Limited)'))!.section
+  const attachmentSection = findSection(sm, optionId(sm, 'A', 'Flamer'))!.section
   const stormbolter = optionId(sm, 'A', 'Stormbolter')
 
   it('blocks a single-model unit’s attachment section once its Assault Rifle is replaced', () => {
@@ -498,7 +533,7 @@ describe('combinedEffectiveUnit', () => {
 
   it('keeps a plain weapon and a rule-bearing variant of the same weapon as separate entries', () => {
     const plainMeltagun = optionId(sm, 'D', 'Meltagun') // Replace one Assault Rifle -> Meltagun
-    const limitedMeltagun = optionId(sm, 'A', 'Meltagun (Limited)') // Take one Assault Rifle attachment
+    const limitedMeltagun = optionId(sm, 'A', 'Meltagun') // Take one Assault Rifle attachment
     const effA = applyUpgrades(tacticals, [plainMeltagun], sm)
     const effB = applyUpgrades(tacticals, [limitedMeltagun], sm)
     const combined = combinedEffectiveUnit(effA, effB)

@@ -14,12 +14,15 @@ import {
   validate,
 } from '../domain/calc'
 import type { CombinedUnit, EffectiveUnit, GroupUnit } from '../domain/calc'
-import RuleChips from '../components/RuleChips.vue'
-import EquipmentList from '../components/EquipmentList.vue'
 import RuleTooltip from '../components/RuleTooltip.vue'
 import EntryUpgradeControls from '../components/EntryUpgradeControls.vue'
 import RosterUnitPreview from '../components/RosterUnitPreview.vue'
 import Badge from '../components/Badge.vue'
+import AppButton from '../components/AppButton.vue'
+import UnitLoadout from '../components/UnitLoadout.vue'
+import UnitHeadline from '../components/UnitHeadline.vue'
+import CandidatePicker from '../components/CandidatePicker.vue'
+import TabSwitcher from '../components/TabSwitcher.vue'
 import { maxHeroes } from '../data/composition'
 import type { ListUnit } from '../domain/list'
 import type { UnitProfile } from '../domain/types'
@@ -55,8 +58,23 @@ const issues = computed(() =>
 const heroLimit = computed(() => (list.value ? maxHeroes(list.value.pointsCap) : 1))
 const pointsLimit = computed(() => list.value !== undefined ? list.value.pointsCap : 0)
 
+type BuilderTab = 'roster' | 'selected'
+
 /** Which panel is shown below the `md` breakpoint; both panels stay visible at `md`+ regardless. */
-const activeTab = ref<'roster' | 'selected'>('roster')
+const activeTab = ref<BuilderTab>('roster')
+const builderTabOptions = computed<{ id: BuilderTab; label: string }[]>(() => [
+  { id: 'roster', label: 'Roster' },
+  { id: 'selected', label: `Selected Units (${list.value?.units.length ?? 0})` },
+])
+
+function isBuilderTab(id: string): id is BuilderTab {
+  return id === 'roster' || id === 'selected'
+}
+
+/** See `onSelectSystem` in `ListsView.vue` for why this type predicate exists (generic emit inference limitation). */
+function onSelectBuilderTab(id: string) {
+  if (isBuilderTab(id)) activeTab.value = id
+}
 
 function profileFor(unitId: string): UnitProfile | undefined {
   return faction.value?.units.find((u) => u.id === unitId)
@@ -240,32 +258,15 @@ function candidateLabel(u: ListUnit): string {
   return profileFor(u.unitId)?.name ?? u.unitId
 }
 
-function onCombineSelect(lu: ListUnit, event: Event) {
-  const select = event.target as HTMLSelectElement
-  if (select.value && list.value) store.combineUnits(list.value.id, lu.instanceId, select.value)
-  select.value = ''
-}
-
-function onAttachSelect(lu: ListUnit, event: Event) {
-  const select = event.target as HTMLSelectElement
-  if (select.value && list.value) store.attachToUnit(list.value.id, lu.instanceId, select.value)
-  select.value = ''
-}
-
-function onGroupSelect(lu: ListUnit, event: Event) {
-  const select = event.target as HTMLSelectElement
-  if (select.value && list.value) store.joinGroup(list.value.id, lu.instanceId, select.value)
-  select.value = ''
-}
 </script>
 
 <template>
   <div v-if="list && faction" class="mx-auto max-w-6xl p-4">
     <!-- Header -->
     <div class="mb-4 flex flex-wrap items-center gap-3">
-      <button class="rounded border border-stone-300 px-4 py-2 text-base hover:bg-stone-100 dark:border-slate-700 dark:hover:bg-slate-800" @click="emit('back')">
+      <AppButton @click="emit('back')">
         <BackIcon />
-      </button>
+      </AppButton>
       <div class="flex flex-1 flex-col">
         <input
             :value="list.name"
@@ -282,9 +283,9 @@ function onGroupSelect(lu: ListUnit, event: Event) {
           class="w-24 rounded border border-stone-300 px-2 py-1 dark:border-slate-700 dark:bg-slate-800"
           @change="store.setPointsCap(list.id, Number(($event.target as HTMLInputElement).value))"
       />
-      <button class="rounded border border-stone-300 px-4 py-2 font-display text-base uppercase tracking-wide hover:bg-stone-100 dark:border-slate-700 dark:hover:bg-slate-800" @click="emit('print')">
+      <AppButton @click="emit('print')">
         <PrinterIcon />
-      </button>
+      </AppButton>
     </div>
 
     <!-- Live summary -->
@@ -306,24 +307,14 @@ function onGroupSelect(lu: ListUnit, event: Event) {
     </div>
 
     <!-- Mobile tab switcher: Roster vs Selected Units (both panels always shown side by side at md+) -->
-    <div class="mb-3 flex gap-2 md:hidden">
-      <button
-        type="button"
-        class="flex-1 rounded px-4 py-2 font-display text-base uppercase tracking-wide"
-        :class="activeTab === 'roster' ? 'bg-yellow-700 text-stone-50 hover:bg-yellow-500 dark:bg-yellow-500 dark:text-slate-950 dark:hover:bg-yellow-700' : 'border border-stone-300 hover:bg-stone-100 dark:border-slate-700 dark:hover:bg-slate-800'"
-        @click="activeTab = 'roster'"
-      >
-        Roster
-      </button>
-      <button
-        type="button"
-        class="flex-1 rounded px-4 py-2 font-display text-base uppercase tracking-wide"
-        :class="activeTab === 'selected' ? 'bg-yellow-700 text-stone-50 hover:bg-yellow-500 dark:bg-yellow-500 dark:text-slate-950 dark:hover:bg-yellow-700' : 'border border-stone-300 hover:bg-stone-100 dark:border-slate-700 dark:hover:bg-slate-800'"
-        @click="activeTab = 'selected'"
-      >
-        Selected Units ({{ list.units.length }})
-      </button>
-    </div>
+    <TabSwitcher
+      class="mb-3 md:hidden"
+      full-width
+      :options="builderTabOptions"
+      :active="activeTab"
+      aria-label="Builder panel"
+      @select="onSelectBuilderTab"
+    />
 
     <div class="grid gap-4 md:grid-cols-2">
       <!-- Roster -->
@@ -335,35 +326,18 @@ function onGroupSelect(lu: ListUnit, event: Event) {
             :key="unit.id"
             class="rounded border border-stone-300 bg-stone-50 px-2 py-1 dark:border-slate-700 dark:bg-slate-900"
           >
-            <div class="flex items-center justify-between">
-              <span class="text-md">
-                <span class="font-medium">{{ unit.name }}</span>
-                <span class="text-stone-600 dark:text-slate-400">
-                  [{{ unit.size }}] · <span class="text-slate-600 dark:text-slate-400">Q{{ unit.quality }}</span> ·
-                  <span class="text-yellow-700 dark:text-yellow-500">{{ unit.cost }}pts</span>
-                </span>
+            <UnitHeadline :name="unit.name" :size="unit.size" :quality="unit.quality" :cost="unit.cost" :divider="false">
+              <template #badge>
                 <Badge v-if="unit.isHero" variant="hero" class="ml-1">Hero</Badge>
-                <Badge
-                  v-else-if="casterBadgeLabel(unit)"
-                  variant="psyker"
-                  class="ml-1"
-                  >{{ casterBadgeLabel(unit) }}</Badge
-                >
-              </span>
-              <span class="flex items-center gap-1">
-                <button
-                  type="button"
-                  class="rounded border border-stone-300 px-3 py-1.5 text-sm hover:bg-stone-100 dark:border-slate-700 dark:hover:bg-slate-800"
-                  :aria-expanded="expandedRosterIds.has(unit.id)"
-                  @click="toggleRosterInfo(unit.id)"
-                >
+                <Badge v-else-if="casterBadgeLabel(unit)" variant="psyker" class="ml-1">{{ casterBadgeLabel(unit) }}</Badge>
+              </template>
+              <template #controls>
+                <AppButton size="sm" :aria-expanded="expandedRosterIds.has(unit.id)" @click="toggleRosterInfo(unit.id)">
                   {{ expandedRosterIds.has(unit.id) ? 'Hide' : 'Details' }}
-                </button>
-                <button class="rounded bg-yellow-700 px-3 py-1.5 font-display text-sm uppercase tracking-wide text-stone-50 hover:bg-yellow-500 dark:bg-yellow-500 dark:text-slate-950 dark:hover:bg-yellow-700" @click="store.addUnit(list.id, unit.id)">
-                  Add
-                </button>
-              </span>
-            </div>
+                </AppButton>
+                <AppButton variant="primary" size="sm" @click="store.addUnit(list.id, unit.id)">Add</AppButton>
+              </template>
+            </UnitHeadline>
             <RosterUnitPreview v-if="expandedRosterIds.has(unit.id)" :profile="unit" :faction="faction" />
           </li>
         </ul>
@@ -381,52 +355,32 @@ function onGroupSelect(lu: ListUnit, event: Event) {
           >
             <!-- Group-deployment combine (Conclave/Warband/Beastmaster/Court) -->
             <template v-if="row.kind === 'group'">
-              <div class="flex items-center justify-between mb-1 border-b border-stone-300 pb-1 dark:border-slate-700">
-                <span class="text-md">
-                  <span class="font-medium">Group</span>
-                  <span class="text-stone-600 dark:text-slate-400">
-                    [{{ row.group.size }}] ·
-                    <span class="text-yellow-700 dark:text-yellow-500">{{ row.group.cost }}pts</span>
+              <UnitHeadline name="Group" :size="row.group.size" :cost="row.group.cost">
+                <template #badge>
                   <Badge variant="group" class="ml-1">Group</Badge>
-                  </span>
-                </span>
-                <span class="flex items-center gap-2">
-                  <select
+                </template>
+                <template #controls>
+                  <CandidatePicker
                     v-if="groupJoinCandidates(row.members[0].listUnit).length"
-                    class="rounded border border-stone-300 px-3 py-1.5 text-sm dark:border-slate-700 dark:bg-slate-800"
-                    @change="onGroupSelect(row.members[0].listUnit, $event)"
-                  >
-                    <option value="">Add to group…</option>
-                    <option v-for="c in groupJoinCandidates(row.members[0].listUnit)" :key="c.instanceId" :value="c.instanceId">
-                      {{ candidateLabel(c) }}
-                    </option>
-                  </select>
-                </span>
-              </div>
+                    :candidates="groupJoinCandidates(row.members[0].listUnit)"
+                    placeholder="Add to group…"
+                    :label="candidateLabel"
+                    @pick="store.joinGroup(list.id, row.members[0].listUnit.instanceId, $event)"
+                  />
+                </template>
+              </UnitHeadline>
 
               <ul class="mb-2 text-sm text-stone-600 dark:text-slate-400">
                 <li v-for="m in row.group.members" :key="m.profile.id">{{ m.count }}x {{ m.profile.name }} · Q{{ m.profile.quality }}</li>
               </ul>
 
-              <div class="mb-1 text-sm">
-                <span class="text-stone-600 dark:text-slate-400">Equipment:</span>
-                <EquipmentList :equipment="row.group.equipment" :unit-size="row.group.size" :faction="faction" />
-              </div>
-              <div class="mb-2 text-sm">
-                <span class="text-stone-600 dark:text-slate-400">Special: </span>
-                <RuleChips :rules="row.group.specialRules" :faction="faction" />
-              </div>
+              <UnitLoadout :equipment="row.group.equipment" :unit-size="row.group.size" :faction="faction" :special-rules="row.group.specialRules" />
 
               <div class="grid gap-3 border-t border-stone-300 pt-2 dark:border-slate-700 sm:grid-cols-2">
                 <div v-for="entry in row.members" :key="entry.listUnit.instanceId">
                   <div class="mb-1 flex items-center justify-between text-xs text-stone-600 dark:text-slate-400">
                     <span>{{ entry.eff.profile.name }} — {{ entry.eff.cost }}pts</span>
-                    <button
-                      class="rounded border border-stone-300 px-3 py-1.5 text-sm hover:bg-stone-100 dark:border-slate-700 dark:hover:bg-slate-800"
-                      @click="store.leaveGroup(list.id, entry.listUnit.instanceId)"
-                    >
-                      Leave group
-                    </button>
+                    <AppButton size="sm" @click="store.leaveGroup(list.id, entry.listUnit.instanceId)">Leave group</AppButton>
                   </div>
                   <EntryUpgradeControls :list-id="list.id" :profile="entry.eff.profile" :list-unit="entry.listUnit" :faction="faction" />
                 </div>
@@ -435,33 +389,16 @@ function onGroupSelect(lu: ListUnit, event: Event) {
 
             <!-- Combined pair -->
             <template v-else-if="row.kind === 'combined'">
-              <div class="flex items-center justify-between mb-1 border-b border-stone-300 pb-1 dark:border-slate-700">
-                <span class="text-md">
-                  <span class="font-medium">{{ row.combined.profile.name }}</span>
-                  <span class="text-stone-600 dark:text-slate-400">
-                    [{{ row.combined.size }}] · <span class="text-slate-600 dark:text-slate-400">Q{{ row.combined.profile.quality }}</span> ·
-                    <span class="text-yellow-700 dark:text-yellow-500">{{ row.combined.cost }}pts</span>
-                    <Badge variant="combined" class="ml-1">Combined</Badge>
-                  </span>
-                </span>
-                <span class="flex items-center gap-2">
-                  <button
-                    class="rounded border border-stone-300 px-3 py-1.5 text-sm hover:bg-stone-100 dark:border-slate-700 dark:hover:bg-slate-800"
-                    @click="store.splitUnits(list.id, row.a.instanceId)"
-                  >
-                    Split
-                  </button>
-                </span>
-              </div>
+              <UnitHeadline :name="row.combined.profile.name" :size="row.combined.size" :quality="row.combined.profile.quality" :cost="row.combined.cost">
+                <template #badge>
+                  <Badge variant="combined" class="ml-1">Combined</Badge>
+                </template>
+                <template #controls>
+                  <AppButton size="sm" @click="store.splitUnits(list.id, row.a.instanceId)">Split</AppButton>
+                </template>
+              </UnitHeadline>
 
-              <div class="mb-1 text-sm">
-                <span class="text-stone-600 dark:text-slate-400">Equipment:</span>
-                <EquipmentList :equipment="row.combined.equipment" :unit-size="row.combined.size" :faction="faction" />
-              </div>
-              <div class="mb-2 text-sm">
-                <span class="text-stone-600 dark:text-slate-400">Special: </span>
-                <RuleChips :rules="row.combined.specialRules" :faction="faction" />
-              </div>
+              <UnitLoadout :equipment="row.combined.equipment" :unit-size="row.combined.size" :faction="faction" :special-rules="row.combined.specialRules" />
 
               <div class="text-xs font-display font-semibold uppercase tracking-wide text-stone-600 dark:text-slate-400">Whole-unit upgrades (applies to both)</div>
               <EntryUpgradeControls :list-id="list.id" :profile="row.effA.profile" :list-unit="row.a" :faction="faction" filter="whole" />
@@ -476,51 +413,34 @@ function onGroupSelect(lu: ListUnit, event: Event) {
 
             <!-- Standalone unit -->
             <template v-else>
-              <div class="flex items-center justify-between mb-1 border-b border-stone-300 pb-1 dark:border-slate-700">
-                <span class="text-md">
-                  <span class="font-medium">{{ row.eff.profile.name }}</span>
-                  <span class="text-stone-600 dark:text-slate-400">
-                    [{{ row.eff.profile.size }}] · <span class="text-slate-600 dark:text-slate-400">Q{{ row.eff.profile.quality }}</span> ·
-                    <span class="text-yellow-700 dark:text-yellow-500">{{ row.eff.cost }}pts</span>
-                  </span>
-                </span>
-                <span class="flex flex-wrap items-center gap-2">
-                  <select
+              <UnitHeadline :name="row.eff.profile.name" :size="row.eff.profile.size" :quality="row.eff.profile.quality" :cost="row.eff.cost">
+                <template #controls>
+                  <CandidatePicker
                     v-if="combineCandidates(row.listUnit).length"
-                    class="rounded border border-stone-300 px-3 py-1.5 text-sm dark:border-slate-700 dark:bg-slate-800"
-                    @change="onCombineSelect(row.listUnit, $event)"
-                  >
-                    <option value="">Merge…</option>
-                    <option v-for="c in combineCandidates(row.listUnit)" :key="c.instanceId" :value="c.instanceId">{{ candidateLabel(c) }}</option>
-                  </select>
-                  <select
+                    :candidates="combineCandidates(row.listUnit)"
+                    placeholder="Merge…"
+                    :label="candidateLabel"
+                    @pick="store.combineUnits(list.id, row.listUnit.instanceId, $event)"
+                  />
+                  <CandidatePicker
                     v-if="groupJoinCandidates(row.listUnit).length"
-                    class="rounded border border-stone-300 px-3 py-1.5 text-sm dark:border-slate-700 dark:bg-slate-800"
-                    @change="onGroupSelect(row.listUnit, $event)"
-                  >
-                    <option value="">Group…</option>
-                    <option v-for="c in groupJoinCandidates(row.listUnit)" :key="c.instanceId" :value="c.instanceId">{{ candidateLabel(c) }}</option>
-                  </select>
-                  <select
+                    :candidates="groupJoinCandidates(row.listUnit)"
+                    placeholder="Group…"
+                    :label="candidateLabel"
+                    @pick="store.joinGroup(list.id, row.listUnit.instanceId, $event)"
+                  />
+                  <CandidatePicker
                     v-if="isHeroOrPsyker(row.eff.profile) && attachCandidates(row.listUnit).length"
-                    class="rounded border border-stone-300 px-3 py-1.5 text-sm dark:border-slate-700 dark:bg-slate-800"
-                    @change="onAttachSelect(row.listUnit, $event)"
-                  >
-                    <option value="">Attach to…</option>
-                    <option v-for="c in attachCandidates(row.listUnit)" :key="c.instanceId" :value="c.instanceId">{{ candidateLabel(c) }}</option>
-                  </select>
-                  <button class="rounded bg-red-800 px-3 py-1.5 font-display text-sm uppercase tracking-wide text-stone-50 hover:bg-red-600 dark:bg-red-600 dark:text-slate-950 dark:hover:bg-red-800" @click="store.removeUnit(list.id, row.listUnit.instanceId)">Remove</button>
-                </span>
-              </div>
+                    :candidates="attachCandidates(row.listUnit)"
+                    placeholder="Attach to…"
+                    :label="candidateLabel"
+                    @pick="store.attachToUnit(list.id, row.listUnit.instanceId, $event)"
+                  />
+                  <AppButton variant="danger" size="sm" @click="store.removeUnit(list.id, row.listUnit.instanceId)">Remove</AppButton>
+                </template>
+              </UnitHeadline>
 
-              <div class="mb-1 text-sm">
-                <span class="text-stone-600 dark:text-slate-400">Equipment:</span>
-                <EquipmentList :equipment="row.eff.equipment" :unit-size="row.eff.profile.size" :faction="faction" />
-              </div>
-              <div class="mb-2 text-sm">
-                <span class="text-stone-600 dark:text-slate-400">Special: </span>
-                <RuleChips :rules="row.eff.specialRules" :faction="faction" />
-              </div>
+              <UnitLoadout :equipment="row.eff.equipment" :unit-size="row.eff.profile.size" :faction="faction" :special-rules="row.eff.specialRules" />
 
               <EntryUpgradeControls :list-id="list.id" :profile="row.eff.profile" :list-unit="row.listUnit" :faction="faction" />
 
@@ -537,32 +457,15 @@ function onGroupSelect(lu: ListUnit, event: Event) {
             <!-- Attached Hero/Psyker entries, nested under this row's host -->
             <div v-if="row.attached.length" class="mt-2 space-y-2 border-t border-dashed border-stone-300 pt-2 dark:border-slate-700">
               <div v-for="a in row.attached" :key="a.listUnit.instanceId" class="rounded border border-amber-300 bg-amber-50 px-2 py-1 dark:border-amber-700 dark:bg-amber-950/30">
-                <div class="flex items-center justify-between mb-1 border-b border-stone-300 pb-1 dark:border-slate-700">
-                  <span class="text-md">
-                    <span class="font-medium">{{ a.eff.profile.name }}</span>
-                    <span class="text-stone-600 dark:text-slate-400">
-                      [{{ a.eff.profile.size }}] · <span class="text-slate-600 dark:text-slate-400">Q{{ a.eff.profile.quality }}</span> ·
-                      <span class="text-yellow-700 dark:text-yellow-500">{{ a.eff.cost }}pts</span>
-                    </span>
+                <UnitHeadline :name="a.eff.profile.name" :size="a.eff.profile.size" :quality="a.eff.profile.quality" :cost="a.eff.cost">
+                  <template #badge>
                     <Badge variant="attached" class="ml-1">Attached</Badge>
-                  </span>
-                  <span class="flex items-center gap-2">
-                    <button
-                      class="rounded border border-stone-300 px-3 py-1.5 text-sm hover:bg-stone-100 dark:border-slate-700 dark:hover:bg-slate-800"
-                      @click="store.detachFromUnit(list.id, a.listUnit.instanceId)"
-                    >
-                      Detach
-                    </button>
-                  </span>
-                </div>
-                <div class="mb-1 text-sm">
-                  <span class="text-stone-600 dark:text-slate-400">Equipment:</span>
-                  <EquipmentList :equipment="a.eff.equipment" :unit-size="a.eff.profile.size" :faction="faction" />
-                </div>
-                <div class="text-sm">
-                  <span class="text-stone-600 dark:text-slate-400">Special: </span>
-                  <RuleChips :rules="a.eff.specialRules" :faction="faction" />
-                </div>
+                  </template>
+                  <template #controls>
+                    <AppButton size="sm" @click="store.detachFromUnit(list.id, a.listUnit.instanceId)">Detach</AppButton>
+                  </template>
+                </UnitHeadline>
+                <UnitLoadout :equipment="a.eff.equipment" :unit-size="a.eff.profile.size" :faction="faction" :special-rules="a.eff.specialRules" />
                 <EntryUpgradeControls :list-id="list.id" :profile="a.eff.profile" :list-unit="a.listUnit" :faction="faction" />
               </div>
             </div>
@@ -573,6 +476,6 @@ function onGroupSelect(lu: ListUnit, event: Event) {
   </div>
   <div v-else class="p-4">
     <p>List not found.</p>
-    <button class="mt-2 rounded border border-stone-300 px-4 py-2 font-display text-base uppercase tracking-wide hover:bg-stone-100 dark:border-slate-700 dark:hover:bg-slate-800" @click="emit('back')">← Lists</button>
+    <AppButton class="mt-2" @click="emit('back')">← Lists</AppButton>
   </div>
 </template>

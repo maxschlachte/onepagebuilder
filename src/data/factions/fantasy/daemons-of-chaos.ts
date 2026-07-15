@@ -1,4 +1,4 @@
-import { faction, customWeapon, gear, rules, armyRule, power, section, group, type UnitInput } from '../helpers'
+import { faction, customWeapon, weaponFantasy, gear, rules, armyRule, power, section, group, type UnitInput } from '../helpers'
 
 const units: UnitInput[] = [
     // "Bloodthrister" as printed in the source (likely a transcription typo for "Bloodthirster") — kept verbatim.
@@ -103,7 +103,7 @@ export const daemonsofchaos = faction({
     ]),
     group("D", [
       section("Upgrade with:", 'any', [
-        { label: "Daemonic Flight (Flying)", cost: 5, adds: ["Flying"] },
+        { label: "Daemonic Flight", cost: 5, adds: ["Flying"] },
         { label: "Wizard(1)", cost: 25, adds: ["Wizard(1)"] },
         { label: "Wizard(2)", cost: 30, adds: ["Wizard(2)"] },
         { label: "Wizard(3)", cost: 40, adds: ["Wizard(3)"] }
@@ -111,25 +111,25 @@ export const daemonsofchaos = faction({
     ]),
     group("H", [
       section("Upgrade with one:", 'one', [
-        { label: "Khorne (Furious)", cost: 15, adds: ["Furious"] },
-        { label: "Slaanesh (Piercing)", cost: 15, adds: ["Piercing"] },
-        { label: "Nurgle (Stench)", cost: 30, adds: ["Stench"] },
-        { label: "Tzeentch (Regeneration)", cost: 30, adds: ["Regeneration"] }
+        { label: "Khorne", cost: 15, adds: ["Furious"] },
+        { label: "Slaanesh", cost: 15, adds: ["Piercing"] },
+        { label: "Nurgle", cost: 30, adds: ["Stench"] },
+        { label: "Tzeentch", cost: 30, adds: ["Regeneration"] }
       ])
     ]),
     group("I", [
       section("Upgrade all models with one:", 'one', [
-        { label: "Death’s Heads (Poison)", cost: 20, addEquipment: [customWeapon("Death’s Heads", { range: 12, attacks: "1", rules: rules("Poison") })] },
-        { label: "Plague Proboscis (Poison claws)", cost: 25, adds: ["Poison"] },
-        { label: "Venom Sting (Deadly claws)", cost: 80, adds: ["Deadly"] }
+        { label: "Death’s Heads", cost: 20, addEquipment: [customWeapon("Death’s Heads", { range: 12, attacks: "1", rules: rules("Poison") })] },
+        { label: "Plague Proboscis", cost: 25, adds: ["Poison"] },
+        { label: "Venom Sting", cost: 80, adds: ["Deadly"] }
       ])
     ]),
     group("J", [
       section("Upgrade with one:", 'one', [
-        { label: "Baleful Torrent (Fire Thrower)", cost: 20, addEquipment: [customWeapon("Baleful Torrent", { range: 18, attacks: "6", rules: rules("") })] },
-        { label: "Warp Gaze (Bolt Thrower)", cost: 45, addEquipment: [customWeapon("Warp Gaze", { range: 48, attacks: "3", rules: rules("Piercing") })] },
-        { label: "Phlegm Bombard (Stone Thrower)", cost: 55, addEquipment: [customWeapon("Phlegm Bombard", { range: 48, attacks: "3", rules: rules("Piercing, Indirect") })] },
-        { label: "Harvester Cannon (Cannon)", cost: 90, addEquipment: [customWeapon("Harvester Cannon", { range: 48, attacks: "D3+3", rules: rules("Piercing") })] }
+        { label: "Baleful Torrent", cost: 20, addEquipment: [customWeapon("Fire Thrower", { range: 18, attacks: "6", rules: rules("") })] },
+        { label: "Warp Gaze", cost: 45, addEquipment: [weaponFantasy('bolt-thrower')] },
+        { label: "Phlegm Bombard", cost: 55, addEquipment: [customWeapon("Stone Thrower", { range: 48, attacks: "3", rules: rules("Piercing, Indirect") })] },
+        { label: "Harvester Cannon", cost: 90, addEquipment: [customWeapon("Cannon", { range: 48, attacks: "D3+3", rules: rules("Piercing") })] }
       ])
     ])
   ],

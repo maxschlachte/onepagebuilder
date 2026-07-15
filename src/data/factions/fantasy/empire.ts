@@ -44,7 +44,7 @@ export const empire = faction({
       ]),
       section("Equip with one:", 'one', [
         { label: "Pistol", cost: 5, addEquipment: [customWeapon("Pistol", { range: 12, attacks: '1', rules: rules('Piercing') })] },
-        { label: "Heavy Armor (Armored)", cost: 10, adds: ["Armored"] },
+        { label: "Heavy Armor", cost: 10, adds: ["Armored"] },
         { label: "Rifle", cost: 10, addEquipment: [customWeapon("Rifle", { range: 24, attacks: '1', rules: rules('Piercing') })] },
         { label: "Longbow", cost: 15, addEquipment: [customWeapon("Longbow", { range: 30, attacks: '1', rules: rules('') })] }
       ]),
@@ -63,10 +63,10 @@ export const empire = faction({
       ]),
       section("Replace one Bow with one:", 'one', [
         { label: "Repeater Handgun", cost: 15, addEquipment: [customWeapon("Repeater Handgun", { range: 24, attacks: "3", rules: rules("Piercing") })], removeOneEquipment: ["Bow"] },
-        { label: "Hochland Rifle (Sniper)", cost: 40, addEquipment: [customWeapon("Hochland Rifle", { range: 36, attacks: "1", rules: rules("Piercing, Sniper") })], removeOneEquipment: ["Bow"] }
+        { label: "Hochland Rifle", cost: 40, addEquipment: [customWeapon("Hochland Rifle", { range: 36, attacks: "1", rules: rules("Piercing, Sniper") })], removeOneEquipment: ["Bow"] }
       ]),
       section("Upgrade all models:", 'any', [
-        { label: "Huntsman Training (Scout)", cost: 10, adds: ["Scout"] }
+        { label: "Huntsman Training", cost: 10, adds: ["Scout"] }
       ])
     ]),
     group("H", [
@@ -82,7 +82,7 @@ export const empire = faction({
         { label: "Light Maces", cost: 10, addEquipment: [customWeapon("Light Maces", { range: null, attacks: '1', rules: rules('Piercing, Poison') })] }
       ]),
       section("Upgrade all models:", 'any', [
-        { label: "Reiksguard Training (Fearless)", cost: 15, adds: ["Fearless"] }
+        { label: "Reiksguard Training", cost: 15, adds: ["Fearless"] }
       ])
     ]),
     group("B", [
@@ -91,7 +91,7 @@ export const empire = faction({
         { label: "Medium Mace", cost: 10, addEquipment: [customWeapon("Medium Mace", { range: null, attacks: '2', rules: rules('Piercing, Poison') })] }
       ]),
       section("Equip with:", 'any', [
-        { label: "Heavy Armor (Armored)", cost: 10, adds: ["Armored"] }
+        { label: "Heavy Armor", cost: 10, adds: ["Armored"] }
       ]),
       section("Mount on:", 'any', [
         { label: "Warhorse", cost: 5, addEquipment: [gear("Warhorse")] }
@@ -117,7 +117,7 @@ export const empire = faction({
     ]),
     group("L", [
       section("Upgrade with:", 'any', [
-        { label: "Iron Hooves (Piercing Impact hits)", cost: 5, adds: ["Piercing"] },
+        { label: "Iron Hooves", cost: 5, adds: ["Piercing"] },
         // "Swift as the Wind" grants a move bonus with no matching glossary rule id — kept as a bare addRules token (parsed name only, no glossary text) rather than invented.
         { label: "Swift as the Wind", cost: 5, adds: ["Swift as the Wind"] }
       ])
@@ -128,7 +128,7 @@ export const empire = faction({
         { label: "Repeater Pistol", cost: 10, addEquipment: [customWeapon("Repeater Pistol", { range: 12, attacks: "3", rules: rules("Piercing") })] },
         { label: "Pigeon Bomb", cost: 10, addEquipment: [customWeapon("Pigeon Bomb", { range: 24, attacks: "D3", rules: rules("Piercing") })] },
         { label: "Repeater Handgun", cost: 20, addEquipment: [customWeapon("Repeater Handgun", { range: 24, attacks: "3", rules: rules("Piercing") })] },
-        { label: "Hochland Rifle (Sniper)", cost: 45, addEquipment: [customWeapon("Hochland Rifle", { range: 36, attacks: "1", rules: rules("Piercing, Sniper") })] }
+        { label: "Hochland Rifle", cost: 45, addEquipment: [customWeapon("Hochland Rifle", { range: 36, attacks: "1", rules: rules("Piercing, Sniper") })] }
       ]),
       section("Mount on:", 'any', [
         { label: "Warhorse", cost: 5, addEquipment: [gear("Warhorse")] },
@@ -138,7 +138,7 @@ export const empire = faction({
     group("M", [
       section("Upgrade with:", 'any', [
         { label: "Bloodroar", cost: 5, adds: ["Bloodroar"] },
-        { label: "Two Heads (+1A in Melee)", cost: 5, adds: ["+1A in Melee"] }
+        { label: "Two Heads", cost: 5, adds: ["+1A in Melee"] }
       ])
     ]),
     group("E", [

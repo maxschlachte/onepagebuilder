@@ -76,16 +76,16 @@ export const goblins = faction({
     ]),
     group("E", [
       section("Equip with:", 'any', [
-        { label: "Stone Thrower (Indirect, Sticky)", cost: 85, addEquipment: [customWeapon("Stone Thrower", { range: 48, attacks: '3', rules: rules("Piercing, Indirect, Sticky") })] }
+        { label: "Stone Thrower", cost: 85, addEquipment: [customWeapon("Stone Thrower", { range: 48, attacks: '3', rules: rules("Piercing, Indirect, Sticky") })] }
       ])
     ]),
     group("F", [
       section("Upgrade with any:", 'any', [
         { label: "Out-Rigga", cost: 5, addEquipment: [gear("Out-Rigga")] },
-        { label: "Flappas (Strider)", cost: 5, adds: ["Strider"] },
+        { label: "Flappas", cost: 5, adds: ["Strider"] },
         // Source prints a clarifying note on the following line: "(Impact(+D6) once per game)".
         { label: "Giant Explodin’ Spores", cost: 5, adds: ["Impact(+D6)"] },
-        { label: "Spiky Roller (Piercing Impact hits)", cost: 10, adds: ["Piercing"] }
+        { label: "Spiky Roller", cost: 10, adds: ["Piercing"] }
       ])
     ]),
     group("G", [

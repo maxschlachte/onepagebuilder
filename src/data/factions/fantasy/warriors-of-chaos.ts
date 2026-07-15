@@ -1,4 +1,4 @@
-import { faction, customWeapon, meleeWeapon, gear, rules, armyRule, power, section, group, type UnitInput } from '../helpers'
+import { faction, customWeapon, weaponFantasy, meleeWeapon, gear, rules, armyRule, power, section, group, type UnitInput } from '../helpers'
 
 const units: UnitInput[] = [
     { name: "Chaos Lord", size: 1, quality: "3+", equipment: [meleeWeapon('Master', 'Sword', { key: 'master-sword', label: "Master Sword" })], special: "Armored, Hero, Tough(3)", upgrades: "A, B", cost: 50 },
@@ -38,10 +38,10 @@ export const warriorsofchaos = faction({
   upgradeGroups: [
     group("A", [
       section("Upgrade with:", 'any', [
-        { label: "Slaanesh (Fearless)", cost: 5, adds: ["Fearless"] },
-        { label: "Khorne (Furious)", cost: 5, adds: ["Furious"] },
-        { label: "Tzeentch (Resistance)", cost: 10, adds: ["Resistance"] },
-        { label: "Nurgle (Regeneration)", cost: 20, adds: ["Regeneration"] }
+        { label: "Slaanesh", cost: 5, adds: ["Fearless"] },
+        { label: "Khorne", cost: 5, adds: ["Furious"] },
+        { label: "Tzeentch", cost: 10, adds: ["Resistance"] },
+        { label: "Nurgle", cost: 20, adds: ["Regeneration"] }
       ])
     ]),
     group("G", [
@@ -91,7 +91,7 @@ export const warriorsofchaos = faction({
         { label: "Light Maces", cost: 25, addEquipment: [meleeWeapon('Light', 'Mace', { key: 'light-mace', label: "Light Maces" })] }
       ]),
       section("Upgrade all models with:", 'any', [
-        { label: "Throwing Weapons", cost: 15, addEquipment: [customWeapon("Throwing Weapons", { range: null, attacks: '1', rules: rules('') })] }
+        { label: "Throwing Weapons", cost: 15, addEquipment: [weaponFantasy('throwing-weapon', { label: "Throwing Weapons" })] }
       ])
     ]),
     group("K", [
@@ -116,10 +116,10 @@ export const warriorsofchaos = faction({
     ]),
     group("M", [
       section("Upgrade with:", 'any', [
-        { label: "Tzeentch (Resistance)", cost: 15, adds: ["Resistance"] },
-        { label: "Khorne (Furious)", cost: 15, adds: ["Furious"] },
-        { label: "Slaanesh (Fearless)", cost: 30, adds: ["Fearless"] },
-        { label: "Nurgle (Regeneration)", cost: 30, adds: ["Regeneration"] }
+        { label: "Tzeentch", cost: 15, adds: ["Resistance"] },
+        { label: "Khorne", cost: 15, adds: ["Furious"] },
+        { label: "Slaanesh", cost: 30, adds: ["Fearless"] },
+        { label: "Nurgle", cost: 30, adds: ["Regeneration"] }
       ])
     ]),
     group("D", [
@@ -134,35 +134,35 @@ export const warriorsofchaos = faction({
     ]),
     group("N", [
       section("Upgrade with:", 'any', [
-        { label: "Tzeentch (Resistance)", cost: 15, adds: ["Resistance"] },
-        { label: "Khorne (Furious)", cost: 20, adds: ["Furious"] },
-        { label: "Nurgle (Regeneration)", cost: 30, adds: ["Regeneration"] },
-        { label: "Slaanesh (Fearless)", cost: 40, adds: ["Fearless"] }
+        { label: "Tzeentch", cost: 15, adds: ["Resistance"] },
+        { label: "Khorne", cost: 20, adds: ["Furious"] },
+        { label: "Nurgle", cost: 30, adds: ["Regeneration"] },
+        { label: "Slaanesh", cost: 40, adds: ["Fearless"] }
       ])
     ]),
     group("E", [
       section("Upgrade with:", 'any', [
         { label: "Vanguard", cost: 10, adds: ["Vanguard"] },
         { label: "Poison", cost: 15, adds: ["Poison"] },
-        { label: "Scaly Hides (Armored)", cost: 15, adds: ["Armored"] }
+        { label: "Scaly Hides", cost: 15, adds: ["Armored"] }
       ])
     ]),
     group("O", [
       section("Upgrade all models with:", 'any', [
-        { label: "Wrathmongers (Impact(D3))", cost: 20, adds: ["Impact(D3)"] }
+        { label: "Wrathmongers", cost: 20, adds: ["Impact(D3)"] }
       ])
     ]),
     group("F", [
       section("Upgrade with any:", 'any', [
         { label: "Fiery Breath", cost: 10, adds: ["Fiery Breath"] },
-        { label: "Regenerating Flesh (Regeneration)", cost: 10, adds: ["Regeneration"] },
-        { label: "Venomous Ooze (Poison)", cost: 25, adds: ["Poison"] }
+        { label: "Regenerating Flesh", cost: 10, adds: ["Regeneration"] },
+        { label: "Venomous Ooze", cost: 25, adds: ["Poison"] }
       ])
     ]),
     group("P", [
       section("Upgrade with any:", 'any', [
-        { label: "Iron Hard Skin (Re-roll blocks)", cost: 20, adds: ["Iron Hard Skin"] },
-        { label: "Venom Tail (Deadly)", cost: 25, adds: ["Deadly"] }
+        { label: "Iron Hard Skin", cost: 20, adds: ["Iron Hard Skin"] },
+        { label: "Venom Tail", cost: 25, adds: ["Deadly"] }
       ])
     ]),
     group("Q", [
@@ -172,7 +172,7 @@ export const warriorsofchaos = faction({
     ]),
     group("R", [
       section("Upgrade with:", 'any', [
-        { label: "Extra Claws (+2A in Melee)", cost: 10, adds: ["+2A in Melee"] }
+        { label: "Extra Claws", cost: 10, adds: ["+2A in Melee"] }
       ])
     ]),
     group("S", [

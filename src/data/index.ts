@@ -7,6 +7,7 @@ import type { RulesDatabase } from '../domain/types'
 import { glossary } from './glossary'
 import { fantasyGlossary } from './glossary-fantasy'
 import { weapons } from './weapons'
+import { weaponsFantasy } from './weapons-fantasy'
 import { composition } from './composition'
 
 import { spaceMarines } from './factions/40k/space-marines.ts'
@@ -80,7 +81,10 @@ export const rulesDatabase: RulesDatabase = {
     'system-40k': glossary,
     'system-fantasy': fantasyGlossary,
   },
-  weapons,
+  weapons: {
+    'system-40k': weapons,
+    'system-fantasy': weaponsFantasy,
+  },
   composition,
 }
 

@@ -8,9 +8,21 @@
 // that only walks baseline `unit.specialRules`, not upgrade-option effects.
 import { describe, expect, it } from 'vitest'
 import { rulesDatabase } from './index'
+import { weaponsFantasy } from './weapons-fantasy'
 import type { EquipmentEntry } from '../domain/types'
 
 const FANTASY_FACTIONS = rulesDatabase.factions.filter((f) => f.system === 'system-fantasy')
+
+/** Canonical ranged-weapon stats from `weapons-fantasy.ts`, keyed by lowercase name. */
+const RANGED_TABLE = new Map(
+  weaponsFantasy.map((w) => [w.name.toLowerCase(), { range: w.range, attacks: w.attacks, ruleIds: w.rules.map((r) => r.ruleId) }]),
+)
+
+/** Normalize a weapon/equipment name the same way `index.test.ts`'s `isKnownWeaponName` does. */
+function normalizeWeaponName(name: string): string {
+  const baseName = name.replace(/^\d+x\s+/, '').replace(/\s*\(.+\)\s*$/, '')
+  return baseName.toLowerCase().replace(/^linked\s+/, '').replace(/s$/, '')
+}
 
 /** Per one-page-fantasy-rules.md's Weapons section. */
 const TIER_ATTACKS: Record<string, string> = {
@@ -88,6 +100,46 @@ describe('Age of Fantasy data-quality audit', () => {
           if (!ruleIds.has(ruleId)) {
             problems.push(`${factionId}/${context} "${e.weapon.name}": missing innate rule "${ruleId}" for type "${typeWord}"`)
           }
+        }
+      }
+    }
+
+    for (const faction of FANTASY_FACTIONS) {
+      for (const unit of faction.units) {
+        for (const e of unit.equipment) check(faction.id, `unit ${unit.name}`, e)
+      }
+      for (const group of faction.upgradeGroups) {
+        for (const section of group.sections) {
+          for (const option of section.options) {
+            for (const e of option.effects?.addEquipment ?? []) {
+              check(faction.id, `group ${group.id} opt "${option.label}"`, e)
+            }
+          }
+        }
+      }
+    }
+
+    expect(problems).toEqual([])
+  })
+
+  it('every standard-named custom weapon matches the Fantasy Weapons table', () => {
+    const problems: string[] = []
+
+    function check(factionId: string, context: string, e: EquipmentEntry) {
+      if (!e.weapon) return
+      const canonical = RANGED_TABLE.get(normalizeWeaponName(e.weapon.name))
+      if (!canonical) return
+
+      if (e.weapon.range !== canonical.range || e.weapon.attacks !== canonical.attacks) {
+        problems.push(
+          `${factionId}/${context} "${e.weapon.name}": expected range ${canonical.range} / attacks ${canonical.attacks}, got range ${e.weapon.range} / attacks ${e.weapon.attacks}`,
+        )
+      }
+
+      const ruleIds = new Set(e.weapon.rules.map((r) => r.ruleId))
+      for (const ruleId of canonical.ruleIds) {
+        if (!ruleIds.has(ruleId)) {
+          problems.push(`${factionId}/${context} "${e.weapon.name}": missing baseline rule "${ruleId}"`)
         }
       }
     }

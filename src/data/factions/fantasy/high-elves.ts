@@ -1,4 +1,4 @@
-import { faction, customWeapon, meleeWeapon, gear, rules, armyRule, power, section, group, type UnitInput } from '../helpers'
+import { faction, customWeapon, weaponFantasy, meleeWeapon, gear, rules, armyRule, power, section, group, type UnitInput } from '../helpers'
 
 const units: UnitInput[] = [
     { name: "Prince", size: 1, quality: "4+", equipment: [meleeWeapon('Master', 'Sword', { key: 'master-sword', label: "Master Sword" })], special: "Hero, Prowess, Tough(3)", upgrades: "A", cost: 35 },
@@ -7,19 +7,19 @@ const units: UnitInput[] = [
     { name: "Phoenix Guard", size: 10, quality: "3+", equipment: [meleeWeapon('Light', 'Halberd', { key: 'light-halberd', label: "Light Halberds" })], special: "Armored, Fear, Prowess", upgrades: "C", cost: 225 },
     { name: "White Lions", size: 10, quality: "3+", equipment: [meleeWeapon('Light', 'Mace', { key: 'light-mace', label: "Light Maces" })], special: "Deflect, Fearless, Prowess, Strider", upgrades: "C", cost: 265 },
     { name: "Swordmasters", size: 10, quality: "3+", equipment: [meleeWeapon('Medium', 'Mace', { key: 'medium-mace', label: "Medium Maces" })], special: "Deflect, Prowess", upgrades: "C", cost: 310 },
-    { name: "Lothern Sea Guard", size: 5, quality: "4+", equipment: [customWeapon("Bows", { range: null, attacks: "1", rules: rules("") }), meleeWeapon('Light', 'Spears', { key: 'light-spear', label: "Light Spears" })], special: "Prowess", upgrades: "C", cost: 100 },
-    { name: "Archers", size: 5, quality: "4+", equipment: [customWeapon("Longbows", { range: null, attacks: "1", rules: rules("") })], special: "Prowess", upgrades: "C", cost: 100 },
+    { name: "Lothern Sea Guard", size: 5, quality: "4+", equipment: [weaponFantasy('bow', { label: "Bows" }), meleeWeapon('Light', 'Spears', { key: 'light-spear', label: "Light Spears" })], special: "Prowess", upgrades: "C", cost: 100 },
+    { name: "Archers", size: 5, quality: "4+", equipment: [weaponFantasy('longbow', { label: "Longbows" })], special: "Prowess", upgrades: "C", cost: 100 },
     { name: "Ellyrian Reavers", size: 5, quality: "4+", equipment: [meleeWeapon('Light', 'Spears', { key: 'light-spear', label: "Light Spears" })], special: "Fast, Prowess, Nimble", upgrades: "C, F", cost: 85 },
     { name: "Silver Helms", size: 5, quality: "4+", equipment: [meleeWeapon('Light', 'Lance', { key: 'light-lance', label: "Light Lances" })], special: "Armored, Prowess, Nimble", upgrades: "C", cost: 90 },
     { name: "Dragon Princes", size: 5, quality: "3+", equipment: [meleeWeapon('Medium', 'Lance', { key: 'medium-lance', label: "Medium Lances" })], special: "Armored, Prowess, Nimble", upgrades: "C", cost: 130 },
     { name: "Great Eagles", size: 3, quality: "3+", equipment: [meleeWeapon('Medium', 'Claws', { key: 'medium-claw', label: "Medium Claws" })], special: "Flying, Impact(1), Nimble, Tough(3)", upgrades: "D", cost: 125 },
-    { name: "Sisters of Avelorn", size: 5, quality: "3+", equipment: [customWeapon("Bows", { range: null, attacks: "1", rules: rules("Piercing") })], special: "Prowess", upgrades: "-", cost: 140 },
-    { name: "Shadow Warriors", size: 5, quality: "3+", equipment: [customWeapon("Longbows", { range: null, attacks: "1", rules: rules("") })], special: "Prowess, Scout", upgrades: "-", cost: 150 },
+    { name: "Sisters of Avelorn", size: 5, quality: "3+", equipment: [weaponFantasy('bow', { label: "Bows", rules: rules("Piercing") })], special: "Prowess", upgrades: "-", cost: 140 },
+    { name: "Shadow Warriors", size: 5, quality: "3+", equipment: [weaponFantasy('longbow', { label: "Longbows" })], special: "Prowess, Scout", upgrades: "-", cost: 150 },
     { name: "Frostheart Phoenix", size: 1, quality: "3+", equipment: [meleeWeapon('Master', 'Claws', { key: 'master-claw', label: "Master Claws" })], special: "Armored, Blizzard Aura, Flying, Impact(D6), Tough(6)", upgrades: "-", cost: 110 },
     { name: "Flamespyre Phoenix", size: 1, quality: "3+", equipment: [meleeWeapon('Heavy', 'Claws', { key: 'heavy-claw', label: "Heavy Claws" })], special: "Armored, Fear, Flying, Impact(D6), Phoenix, Tough(6), Wake of Fire", upgrades: "-", cost: 165 },
     { name: "Lion Chariot", size: 1, quality: "4+", equipment: [meleeWeapon('Medium', 'Mace', { key: 'medium-mace', label: "Medium Mace" }), meleeWeapon('Master', 'Claws', { key: 'master-claw', label: "Master Claws" })], special: "Armored, Fast, Fear, Fearless, Impact(D6), Prowess, Tough(3)", upgrades: "-", cost: 90 },
-    { name: "Lothern Skycutter", size: 1, quality: "4+", equipment: [customWeapon("3x Bows", { range: null, attacks: "1", rules: rules("") }), meleeWeapon('Heavy', 'Spear', { key: 'heavy-spear', label: "Heavy Spear" }), meleeWeapon('Medium', 'Claws', { key: 'medium-claw', label: "Medium Claws" })], special: "Armored, Fast, Flying, Impact(D6), Prowess, Tough(3)", upgrades: "E", cost: 90 },
-    { name: "Tiranoc Chariots", size: 3, quality: "4+", equipment: [customWeapon("2x Longbows", { range: null, attacks: "1", rules: rules("") }), meleeWeapon('Medium', 'Spear', { key: 'medium-spear', label: "Medium Spear" }), meleeWeapon('Medium', 'Claws', { key: 'medium-claw', label: "Medium Claws" })], special: "Armored, Fast, Impact(D6), Prowess, Tough(3)", upgrades: "-", cost: 235 },
+    { name: "Lothern Skycutter", size: 1, quality: "4+", equipment: [weaponFantasy('bow', { count: 3 }), meleeWeapon('Heavy', 'Spear', { key: 'heavy-spear', label: "Heavy Spear" }), meleeWeapon('Medium', 'Claws', { key: 'medium-claw', label: "Medium Claws" })], special: "Armored, Fast, Flying, Impact(D6), Prowess, Tough(3)", upgrades: "E", cost: 90 },
+    { name: "Tiranoc Chariots", size: 3, quality: "4+", equipment: [weaponFantasy('longbow', { count: 2 }), meleeWeapon('Medium', 'Spear', { key: 'medium-spear', label: "Medium Spear" }), meleeWeapon('Medium', 'Claws', { key: 'medium-claw', label: "Medium Claws" })], special: "Armored, Fast, Impact(D6), Prowess, Tough(3)", upgrades: "-", cost: 235 },
     { name: "Bolt Thrower", size: 1, quality: "4+", equipment: [customWeapon("Rapid Bolt Thrower", { range: 48, attacks: "3", rules: rules("Piercing, Single Target, Rapid") })], special: "Armored, Prowess, Ordnance, Tough(3)", upgrades: "-", cost: 105 },
 ]
 
@@ -31,8 +31,8 @@ export const highelves = faction({
   upgradeGroups: [
     group("G", [
       section("Upgrade with:", 'any', [
-        { label: "Swiftsense (Rapid)", cost: 5, adds: ["Rapid"] },
-        { label: "Shredding Talons (Piercing)", cost: 5, adds: ["Piercing"] }
+        { label: "Swiftsense", cost: 5, adds: ["Rapid"] },
+        { label: "Shredding Talons", cost: 5, adds: ["Piercing"] }
       ])
     ]),
     group("A", [
@@ -44,8 +44,8 @@ export const highelves = faction({
         { label: "Master Mace", cost: 20, addEquipment: [meleeWeapon('Master', 'Mace', { key: 'master-mace', label: "Master Mace" })] }
       ]),
       section("Equip with one:", 'one', [
-        { label: "Longbow", cost: 10, addEquipment: [customWeapon("Longbow", { range: null, attacks: '1', rules: rules('') })] },
-        { label: "Heavy Armor (Armored)", cost: 10, adds: ["Armored"] }
+        { label: "Longbow", cost: 10, addEquipment: [weaponFantasy('longbow')] },
+        { label: "Heavy Armor", cost: 10, adds: ["Armored"] }
       ]),
       section("Mount on:", 'any', [
         { label: "Elven Steed", cost: 10, addEquipment: [gear("Elven Steed")] },
@@ -58,8 +58,8 @@ export const highelves = faction({
     ]),
     group("H", [
       section("Upgrade with:", 'any', [
-        { label: "Swooping Strike (Furious)", cost: 5, adds: ["Furious"] },
-        { label: "Swiftsense (Rapid)", cost: 5, adds: ["Rapid"] }
+        { label: "Swooping Strike", cost: 5, adds: ["Furious"] },
+        { label: "Swiftsense", cost: 5, adds: ["Rapid"] }
       ])
     ]),
     group("B", [
@@ -83,8 +83,8 @@ export const highelves = faction({
     ]),
     group("D", [
       section("Upgrade with:", 'any', [
-        { label: "Swiftsense (Rapid)", cost: 5, adds: ["Rapid"] },
-        { label: "Shredding Talons (Piercing)", cost: 10, adds: ["Piercing"] }
+        { label: "Swiftsense", cost: 5, adds: ["Rapid"] },
+        { label: "Shredding Talons", cost: 10, adds: ["Piercing"] }
       ])
     ]),
     group("E", [

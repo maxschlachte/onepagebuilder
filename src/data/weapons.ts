@@ -36,7 +36,7 @@ export const weapons = [
   { id: 'autocannon', name: 'Autocannon', range: 48, attacks: '2', rules: P },
   { id: 'missile-launcher', name: 'Missile Launcher', range: 48, attacks: 'D3', rules: P },
   { id: 'battle-cannon', name: 'Battle Cannon', range: 48, attacks: '9', rules: P },
-  { id: 'lascannon', name: 'Lascannon', range: 48, attacks: '6', rules: X },
+  { id: 'lascannon', name: 'Lascannon', range: 48, attacks: '6', rules: X }
 ] as const satisfies Weapon[]
 
 export type WeaponId = (typeof weapons)[number]['id']

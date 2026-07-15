@@ -5,8 +5,11 @@ import { getFaction } from '../data/index'
 import { getEffectiveFaction } from '../data/chapters'
 import { totalPoints } from '../domain/calc'
 import CreateListDialog from '../components/CreateListDialog.vue'
+import AppButton from '../components/AppButton.vue'
+import TabSwitcher from '../components/TabSwitcher.vue'
 import type { ArmyList } from '../domain/list'
 import type { ChapterId } from '../data/chapters'
+import type { GameSystem } from '../domain/types'
 import DotsVerticalIcon from "../components/icons/DotsVerticalIcon.vue";
 
 const emit = defineEmits<{ open: [id: string] }>()
@@ -16,7 +19,7 @@ const importError = ref('')
 const fileInput = ref<HTMLInputElement | null>(null)
 
 const showCreateDialog = ref(false)
-const createButtonRef = ref<HTMLButtonElement | null>(null)
+const createButtonRef = ref<InstanceType<typeof AppButton> | null>(null)
 
 const openMenuId = ref<string | null>(null)
 const renamingId = ref<string | null>(null)
@@ -90,7 +93,7 @@ function onCreate(payload: { name: string; factionId: string; pointsCap: number;
 
 function onCancelCreate() {
   showCreateDialog.value = false
-  createButtonRef.value?.focus()
+  ;(createButtonRef.value?.$el as HTMLButtonElement | undefined)?.focus()
 }
 
 function listTotal(list: ArmyList): number {
@@ -102,10 +105,28 @@ function factionName(id: string): string {
   return getFaction(id)?.name ?? id
 }
 
-const systemOptions: { id: 'system-40k' | 'system-fantasy'; name: string }[] = [
-  { id: 'system-40k', name: 'Warhammer 40k' },
-  { id: 'system-fantasy', name: 'Warhammer Fantasy' },
+const systemOptions: { id: GameSystem; name: string }[] = [
+  { id: 'system-40k', name: 'One Page 40k' },
+  { id: 'system-fantasy', name: 'One Page Fantasy' },
 ]
+
+const systemTabOptions: { id: GameSystem; label: string }[] = systemOptions.map((s) => ({ id: s.id, label: s.name }))
+
+function isGameSystem(id: string): id is GameSystem {
+  return systemTabOptions.some((o) => o.id === id)
+}
+
+/**
+ * `TabSwitcher`'s `select` emit resolves to its generic constraint (`string`)
+ * rather than the narrowed `GameSystem` in the parent template — a Vue/vue-tsc
+ * limitation for generic SFC components' emits, not a real ambiguity (the
+ * emitted id always comes from `systemTabOptions`, which is fully typed). This
+ * type predicate is the cast-free way to recover the narrow type at the one
+ * boundary where the tooling can't infer it itself.
+ */
+function onSelectSystem(id: string) {
+  if (isGameSystem(id)) store.setActiveSystem(id)
+}
 
 /** Saved lists belonging to the active game system — a list's system is derived from its faction, never stored separately. */
 const visibleLists = computed(() =>
@@ -151,36 +172,17 @@ async function onImportFile(e: Event) {
         <p class="mt-2.5 max-w-[70ch] text-stone-600 dark:text-slate-400">Build, upgrade, and print army lists for every faction and chapter.</p>
 
         <div class="mt-4 flex flex-wrap items-center justify-between gap-2">
-          <div class="flex gap-1 rounded border border-stone-300 p-1 dark:border-slate-700" role="tablist" aria-label="Game system">
-            <button
-              v-for="sys in systemOptions"
-              :key="sys.id"
-              type="button"
-              role="tab"
-              :aria-selected="store.activeSystem.value === sys.id"
-              class="rounded px-3 py-1.5 font-display text-sm uppercase tracking-wide"
-              :class="store.activeSystem.value === sys.id ? 'bg-yellow-700 text-stone-50 dark:bg-yellow-500 dark:text-slate-950' : 'hover:bg-stone-100 dark:hover:bg-slate-800'"
-              @click="store.setActiveSystem(sys.id)"
-            >
-              {{ sys.name }}
-            </button>
-          </div>
+          <TabSwitcher
+            :options="systemTabOptions"
+            :active="store.activeSystem.value"
+            aria-label="Game system"
+            @select="onSelectSystem"
+          />
           <div class="flex flex-wrap items-center gap-2">
-            <button
-              ref="createButtonRef"
-              type="button"
-              class="rounded bg-yellow-700 px-4 py-2 font-display text-base uppercase tracking-wide text-stone-50 hover:bg-yellow-500 dark:bg-yellow-500 dark:text-slate-950 dark:hover:bg-yellow-700"
-              @click="showCreateDialog = true"
-            >
+            <AppButton ref="createButtonRef" variant="primary" @click="showCreateDialog = true">
               Create Army List
-            </button>
-            <button
-              type="button"
-              class="rounded border border-stone-300 px-4 py-2 font-display text-base uppercase tracking-wide hover:bg-stone-100 dark:border-slate-700 dark:hover:bg-slate-800"
-              @click="fileInput?.click()"
-            >
-              Import JSON
-            </button>
+            </AppButton>
+            <AppButton @click="fileInput?.click()">Import JSON</AppButton>
             <input ref="fileInput" type="file" accept="application/json,.json" class="hidden" @change="onImportFile" />
           </div>
         </div>

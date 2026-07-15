@@ -62,12 +62,12 @@ export const woodelves = faction({
     ]),
     group("D", [
       section("Upgrade all Longbows with one:", 'one', [
-        { label: "Trueflight Arrows (Ignores Cover)", cost: 5, adds: ["Ignores Cover"] },
-        { label: "Skyfire Shot (Rapid)", cost: 15, adds: ["Rapid"] },
-        { label: "Hagbane Tips (Poison)", cost: 15, adds: ["Poison"] },
-        { label: "Arcane Bodkins (Piercing)", cost: 25, adds: ["Piercing"] },
+        { label: "Trueflight Arrows", cost: 5, adds: ["Ignores Cover"] },
+        { label: "Skyfire Shot", cost: 15, adds: ["Rapid"] },
+        { label: "Hagbane Tips", cost: 15, adds: ["Poison"] },
+        { label: "Arcane Bodkins", cost: 25, adds: ["Piercing"] },
         // "+1 Attack" is not a named rule anywhere in the source (no Common Special Rules entry, no Wood Elves army rule defines it standalone — it only appears as a sub-choice inside "Dancer"/"Hawk-eyed"'s own text) so this reference is left as best-effort and will not resolve against the glossary.
-        { label: "Swiftshiver Shards (+1 Attack)", cost: 50, adds: ["+1 Attack"] }
+        { label: "Swiftshiver Shards", cost: 50, adds: ["+1 Attack"] }
       ])
     ]),
     group("E", [

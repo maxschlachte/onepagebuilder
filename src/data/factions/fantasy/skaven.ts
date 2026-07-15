@@ -1,4 +1,4 @@
-import { faction, customWeapon, meleeWeapon, gear, rules, armyRule, power, section, group, type UnitInput } from '../helpers'
+import { faction, customWeapon, weaponFantasy, meleeWeapon, gear, rules, armyRule, power, section, group, type UnitInput } from '../helpers'
 
 const units: UnitInput[] = [
     { name: "Warlord", size: 1, quality: "4+", equipment: [meleeWeapon('Heavy', 'Sword', { key: 'heavy-sword', label: "Heavy Sword" })], special: "Hero, Strength in Numbers, Tough(3)", upgrades: "A", cost: 30 },
@@ -38,7 +38,7 @@ export const skaven = faction({
         { label: "Light Spears", cost: 5, addEquipment: [meleeWeapon('Light', 'Spears', { key: 'light-spear', label: "Light Spears" })] }
       ]),
       section("Equip all models with:", 'any', [
-        { label: "Throwing Weapons", cost: 10, addEquipment: [customWeapon("Throwing Weapons", { range: null, attacks: '1', rules: rules('') })] }
+        { label: "Throwing Weapons", cost: 10, addEquipment: [weaponFantasy('throwing-weapon', { label: "Throwing Weapons" })] }
       ])
     ]),
     group("A", [
@@ -48,9 +48,9 @@ export const skaven = faction({
         { label: "Heavy Mace", cost: 10, addEquipment: [meleeWeapon('Heavy', 'Mace', { key: 'heavy-mace', label: "Heavy Mace" })] }
       ]),
       section("Equip with any:", 'any', [
-        { label: "Tail Weapon (+1 Melee attack)", cost: 5, addEquipment: [customWeapon("Tail Weapon", { range: null, attacks: '1', rules: rules("+1 Melee attack") })] },
-        { label: "Rat Hound (+1 Melee attack)", cost: 5, adds: ["+1 Melee attack"] },
-        { label: "Unctuous Lotions (Poison)", cost: 10, adds: ["Poison"] }
+        { label: "Tail Weapon", cost: 5, addEquipment: [customWeapon("Tail Weapon", { range: null, attacks: '1', rules: rules("+1 Melee attack") })] },
+        { label: "Rat Hound", cost: 5, adds: ["+1 Melee attack"] },
+        { label: "Unctuous Lotions", cost: 10, adds: ["Poison"] }
       ]),
       section("Mount on:", 'any', [
         { label: "Great Pox Rat", cost: 15, addEquipment: [gear("Great Pox Rat")] },
@@ -60,9 +60,9 @@ export const skaven = faction({
     ]),
     group("G", [
       section("Equip all models with any:", 'any', [
-        { label: "Smoke Bombs (Unit always counts as in Cover)", cost: 10, adds: ["Smoke Bombs"] },
-        { label: "Snare Nets (Enemies get Unwieldy in Melee)", cost: 15, adds: ["Snare Nets"] },
-        { label: "Venomous Blades (Poison)", cost: 30, adds: ["Poison"] }
+        { label: "Smoke Bombs", cost: 10, adds: ["Smoke Bombs"] },
+        { label: "Snare Nets", cost: 15, adds: ["Snare Nets"] },
+        { label: "Venomous Blades", cost: 30, adds: ["Poison"] }
       ])
     ]),
     group("H", [
@@ -75,8 +75,8 @@ export const skaven = faction({
         { label: "Medium Halberd", cost: 5, addEquipment: [meleeWeapon('Medium', 'Halberd', { key: 'medium-halberd', label: "Medium Halberd" })] }
       ]),
       section("Equip with one:", 'one', [
-        { label: "Pistol", cost: 5, addEquipment: [customWeapon("Pistol", { range: null, attacks: '1', rules: rules('') })] },
-        { label: "Rifle", cost: 10, addEquipment: [customWeapon("Rifle", { range: null, attacks: '1', rules: rules('') })] }
+        { label: "Pistol", cost: 5, addEquipment: [weaponFantasy('pistol')] },
+        { label: "Rifle", cost: 10, addEquipment: [weaponFantasy('rifle')] }
       ]),
       section("Upgrade with one:", 'one', [
         { label: "Wizard(1)", cost: 25, adds: ["Wizard(1)"] },
@@ -85,10 +85,10 @@ export const skaven = faction({
     ]),
     group("I", [
       section("Upgrade with:", 'any', [
-        { label: "Flayer Gauntlets (Impact(+D3))", cost: 5, adds: ["Flayer Gauntlets (Impact(+D3))"] },
-        { label: "Shock Gauntlets (Piercing Melee)", cost: 5, adds: ["Piercing Melee"] },
-        { label: "Grinderfists (Grinder)", cost: 15, addEquipment: [customWeapon("Grinderfists", { range: null, attacks: '1', rules: rules("Grinder") })] },
-        { label: "Warpfire Projectors (Fire Thrower)", cost: 20, adds: ["Fire Thrower"] },
+        { label: "Flayer Gauntlets", cost: 5, adds: ["Impact(+D3)"] },
+        { label: "Shock Gauntlets", cost: 5, adds: ["Piercing in Melee"] },
+        { label: "Grinderfists", cost: 15, addEquipment: [customWeapon("Grinderfists", { range: null, attacks: '1', rules: rules("Grinder") })] },
+        { label: "Warpfire Projectors", cost: 20, adds: ["Fire Thrower"] },
         { label: "Windlaunchers", cost: 45, addEquipment: [customWeapon("Windlaunchers", { range: 24, attacks: "3", rules: rules("Piercing, Indirect, Poison") })] },
         { label: "Ratling Cannons", cost: 70, addEquipment: [customWeapon("Ratling Cannons", { range: 18, attacks: "3D6", rules: rules("Piercing") })] }
       ])
@@ -97,7 +97,7 @@ export const skaven = faction({
       section("Upgrade with:", 'any', [
         { label: "Master Sword", cost: 5, addEquipment: [meleeWeapon('Master', 'Sword', { key: 'master-sword', label: "Master Sword" })] },
         { label: "Heavy Halberd", cost: 5, addEquipment: [meleeWeapon('Heavy', 'Halberd', { key: 'heavy-halberd', label: "Heavy Halberd" })] },
-        { label: "Heavy Mace (Noxious)", cost: 20, addEquipment: [meleeWeapon('Heavy', 'Mace', { key: 'heavy-mace', label: "Heavy Mace", rules: rules('Noxious') })] }
+        { label: "Heavy Mace", cost: 20, addEquipment: [meleeWeapon('Heavy', 'Mace', { key: 'heavy-mace', label: "Heavy Mace", rules: rules('Noxious') })] }
       ]),
       section("Upgrade Wizard(1):", 'any', [
         { label: "Wizard(2)", cost: 5, adds: ["Wizard(2)"] }
@@ -117,12 +117,12 @@ export const skaven = faction({
     ]),
     group("E", [
       section("Upgrade with:", 'any', [
-        { label: "Weapons Team (Ratling Gun)", cost: 25, adds: ["Ratling Gun"] }
+        { label: "Weapons Team", cost: 25, adds: ["Ratling Gun"] }
       ]),
       section("Replace Ratling Gun:", 'any', [
         { label: "Poisoned Wind Mortar", cost: 10, addEquipment: [customWeapon("Poisoned Wind Mortar", { range: 24, attacks: "3", rules: rules("Indirect, Poison") })], removeEquipment: ["Ratling Gun"] },
         { label: "Warpfire Thrower", cost: 10, addEquipment: [customWeapon("Warpfire Thrower", { range: 18, attacks: "6", rules: rules("Piercing") })], removeEquipment: ["Ratling Gun"] },
-        { label: "Warp Grinder (Grinder)", cost: 30, adds: ["Grinder"], removeEquipment: ["Ratling Gun"] },
+        { label: "Warp Grinder", cost: 30, adds: ["Grinder"], removeEquipment: ["Ratling Gun"] },
         { label: "Doom Flayer", cost: 45, adds: ["Doom Flayer"], removeEquipment: ["Ratling Gun"] }
       ])
     ])
@@ -138,6 +138,8 @@ export const skaven = faction({
     armyRule("Sneaky", "You may choose not to deploy this unit with your army, and instead keep it in reserve. After round 1 you may roll one die at the beginning of each round, and on a 4+ you may place the unit on the table touching any table edge over 6” away from enemy units. If the unit has not arrived by the last round it arrives automatically."),
     armyRule("Strength in Numbers", "As long as this unit is within 6” of a friendly unit when taking morale tests it rolls one extra die and picks the highest result."),
     armyRule("Too Horrible to Die", "Whenever this model would be killed roll one die, on a 6+ it is not killed and immediately restores D6 wounds instead."),
+    armyRule("Smoke Bombs", "The unit always counts as in Cover."),
+    armyRule("Snare Nets", "Enemies get Unwieldy in Melee against this unit."),
   ],
   psychicPowers: [
     power("Skitterleap", 6, "Target friendly model within 12” may be placed anywhere on the table."),

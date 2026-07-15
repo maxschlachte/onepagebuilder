@@ -34,7 +34,7 @@ export const ogrekingdoms = faction({
       ]),
       section("Equip with:", 'any', [
         { label: "Ogre Pistol", cost: 10, addEquipment: [customWeapon("Ogre Pistol", { range: 24, attacks: "1", rules: rules("Piercing") })] },
-        { label: "Ironfist (Armored)", cost: 20, adds: ["Armored"] }
+        { label: "Ironfist", cost: 20, adds: ["Armored"] }
       ])
     ]),
     group("B", [
@@ -43,8 +43,8 @@ export const ogrekingdoms = faction({
         { label: "Master Mace", cost: 20, addEquipment: [meleeWeapon('Master', 'Mace', { key: 'master-mace', label: "Master Mace", rules: rules('Piercing, Poison') })], removeEquipment: ["Master Sword"] }
       ]),
       section("Equip with any:", 'any', [
-        { label: "Ironfist (Armored)", cost: 10, adds: ["Armored"] },
-        { label: "Vulture (Ignores Cover)", cost: 10, addEquipment: [customWeapon("Vulture", { range: 36, attacks: "1", rules: rules("Ignores Cover") })] },
+        { label: "Ironfist", cost: 10, adds: ["Armored"] },
+        { label: "Vulture", cost: 10, addEquipment: [customWeapon("Vulture", { range: 36, attacks: "1", rules: rules("Ignores Cover") })] },
         { label: "Harpoon Launcher", cost: 15, addEquipment: [customWeapon("Harpoon Launcher", { range: 36, attacks: "1", rules: rules("Piercing") })] }
       ]),
       section("Mount on:", 'any', [
@@ -53,11 +53,11 @@ export const ogrekingdoms = faction({
     ]),
     group("C", [
       section("Upgrade with one:", 'one', [
-        { label: "Longstrider (Fast)", cost: 5, adds: ["Fast"] },
-        { label: "Wallcrusher (Impact(+1))", cost: 5, adds: ["Impact(+1)"] },
-        { label: "Brawlergut (Piercing Impact)", cost: 5, adds: ["Piercing", "Impact"] },
-        { label: "Giantbreaker (Piercing Melee)", cost: 10, adds: ["Piercing (Melee)"] },
-        { label: "Mountaineater (Tough(+3))", cost: 25, adds: ["Tough(+3)"] }
+        { label: "Longstrider", cost: 5, adds: ["Fast"] },
+        { label: "Wallcrusher", cost: 5, adds: ["Impact(+1)"] },
+        { label: "Brawlergut", cost: 5, adds: ["Piercing", "Impact"] },
+        { label: "Giantbreaker", cost: 10, adds: ["Piercing in Melee"] },
+        { label: "Mountaineater", cost: 25, adds: ["Tough(+3)"] }
       ])
     ]),
     group("D", [
@@ -66,7 +66,7 @@ export const ogrekingdoms = faction({
         { label: "Heavy Mace", cost: 15, addEquipment: [meleeWeapon('Heavy', 'Mace', { key: 'heavy-mace', label: "Heavy Mace", rules: rules('Piercing, Poison') })], removeEquipment: ["Heavy Sword"] }
       ]),
       section("Equip with:", 'any', [
-        { label: "Ironfist (Armored)", cost: 10, adds: ["Armored"] }
+        { label: "Ironfist", cost: 10, adds: ["Armored"] }
       ]),
       section("Upgrade Wizard(1):", 'any', [
         { label: "Wizard(2)", cost: 5, adds: ["Wizard(2)"] },
@@ -112,7 +112,7 @@ export const ogrekingdoms = faction({
     ]),
     group("K", [
       section("Upgrade with any:", 'any', [
-        { label: "Chaintrap (Deadly)", cost: 10, addEquipment: [customWeapon("Chaintrap", { range: 12, attacks: '1', rules: rules("Deadly") })] },
+        { label: "Chaintrap", cost: 10, addEquipment: [customWeapon("Chaintrap", { range: 12, attacks: '1', rules: rules("Deadly") })] },
         { label: "Harpoon Launcher", cost: 15, addEquipment: [customWeapon("Harpoon Launcher", { range: 36, attacks: '1', rules: rules("Piercing") })] }
       ])
     ])

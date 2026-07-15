@@ -41,7 +41,7 @@ export const vampirecounts = faction({
         { label: "Master Mace", cost: 20, addEquipment: [meleeWeapon('Master', 'Mace', { key: 'master-mace', label: "Master Mace", rules: rules('Piercing, Poison') })], removeEquipment: ["Master Sword"] }
       ]),
       section("Equip with:", 'any', [
-        { label: "Heavy Armor (Armored)", cost: 10, adds: ["Armored"] }
+        { label: "Heavy Armor", cost: 10, adds: ["Armored"] }
       ]),
       section("Upgrade Wizard(1):", 'any', [
         { label: "Wizard(2)", cost: 5, adds: ["Wizard(2)"] }
@@ -57,12 +57,12 @@ export const vampirecounts = faction({
     ]),
     group("B", [
       section("Replace Heavy Sword:", 'any', [
-        { label: "Heavy Mace (Deadly)", cost: 5, addEquipment: [meleeWeapon('Heavy', 'Mace', { key: 'heavy-mace', label: "Heavy Mace", rules: rules('Piercing, Poison, Deadly') })], removeEquipment: ["Heavy Sword"] },
+        { label: "Heavy Mace", cost: 5, addEquipment: [meleeWeapon('Heavy', 'Mace', { key: 'heavy-mace', label: "Heavy Mace", rules: rules('Piercing, Poison, Deadly') })], removeEquipment: ["Heavy Sword"] },
         { label: "Heavy Lance (Deadly, Mounted Only)", cost: 5, addEquipment: [meleeWeapon('Heavy', 'Lance', { key: 'heavy-lance', label: "Heavy Lance", rules: rules('Impact(1), Deadly, Mounted Only') })], removeEquipment: ["Heavy Sword"] },
-        { label: "Master Sword (Deadly)", cost: 10, addEquipment: [meleeWeapon('Master', 'Sword', { key: 'master-sword', label: "Master Sword", rules: rules('Deadly') })], removeEquipment: ["Heavy Sword"] }
+        { label: "Master Sword", cost: 10, addEquipment: [meleeWeapon('Master', 'Sword', { key: 'master-sword', label: "Master Sword", rules: rules('Deadly') })], removeEquipment: ["Heavy Sword"] }
       ]),
       section("Equip with:", 'any', [
-        { label: "Heavy Armor (Armored)", cost: 10, adds: ["Armored"] }
+        { label: "Heavy Armor", cost: 10, adds: ["Armored"] }
       ]),
       section("Mount on:", 'any', [
         { label: "Skeletal Steed", cost: 15, addEquipment: [gear("Skeletal Steed")] }
@@ -87,7 +87,7 @@ export const vampirecounts = faction({
     group("E", [
       section("Upgrade with any:", 'any', [
         { label: "Infested", cost: 10, adds: ["Infested"] },
-        { label: "Rancid Maw (Poison Melee)", cost: 10, adds: ["Poison (Melee)"] }
+        { label: "Rancid Maw", cost: 10, adds: ["Poison in Melee"] }
       ])
     ]),
     group("F", [
@@ -98,8 +98,8 @@ export const vampirecounts = faction({
     ]),
     group("G", [
       section("Upgrade with any:", 'any', [
-        { label: "Sword-Claws (Piercing Melee)", cost: 5, addEquipment: [customWeapon("Sword-Claws", { range: null, attacks: '1', rules: rules("Piercing (Melee)") })] },
-        { label: "Poisonous Tail (Poison Melee)", cost: 10, addEquipment: [customWeapon("Poisonous Tail", { range: null, attacks: '1', rules: rules("Poison (Melee)") })] }
+        { label: "Sword-Claws", cost: 5, addEquipment: [customWeapon("Sword-Claws", { range: null, attacks: '1', rules: rules("Piercing in Melee") })] },
+        { label: "Poisonous Tail", cost: 10, addEquipment: [customWeapon("Poisonous Tail", { range: null, attacks: '1', rules: rules("Poison in Melee") })] }
       ])
     ]),
     group("H", [
@@ -109,12 +109,12 @@ export const vampirecounts = faction({
     ]),
     group("I", [
       section("Replace all Light Swords:", 'one', [
-        { label: "Light Maces (Deadly)", cost: 15, addEquipment: [meleeWeapon('Light', 'Mace', { key: 'light-mace', label: "Light Maces", rules: rules('Piercing, Poison, Deadly') })], removeEquipment: ["Light Swords"] }
+        { label: "Light Maces", cost: 15, addEquipment: [meleeWeapon('Light', 'Mace', { key: 'light-mace', label: "Light Maces", rules: rules('Piercing, Poison, Deadly') })], removeEquipment: ["Light Swords"] }
       ])
     ]),
     group("J", [
       section("Replace all Light Swords:", 'one', [
-        { label: "Light Lances (Deadly)", cost: 15, addEquipment: [meleeWeapon('Light', 'Lance', { key: 'light-lance', label: "Light Lances", rules: rules('Impact(1), Deadly') })], removeEquipment: ["Light Swords"] }
+        { label: "Light Lances", cost: 15, addEquipment: [meleeWeapon('Light', 'Lance', { key: 'light-lance', label: "Light Lances", rules: rules('Impact(1), Deadly') })], removeEquipment: ["Light Swords"] }
       ])
     ]),
     group("K", [

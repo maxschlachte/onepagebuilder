@@ -140,10 +140,7 @@ describe('rules database integrity', () => {
     // This does NOT assert every entry resolves a full weapon profile — it only
     // checks the label text is plausible, independent of whether it happens to
     // reference a global weapon, a melee tier/type, or a bespoke profile.
-    const globalWeaponNames = new Set(
-      rulesDatabase.weapons.map((w) => w.name.toLowerCase().replace(/s$/, '')),
-    )
-    function isKnownWeaponName(label: string): boolean {
+    function isKnownWeaponName(label: string, globalWeaponNames: Set<string>): boolean {
       const baseName = label.replace(/^\d+x\s+/, '').replace(/\s*\(.+\)\s*$/, '')
       const normalized = baseName.toLowerCase().replace(/^linked\s+/, '').replace(/s$/, '')
       return globalWeaponNames.has(normalized)
@@ -151,6 +148,9 @@ describe('rules database integrity', () => {
 
     const missing: string[] = []
     for (const faction of rulesDatabase.factions) {
+      const globalWeaponNames = new Set(
+        rulesDatabase.weapons[faction.system].map((w) => w.name.toLowerCase().replace(/s$/, '')),
+      )
       const knownLabels = new Set([
         ...faction.units.flatMap((u) => u.equipment.map((e) => e.label)),
         ...faction.upgradeGroups.flatMap((g) => g.sections.flatMap((s) => s.options.map((o) => o.label))),
@@ -160,7 +160,7 @@ describe('rules database integrity', () => {
           for (const opt of sec.options) {
             for (const entry of opt.effects?.addEquipment ?? []) {
               const isSubstringOfOwnLabel = opt.label.includes(entry.label)
-              if (!knownLabels.has(entry.label) && !isKnownWeaponName(entry.label) && !isSubstringOfOwnLabel) {
+              if (!knownLabels.has(entry.label) && !isKnownWeaponName(entry.label, globalWeaponNames) && !isSubstringOfOwnLabel) {
                 missing.push(`${faction.id}/${group.id}/${sec.title} → ${opt.label} (${entry.label})`)
               }
             }

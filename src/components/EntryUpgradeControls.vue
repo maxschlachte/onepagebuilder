@@ -3,12 +3,12 @@ import { computed } from 'vue'
 import { useListsStore } from '../stores/lists'
 import { affectsAllModels, isSectionAvailable, maxPicks } from '../domain/calc'
 import { createResolver } from '../domain/resolve'
-import { formatWeaponProfile } from '../domain/format'
 import { rulesDatabase } from '../data/index'
 import RuleTooltip from './RuleTooltip.vue'
-import RuleChips from './RuleChips.vue'
+import WeaponProfileLabel from './WeaponProfileLabel.vue'
 import type { ListUnit } from '../domain/list'
 import type { Faction, RuleRef, UnitProfile, UpgradeOption, UpgradeSection, Weapon } from '../domain/types'
+import RuleChips from "./RuleChips.vue";
 
 const props = defineProps<{
   /** Omit both `listId` and `listUnit` for a read-only catalog listing (e.g. a
@@ -83,6 +83,10 @@ function weaponsFor(option: UpgradeOption): Weapon[] {
   return (option.effects?.addEquipment ?? []).flatMap((e) => (e.weapon ? [e.weapon] : []))
 }
 
+function rulesFor(option: UpgradeOption): RuleRef[] {
+  return option.effects?.addRules ?? []
+}
+
 function labelsFor(optionIds: string[]): string[] {
   const options = props.faction.upgradeGroups.flatMap((g) => g.sections.flatMap((s) => s.options))
   return optionIds.map((id) => options.find((o) => o.id === id)?.label ?? id)
@@ -130,7 +134,7 @@ function unavailableReason(section: UpgradeSection): string | undefined {
           :key="opt.id"
           class="flex items-center gap-2 border-dotted border-stone-300 py-0.5 text-sm dark:border-slate-700"
           :class="[
-            readonly ? '' : isOptionDisabled(section, opt.id) ? 'cursor-not-allowed opacity-50' : 'cursor-pointer',
+            readonly ? '' : isOptionDisabled(section, opt.id) ? 'cursor-not-allowed' : 'cursor-pointer',
             oIdx < optionsFor(section).length - 1 ? 'border-b' : '',
           ]"
         >
@@ -142,17 +146,47 @@ function unavailableReason(section: UpgradeSection): string | undefined {
             :disabled="isOptionDisabled(section, opt.id)"
             @change="store.toggleUpgrade(listId!, listUnit!.instanceId, opt.id)"
           />
-          <span>
+          <span
+              :class="[readonly ? '' : isOptionDisabled(section, opt.id) ? 'text-stone-700 dark:text-slate-500' : '']"
+          >
             <template v-if="labelTooltip(opt).tooltip">
               <RuleTooltip :ref-data="labelTooltip(opt).tooltip!" :faction="faction" />{{ labelTooltip(opt).suffix }}
             </template>
-            <template v-else>{{ opt.label }}</template>
-            <template v-for="(w, wi) in weaponsFor(opt)" :key="wi">
-              <span class="ml-1 text-xs text-stone-600 dark:text-slate-400">({{ formatWeaponProfile(w) }})</span>
-              <span v-if="w.rules.length" class="ml-1 text-xs">— <RuleChips :rules="w.rules" :faction="faction" /></span>
+            <template v-else>
+              <span>{{ opt.label }}</span>
+              <span
+                  v-if="rulesFor(opt).length > 0"
+                  class="ml-1 text-xs"
+                  :class="[
+                    !readonly && isOptionDisabled(section, opt.id) ? 'text-stone-800 dark:text-slate-600' : 'text-stone-600 dark:text-slate-400'
+                  ]"
+              >
+                (<RuleChips :rules="rulesFor(opt)" :faction="faction" />)
+              </span>
+            </template>
+            <template v-for="w in weaponsFor(opt)" :key="w.id">
+              <span class="ml-1">
+                <span
+                    v-if="!opt.label.includes(w.name)"
+                    class="text-xs"
+                    :class="[
+                    !readonly && isOptionDisabled(section, opt.id) ? 'text-stone-800 dark:text-slate-600' : 'text-stone-600 dark:text-slate-400'
+                  ]"
+                >
+                  {{ w.name }}
+                </span>
+                <WeaponProfileLabel
+                    :weapon="w"
+                    :faction="faction"
+                    class="text-xs"
+                    :class="[
+                      !readonly && isOptionDisabled(section, opt.id) ? 'text-stone-800 dark:text-slate-600' : 'text-stone-600 dark:text-slate-400'
+                    ]"
+                />
+              </span>
             </template>
           </span>
-          <span :class="opt.costDelta === 0 ? 'text-steel' : 'text-yellow-700 dark:text-brass'">{{ opt.costDelta === 0 ? 'Free' : `+${opt.costDelta}pts` }}</span>
+          <span class="text-yellow-700 dark:text-yellow-600">{{ opt.costDelta === 0 ? 'Free' : `+${opt.costDelta}pts` }}</span>
         </label>
       </template>
     </div>

@@ -74,9 +74,9 @@ export const spaceMarines = faction({
         'Take one Assault Rifle attachment',
         'one',
         [
-          { label: 'Flamer (Limited)', cost: 5, addEquipment: [weapon('flamer', { rules: rules('Limited') })] },
-          { label: 'Meltagun (Limited)', cost: 5, addEquipment: [weapon('meltagun', { rules: rules('Limited') })] },
-          { label: 'Plasmagun (Limited)', cost: 5, addEquipment: [weapon('plasmagun', { rules: rules('Limited') })] },
+          { label: 'Flamer', cost: 5, addEquipment: [weapon('flamer', { rules: rules('Limited') })] },
+          { label: 'Meltagun', cost: 5, addEquipment: [weapon('meltagun', { rules: rules('Limited') })] },
+          { label: 'Plasmagun', cost: 5, addEquipment: [weapon('plasmagun', { rules: rules('Limited') })] },
         ],
         {
           // On a single-model unit, replacing its one Assault Rifle leaves nothing to attach to.
@@ -90,9 +90,9 @@ export const spaceMarines = faction({
         },
       ),
       section('Upgrade one model with one', 'one', [
-        { label: 'Jump Pack (Deep Strike, Flying)', cost: 10, adds: ['Deep Strike', 'Flying'] },
-        { label: 'Bike (Linked Assault Rifle, Fast)', cost: 15, adds: ['Fast'], addEquipment: [linked(weapon('assault-rifle'))] },
-        { label: 'Terminator Armor (Armored, Deep Strike)', cost: 15, adds: ['Armored', 'Deep Strike'] },
+        { label: 'Jump Pack', cost: 10, adds: ['Deep Strike', 'Flying'] },
+        { label: 'Bike', cost: 15, adds: ['Fast'], addEquipment: [linked(weapon('assault-rifle'))] },
+        { label: 'Terminator Armor', cost: 15, adds: ['Armored', 'Deep Strike'] },
       ]),
       section('Upgrade Psyker(1)', 'one', [{ label: 'Psyker(2)', cost: 5, adds: ['Psyker(2)'] }], {
         requiresBaselineRule: ['Psyker(1)'],
@@ -100,10 +100,9 @@ export const spaceMarines = faction({
     ]),
     group('B', [
       section('Upgrade with any', 'any', [
-        { label: 'Dozer Blade (Strider)', cost: 5, adds: ['Strider'] },
-        // Nested-parenthetical compound labels ("X (Y (Limited))") have no single resolvable weapon profile — left without equipment effects.
-        { label: 'Hunter-Killer Missile (Missile Launcher (Limited))', cost: 10 },
-        { label: 'Pintle Mount (Stormbolter)', cost: 15 },
+        { label: 'Dozer Blade', cost: 5, adds: ['Strider'] },
+        { label: 'Hunter-Killer Missile', cost: 10, addEquipment: [customWeapon('Hunter-Killer Missile', { range: 48, attacks: "D3", rules: [{ ruleId: 'limited' }, { ruleId: 'piercing' }] })] },
+        { label: 'Pintle Mount', cost: 15, addEquipment: [customWeapon('Stormbolter', { range: 24, attacks: '2' })] },
       ]),
     ]),
     group('C', [
@@ -166,11 +165,15 @@ export const spaceMarines = faction({
         'Replace one Stormbolter',
         'one',
         [
-          { label: 'Storm Shield (Tough(3))', cost: 5, adds: ['Tough(3)'] },
           {
-            label: 'Minigun (Rending)',
+            label: 'Storm Shield',
+            cost: 5,
+            adds: ['Tough(3)'],
+            removeOneEquipment: ['Stormbolter (24”, A2)']
+          },
+          {
+            label: 'Minigun',
             cost: 15,
-            adds: ['Rending'],
             addEquipment: [weapon('minigun', { rules: rules('Rending') })],
             removeOneEquipment: ['Stormbolter (24”, A2)'],
           },
@@ -190,8 +193,16 @@ export const spaceMarines = faction({
         },
       ),
       section('Replace all Stormbolters', 'one', [
-        { label: 'Storm Shields (Tough(3))', cost: 30, adds: ['Tough(3)'] },
-      ]),
+        {
+          label: 'Storm Shields',
+          cost: 30,
+          adds: ['Tough(3)'],
+          removeEquipment: ['Stormbolter (24”, A2)']
+        },
+      ], {
+        requiresOneOfSelected: ['Stormbolter'],
+        satisfiedByEquipment: ['Stormbolters (24”, A2)'],
+      }),
       section('Equip one model with', 'one', [
         { label: 'Missile Launcher', cost: 50, addEquipment: [weapon('missile-launcher')] },
       ]),
@@ -314,8 +325,8 @@ export const spaceMarines = faction({
         },
       ]),
       section('Take up to two', 'upToTwo', [
-        { label: 'Hunter-Killer Missile (Missile Launcher (Limited))', cost: 10 },
-        { label: 'Hunter-Killer Missile (Missile Launcher (Limited))', cost: 10 },
+        { label: 'Hunter-Killer Missile', cost: 10, addEquipment: [customWeapon('Hunter-Killer Missile', { range: 48, attacks: "D3", rules: [{ ruleId: 'limited' }, { ruleId: 'piercing' }] })] },
+        { label: 'Hunter-Killer Missile', cost: 10, addEquipment: [customWeapon('Hunter-Killer Missile', { range: 48, attacks: "D3", rules: [{ ruleId: 'limited' }, { ruleId: 'piercing' }] })] },
       ]),
     ]),
     group('L', [
@@ -347,7 +358,7 @@ export const spaceMarines = faction({
       ]),
     ]),
     group('M', [
-      section('Upgrade with', 'one', [{ label: 'Extra Armor (Tough(+3))', cost: 35, adds: ['Tough(+3)'] }]),
+      section('Upgrade with', 'one', [{ label: 'Extra Armor', cost: 35, adds: ['Tough(+3)'] }]),
     ]),
     group('N', [
       section('Replace Autocannon', 'one', [
@@ -410,7 +421,7 @@ export const spaceMarines = faction({
       ]),
       section('Take one', 'one', [
         { label: 'Heavy Flamer', cost: 35, addEquipment: [weapon('heavy-flamer')] },
-        { label: 'Minigun (Rending)', cost: 35, adds: ['Rending'], addEquipment: [weapon('minigun', { rules: rules('Rending') })] },
+        { label: 'Minigun', cost: 35, adds: ['Rending'], addEquipment: [weapon('minigun', { rules: rules('Rending') })] },
         { label: 'Machinegun', cost: 35, addEquipment: [weapon('machinegun')] },
         { label: 'Missile Launcher', cost: 50, addEquipment: [weapon('missile-launcher')] },
         { label: 'Multi-Melta', cost: 60, addEquipment: [weapon('multi-melta')] },

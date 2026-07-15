@@ -2,6 +2,7 @@
 import { mount } from '@vue/test-utils'
 import { describe, expect, it } from 'vitest'
 import EntryUpgradeControls from './EntryUpgradeControls.vue'
+import RuleTooltip from './RuleTooltip.vue'
 import { getFaction } from '../data/index'
 import { getEffectiveFaction } from '../data/chapters'
 import type { ListUnit } from '../domain/list'
@@ -34,13 +35,18 @@ describe('EntryUpgradeControls option label tooltips', () => {
     expect(label.text()).toContain('Battle Standard')
   })
 
-  it('does not duplicate rule text for a compound label like "Jump Pack (Deep Strike, Flying)"', () => {
+  it('renders a bare multi-rule-granting label like "Jump Pack" as plain text with its rules as separate chips', () => {
     const wrapper = mountControls()
     const label = wrapper.findAll('label').find((l) => l.text().includes('Jump Pack'))!
-    expect(label.text()).toContain('Jump Pack (Deep Strike, Flying)')
-    // No tooltip wrapper — "Jump Pack" itself isn't a rule name, so the label renders
-    // as plain text exactly as before this change.
-    expect(label.find('.border-dotted').exists()).toBe(false)
+    const tooltips = wrapper.findAllComponents(RuleTooltip).filter((t) => label.element.contains(t.element))
+    // "Jump Pack" itself isn't a rule name, so it must not be swallowed into the
+    // single-rule-name tooltip path — no tooltip's resolved name is "Jump Pack".
+    expect(tooltips.some((t) => t.text().startsWith('Jump Pack'))).toBe(false)
+    // Its two granted rules each render as their own hoverable chip, not duplicated.
+    expect(tooltips).toHaveLength(2)
+    expect(tooltips.map((t) => t.props('refData').ruleId)).toEqual(
+      expect.arrayContaining(['deep-strike', 'flying']),
+    )
   })
 })
 

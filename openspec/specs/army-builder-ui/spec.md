@@ -84,7 +84,7 @@ The system SHALL let the user choose a faction for the current list and SHALL di
 
 ### Requirement: Edit units and upgrades in the builder
 
-The system SHALL display each selected unit with its effective stats and SHALL provide controls to select that unit's available upgrade options and to remove the unit. The displayed equipment list SHALL reflect weapon additions, removals, and replacements from the unit's currently selected upgrades, not only its baseline loadout, with each weapon's range/attacks shown in brackets and its special rules shown as hoverable tooltips. If a unit's effective equipment (after all currently selected upgrades) contains no melee weapon, the displayed equipment list SHALL include a default `Light CCW` entry with its range/attacks bracket, per the rule that units without a melee weapon count as using Light CCWs/Claws. For a unit with more than one model, each equipment line SHALL be prefixed with the number of models in the unit currently carrying it (e.g. `4x Assault Rifle`), reflecting partial upgrades that replace only some of the unit's models' weapons; a single-model unit's equipment list SHALL NOT show this prefix. An upgrade option that adds one or more weapons SHALL show each added weapon's range/attacks bracket and rule chips next to the option itself, computed from that option's own equipment effect — visible as soon as the option is listed, before it is selected — rather than only once the weapon appears in the unit's effective equipment list; this applies identically to the read-only roster "Details" panel, since it lists upgrade options through the same rendering.
+The system SHALL display each selected unit with its effective stats and SHALL provide controls to select that unit's available upgrade options and to remove the unit. The displayed equipment list SHALL reflect weapon additions, removals, and replacements from the unit's currently selected upgrades, not only its baseline loadout, with each weapon's range/attacks and any special rules shown together in a single bracket (e.g. `(24", A1, Piercing)`), the rules rendered as hoverable tooltips. If a unit's effective equipment (after all currently selected upgrades) contains no melee weapon, the displayed equipment list SHALL include a default `Light CCW` entry with its range/attacks bracket, per the rule that units without a melee weapon count as using Light CCWs/Claws. For a unit with more than one model, each equipment line SHALL be prefixed with the number of models in the unit currently carrying it (e.g. `4x Assault Rifle`), reflecting partial upgrades that replace only some of the unit's models' weapons; a single-model unit's equipment list SHALL NOT show this prefix. An upgrade option that adds one or more weapons SHALL show each added weapon's range/attacks and rules in that same single bracket next to the option itself, computed from that option's own equipment effect — visible as soon as the option is listed, before it is selected — rather than only once the weapon appears in the unit's effective equipment list; this applies identically to the read-only roster "Details" panel, since it lists upgrade options through the same rendering. This bracketed format SHALL be identical between a unit's equipment list and its upgrade-option rows, sharing one rendering. When a selected upgrade grants a parameterized special rule (e.g. `Psyker(N)`, `Wizard(N)`, `Tough(N)`, `Impact(N)`) that the unit's baseline already carries (or that another selected upgrade already granted) under the same rule name: if the granted value is a plain tier level, the unit's effective special rules SHALL show only the single highest tier, not each tier separately; if the granted value is an additive bonus (printed as `+N` on the upgrade), it SHALL be added to the unit's existing value for that rule, producing one combined entry rather than a second separate one.
 
 #### Scenario: Upgrade controls reflect available groups
 
@@ -99,7 +99,7 @@ The system SHALL display each selected unit with its effective stats and SHALL p
 #### Scenario: Selecting a weapon-replacing upgrade updates the equipment list
 
 - **WHEN** the user selects an upgrade option that replaces one of the unit's weapons
-- **THEN** the unit's displayed equipment list updates to show the new weapon, with its range/attacks in brackets and any special rules shown as tooltipped chips
+- **THEN** the unit's displayed equipment list updates to show the new weapon, with its range/attacks and any rules together in one bracket
 
 #### Scenario: A ranged-only unit's equipment list shows a default melee weapon
 
@@ -129,17 +129,37 @@ The system SHALL display each selected unit with its effective stats and SHALL p
 #### Scenario: An unselected weapon-adding option shows the weapon's stats
 
 - **WHEN** the builder lists an upgrade option that adds a weapon (e.g. `Dark Lance`), before the user selects it
-- **THEN** the option's row shows that weapon's range/attacks in brackets and its rules as tooltipped chips, matching how the same weapon would be shown once equipped
+- **THEN** the option's row shows that weapon's range/attacks and rules together in one bracket, matching how the same weapon would be shown once equipped
 
 #### Scenario: A multi-weapon option shows stats for each weapon it adds
 
 - **WHEN** the builder lists an upgrade option whose effect adds more than one weapon (e.g. a pistol and a CCW)
-- **THEN** each added weapon's own range/attacks and rules are shown next to the option, in the same order the option's label names them
+- **THEN** each added weapon's own bracketed range/attacks/rules are shown next to the option, in the same order the option's label names them
 
 #### Scenario: The roster details panel also shows inferred weapon stats
 
 - **WHEN** the user expands a roster unit's read-only "Details" panel and it lists an upgrade option that adds a weapon
-- **THEN** that option's row shows the same inferred range/attacks/rule chips as the equivalent option in a selected unit's upgrade panel, with no selection control
+- **THEN** that option's row shows the same inferred bracketed range/attacks/rules as the equivalent option in a selected unit's upgrade panel, with no selection control
+
+#### Scenario: A weapon with no rules shows a plain bracket
+
+- **WHEN** a displayed weapon (in the equipment list or an upgrade option row) has no special rules
+- **THEN** its bracket shows only the range/attacks, with no trailing comma or empty rules segment
+
+#### Scenario: A tiered rule upgrade replaces the lower tier
+
+- **WHEN** the user selects a `Psyker(2)` upgrade option on a unit whose baseline special rules already include `Psyker(1)`
+- **THEN** the unit's effective special rules show only `Psyker(2)`, not both `Psyker(1)` and `Psyker(2)`
+
+#### Scenario: A tiered rule upgrade works the same for Wizard
+
+- **WHEN** the user selects a `Wizard(3)` upgrade option on a unit whose baseline special rules already include `Wizard(2)`
+- **THEN** the unit's effective special rules show only `Wizard(3)`, not both `Wizard(2)` and `Wizard(3)`
+
+#### Scenario: An additive rule upgrade combines with the baseline value
+
+- **WHEN** the user selects a `Tough(+3)` upgrade option on a unit whose baseline special rules include `Tough(3)`
+- **THEN** the unit's effective special rules show a single `Tough(6)` entry, not two separate `Tough` entries
 
 ### Requirement: Live totals and validation display
 
@@ -157,7 +177,7 @@ The system SHALL display the running point total, the points cap, the hero count
 
 ### Requirement: Hover tooltips for rules
 
-The system SHALL display the full explanatory text of a special rule, army special rule, psychic power, or weapon rule when the user hovers over its name in the builder. An upgrade option whose label names a rule it grants (the whole label, or the text before a trailing parenthetical) SHALL show the same hover tooltip on that label, before the option is even selected.
+The system SHALL display the full explanatory text of a special rule, army special rule, psychic power, or weapon rule when the user hovers over its name in the builder. An upgrade option whose label names a rule it grants (the whole label, or the text before a trailing parenthetical) SHALL show the same hover tooltip on that label, before the option is even selected. An upgrade option that grants one or more rules via a bare label that does not name any of them SHALL instead render its label as plain text, followed by its granted rules as a separate comma-joined list, each rendered with the same hover tooltip, before the option is even selected.
 
 #### Scenario: Special rule tooltip
 
@@ -178,6 +198,11 @@ The system SHALL display the full explanatory text of a special rule, army speci
 
 - **WHEN** the user hovers over an upgrade option's label whose text names an army rule it grants (e.g. a "Battle Standard" option)
 - **THEN** a tooltip shows that army rule's full text, the same as it would once the option is selected and shown on the unit
+
+#### Scenario: Upgrade option with a bare label shows its granted rules as separate chips
+
+- **WHEN** an upgrade option's label (e.g. `Jump Pack`) names none of the rules it grants (e.g. `Deep Strike`, `Flying`)
+- **THEN** the label renders as plain text, and each granted rule renders immediately after it as its own hoverable tooltip chip, with no rule's name or text duplicated
 
 ### Requirement: Combine and attach controls in the builder
 
@@ -234,7 +259,7 @@ The system SHALL show a control to combine a selected list entry with another en
 
 ### Requirement: Mobile tab switcher for Roster and Selected Units
 
-Below a mobile-width breakpoint, the system SHALL show a tab switcher letting the user view either the Roster or the Selected Units panel, one at a time, instead of both stacked in sequence. At and above that breakpoint, the system SHALL continue to show both panels side by side, with no tab switcher, exactly as without this requirement.
+Below a mobile-width breakpoint, the system SHALL show a tab switcher letting the user view either the Roster or the Selected Units panel, one at a time, instead of both stacked in sequence. At and above that breakpoint, the system SHALL continue to show both panels side by side, with no tab switcher, exactly as without this requirement. The tab switcher SHALL use the same segmented-control tab pattern as the game-system switcher on the saved-lists screen — a shared bordered container marked `role="tablist"`, with each option rendered as a `role="tab"` control whose `aria-selected` state reflects whether its panel is the one currently shown.
 
 #### Scenario: Tab switcher shown below the breakpoint
 
@@ -250,6 +275,11 @@ Below a mobile-width breakpoint, the system SHALL show a tab switcher letting th
 
 - **WHEN** the builder is viewed at desktop width
 - **THEN** no tab switcher is shown, and both the Roster and Selected Units panels are visible side by side
+
+#### Scenario: Tab switcher exposes tab semantics
+
+- **WHEN** the builder's mobile tab switcher is shown
+- **THEN** its container has `role="tablist"`, each of its two options has `role="tab"`, and the option matching the currently visible panel has `aria-selected="true"` while the other has `aria-selected="false"`
 
 ### Requirement: Touch-friendly control sizing in the builder
 
@@ -331,4 +361,52 @@ The builder header SHALL show the open list's faction name below the editable li
 
 - **WHEN** the user edits the list-name field
 - **THEN** the faction/chapter line below it is unaffected, since it reflects the list's faction and chapter, not its name
+
+### Requirement: Selected Units card headers match the Roster row layout
+
+Each Selected Units card's header row SHALL use the same left-info/right-controls layout as a Roster row: identifying info (name, model count, quality, and points cost) grouped on the left in that order, and only actual controls (combine/group/attach selects, split, leave-group, detach, remove) grouped on the right. This SHALL apply to all four card shapes the Selected Units list renders: a standalone unit, a combined pair, a group-deployment card, and an attached Hero/Wizard/Psyker sub-card.
+
+#### Scenario: A standalone selected unit's cost is part of its info group
+
+- **WHEN** the user views a standalone unit's card in Selected Units
+- **THEN** its points cost is shown in the left-hand info group alongside its name/size/quality, and the right-hand group contains only its controls (e.g. Combine/Group/Attach selects, Remove)
+
+#### Scenario: A combined pair's cost is part of its info group
+
+- **WHEN** the user views a combined pair's card in Selected Units
+- **THEN** its combined points cost is shown in the left-hand info group, and the right-hand group contains only its Split control
+
+#### Scenario: A group-deployment card's cost is part of its info group
+
+- **WHEN** the user views a group-deployment card in Selected Units
+- **THEN** its combined points cost is shown in the left-hand info group, and the right-hand group contains only its "Add to group…" control (when eligible candidates exist)
+
+#### Scenario: An attached sub-card's cost is part of its info group
+
+- **WHEN** the user views an attached Hero/Wizard/Psyker sub-card nested under its host unit
+- **THEN** its points cost is shown in the left-hand info group, and the right-hand group contains only its Detach control
+
+### Requirement: Shared visual primitives render consistently across contexts
+
+The system SHALL render buttons, unit-card headlines (name, model count, quality, points cost, and badge), and equipment/special-rules blocks through shared components, so that every occurrence of a given primitive uses identical markup and styling regardless of where it appears. This SHALL hold across the Roster row, all four Selected Units card shapes (standalone unit, combined pair, group-deployment card, attached Hero/Wizard/Psyker sub-card), the roster unit "Details" preview panel, and the saved-lists/create-list screens.
+
+#### Scenario: Buttons share one visual treatment per variant and size
+
+- **WHEN** the user views buttons across the Roster, Selected Units, saved-lists, and Create Army List screens
+- **THEN** every button of the same variant (primary/secondary/danger) and size (base/small) renders with identical classes — corner radius, padding, colors, hover state, and typography
+
+#### Scenario: Unit headlines share one format across all card shapes
+
+- **WHEN** the user views the Roster row and each Selected Units card shape (standalone, combined, group, attached)
+- **THEN** each headline renders name, model count (when applicable), quality (when applicable), and points cost in the same order and styling, with any badge shown in the same position relative to the info text
+
+#### Scenario: Equipment/special-rules blocks share one format
+
+- **WHEN** the user views a unit's equipment and special rules in the roster "Details" panel or in any Selected Units card shape
+- **THEN** the "Equipment:" and "Special:" lines render with identical structure and styling in both places
+
+#### Scenario: A styling change to a shared primitive applies everywhere at once
+
+- **WHEN** a developer changes the styling of the shared button, unit-headline, or equipment/special-rules component
+- **THEN** the change is visible in every context that primitive is used, without editing more than one component file
 

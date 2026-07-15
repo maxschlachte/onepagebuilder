@@ -137,9 +137,9 @@ describe('combine/split and attach/detach UI flows', () => {
 
     const builder = mount(BuilderView, { props: { listId: list.id } })
     await nextTick()
-    expect(builder.text()).toContain('Combine…')
+    expect(builder.text()).toContain('Merge…')
 
-    // Combine via the "Combine…" select control.
+    // Combine via the "Merge…" select control.
     await builder.find('select').setValue(b.instanceId)
     await nextTick()
     expect(a.combinedWith).toBe(b.instanceId)

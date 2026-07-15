@@ -3,6 +3,7 @@ import { onMounted, onUnmounted, ref, watch } from 'vue'
 import { composition } from '../data/composition'
 import type { Faction } from '../domain/types'
 import type { ChapterId } from '../data/chapters'
+import AppButton from './AppButton.vue'
 
 const props = defineProps<{ factions: Faction[]; chapters: { id: ChapterId; name: string }[] }>()
 const emit = defineEmits<{
@@ -86,20 +87,10 @@ onUnmounted(() => {
             </select>
           </label>
           <div class="mt-2 flex justify-end gap-2">
-            <button
-              type="button"
-              class="rounded border border-stone-300 px-4 py-2 font-display text-sm uppercase tracking-wide hover:bg-stone-100 dark:border-slate-700 dark:hover:bg-slate-800"
-              @click="emit('cancel')"
-            >
-              Cancel
-            </button>
-            <button
-              type="submit"
-              class="rounded bg-yellow-700 px-4 py-2 font-display text-sm uppercase tracking-wide text-stone-50 hover:bg-yellow-500 disabled:opacity-50 dark:bg-yellow-500 dark:text-slate-950 dark:hover:bg-yellow-700"
-              :disabled="!name.trim() || !factionId"
-            >
+            <AppButton type="button" size="sm" @click="emit('cancel')">Cancel</AppButton>
+            <AppButton type="submit" variant="primary" size="sm" class="disabled:opacity-50" :disabled="!name.trim() || !factionId">
               Create
-            </button>
+            </AppButton>
           </div>
         </form>
       </div>

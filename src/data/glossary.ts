@@ -48,6 +48,7 @@ export const glossary: SpecialRule[] = [
     id: 'impact',
     name: 'Impact',
     hasParameter: true,
+    isAdditive: true,
     text: 'This unit deals X automatic hits for each model with this rule when assaulting.',
   },
   {
@@ -125,12 +126,14 @@ export const glossary: SpecialRule[] = [
     id: 'tough',
     name: 'Tough',
     hasParameter: true,
+    isAdditive: true,
     text: 'This model must accumulate X wounds before being removed as a casualty. If a unit with the special rule joins a unit without it you must either accumulate wounds until all models with this rule have been killed, or remove regular models as casualties before starting to accumulate wounds. Note that you must first accumulate wounds on a single model with this special rule until it is killed before you start accumulating them on another.',
   },
   {
     id: 'transport',
     name: 'Transport',
     hasParameter: true,
+    isAdditive: true,
     text: 'This unit may transport up to X Infantry models in its cargo. Infantry units may embark by moving into contact with a transport, and embarked units may use a Walk action to disembark. Units may also be deployed within a transport at the beginning of the game. If a unit is within a transport when it is destroyed it must take a Dangerous Terrain test, is Pinned, and surviving models must be placed within 6” of the transport.',
   },
   {

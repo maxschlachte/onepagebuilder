@@ -75,7 +75,7 @@ export const darkEldar = faction({
         { label: 'Medium CCW (Deadly)', cost: 20, addEquipment: [meleeWeapon('Medium', 'CCW', { rules: rules('Deadly') })], removeOneEquipment: ['Medium CCW (Poison)'] },
       ]),
       // "Pistol or Medium CCW" — which of the two baseline items is replaced is unspecified
-      // per option, so removal is left unset (addition only); the cost-0 "Pistol (Poison)"
+      // per option, so removal is left unset (addition only); the cost-0 "Pistol"
       // option duplicates Haemonculus's existing baseline pistol and is left with no effects.
       section('Replace one Pistol or Medium CCW', 'one', [
         { label: 'Pistol (Poison)', cost: 0 },

@@ -63,7 +63,7 @@ export const sistersOfBattle = faction({
       ),
     ]),
     group('B', [
-      section('Upgrade with', 'one', [{ label: 'Rosarius (Armored)', cost: 10, adds: ['Armored'] }]),
+      section('Upgrade with', 'one', [{ label: 'Rosarius', cost: 10, adds: ['Armored'] }]),
     ]),
     group('C', [
       section('Replace one Assault Rifle', 'one', [

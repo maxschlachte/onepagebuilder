@@ -91,10 +91,10 @@ export const bloodAngelsBundle: ChapterBundle = {
         { label: '2x Heavy Flamers', cost: 70, addEquipment: [weapon('heavy-flamer', { count: 2 })] },
       ]),
       section('Upgrade with any', 'any', [
-        { label: 'Dozer Blade (Strider)', cost: 5, adds: ['Strider'] },
+        { label: 'Dozer Blade', cost: 5, adds: ['Strider'] },
         { label: 'Hunter-Killer Missile (Missile Launcher (Limited))', cost: 10 },
-        { label: 'Pintle Mount (Stormbolter)', cost: 15, addEquipment: [customWeapon('Pintle Mount', { range: 24, attacks: '2' })] },
-        { label: 'Extra Armor (Tough(+3))', cost: 35, adds: ['Tough(+3)'] },
+        { label: 'Pintle Mount', cost: 15, addEquipment: [customWeapon('Stormbolter', { range: 24, attacks: '2' })] },
+        { label: 'Extra Armor', cost: 35, adds: ['Tough(+3)'] },
       ]),
     ]),
     group('ba-g', [
@@ -114,8 +114,8 @@ export const bloodAngelsBundle: ChapterBundle = {
         },
       ]),
       section('Upgrade with any', 'any', [
-        { label: 'Magna-Grapple (Strider)', cost: 5, adds: ['Strider'] },
-        { label: 'Extra Armor (Tough(+3))', cost: 35, adds: ['Tough(+3)'] },
+        { label: 'Magna-Grapple', cost: 5, adds: ['Strider'] },
+        { label: 'Extra Armor', cost: 35, adds: ['Tough(+3)'] },
       ]),
     ]),
   ],

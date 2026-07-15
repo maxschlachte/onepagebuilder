@@ -38,7 +38,7 @@ export const tombkings = faction({
         { label: "Heavy Mace", cost: 15, addEquipment: [meleeWeapon('Heavy', 'Mace', { key: 'heavy-mace', label: "Heavy Mace", rules: rules('Piercing, Poison') })], removeEquipment: ["Heavy Sword"] }
       ]),
       section("Equip with one:", 'one', [
-        { label: "Heavy Armor (Armored)", cost: 10, adds: ["Armored"] }
+        { label: "Heavy Armor", cost: 10, adds: ["Armored"] }
       ]),
       section("Upgrade with:", 'any', [
         { label: "Prince’s Will", cost: 120, adds: ["Prince’s Will"] }
@@ -77,12 +77,12 @@ export const tombkings = faction({
         { label: "Force Mace", cost: 20, addEquipment: [meleeWeapon('Force', 'Mace', { key: 'force-mace', label: "Force Mace", rules: rules('Piercing, Poison') })], removeEquipment: ["Master Sword"] }
       ]),
       section("Equip with:", 'any', [
-        { label: "Bolt Thrower (Asaph’s Arrows)", cost: 55, addEquipment: [customWeapon("Bolt Thrower", { range: 48, attacks: "3", rules: rules("Piercing, Single Target, Asaph’s Arrows") })] }
+        { label: "Bolt Thrower", cost: 55, addEquipment: [customWeapon("Bolt Thrower", { range: 48, attacks: "3", rules: rules("Piercing, Single Target, Asaph’s Arrows") })] }
       ])
     ]),
     group("F", [
       section("Upgrade with:", 'any', [
-        { label: "Envenomed Sting (Poison Melee)", cost: 10, adds: ["Poison"] }
+        { label: "Envenomed Sting", cost: 10, adds: ["Poison"] }
       ])
     ]),
     group("G", [
@@ -100,7 +100,7 @@ export const tombkings = faction({
         { label: "Light Halberds", cost: 15, addEquipment: [meleeWeapon('Light', 'Halberd', { key: 'light-halberd', label: "Light Halberds", rules: rules('Piercing') })], removeEquipment: ["Light Swords"] }
       ]),
       section("Upgrade with:", 'any', [
-        { label: "Cursed Blades (Deadly)", cost: 90, adds: ["Deadly"] }
+        { label: "Cursed Blades", cost: 90, adds: ["Deadly"] }
       ])
     ]),
     group("J", [

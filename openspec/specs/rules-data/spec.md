@@ -52,7 +52,7 @@ The system SHALL store the global special-rule glossary as resolvable entries, a
 
 ### Requirement: Weapon profiles
 
-The system SHALL encode weapon profiles as structured objects with an explicit range, attacks string, and rule references — never inferred by parsing a free-text equipment name. A ranged or melee weapon that appears in the global weapon table SHALL be referenced by its table id; a weapon whose profile is not in the global table SHALL be constructed with an explicit range, attacks, and rules rather than embedding that profile inside a name string. The Piercing rule and the Piercing-plus-single-target-assignment combination SHALL be declared as explicit rule references at construction time rather than inferred from trailing `p`/`x` characters in a name. The `Linked` rule SHALL be declared by explicitly wrapping an equipment entry, not inferred from a `Linked ` name prefix. A close-combat weapon's attack-tier (`Light`/`Medium`/`Heavy`/`Master`/`Force`) and type (e.g. `CCW`, `Claws`, `Powersword`, `Powerfist`) SHALL each be declared as explicit construction arguments, with the type's innate rules (`Powersword` → Piercing; `Powerfist` → Piercing and Rending) resolved by direct lookup on those arguments rather than parsed out of a combined name string, and any additional rule declared alongside a melee type SHALL be merged into the same entry's rules rather than replacing the type's innate rule(s).
+The system SHALL encode weapon profiles as structured objects with an explicit range, attacks string, and rule references — never inferred by parsing a free-text equipment name. A ranged or melee weapon that appears in its game system's weapon table SHALL be referenced by that table's id — Warhammer 40k and Warhammer Fantasy SHALL each maintain their own weapon table, since some same-named weapons (e.g. `Pistol`, `Rifle`) differ in range, attacks, or rules between the two systems; a weapon whose profile is not in its system's table SHALL be constructed with an explicit range, attacks, and rules rather than embedding that profile inside a name string. The Piercing rule and the Piercing-plus-single-target-assignment combination SHALL be declared as explicit rule references at construction time rather than inferred from trailing `p`/`x` characters in a name. The `Linked` rule SHALL be declared by explicitly wrapping an equipment entry, not inferred from a `Linked ` name prefix. A close-combat weapon's attack-tier (`Light`/`Medium`/`Heavy`/`Master`/`Force`) and type (e.g. `CCW`, `Claws`, `Powersword`, `Powerfist`) SHALL each be declared as explicit construction arguments, with the type's innate rules (`Powersword` → Piercing; `Powerfist` → Piercing and Rending) resolved by direct lookup on those arguments rather than parsed out of a combined name string, and any additional rule declared alongside a melee type SHALL be merged into the same entry's rules rather than replacing the type's innate rule(s).
 
 #### Scenario: Weapon profile fields match the PDF
 
@@ -252,6 +252,30 @@ The system SHALL derive every Warhammer Fantasy melee weapon's attacks value fro
 
 - **WHEN** a unit's equipment includes a tier+type weapon with an additional printed rule (e.g. a `Deadly` annotation)
 - **THEN** both the type's innate rule(s) and the additional rule are present, with no duplicate if they overlap
+
+### Requirement: Warhammer Fantasy ranged weapon profiles match the Weapons table
+
+The system SHALL derive every Warhammer Fantasy ranged weapon's range and attacks from `one-page-fantasy-rules.md`'s Weapons table (`Throwing Weapon`=12"/A1; `Pistol`=12"/A1/Piercing; `Shortbow`=18"/A1; `Fire Thrower`=18"/A6; `Bow`=24"/A1; `Rifle`=24"/A1/Piercing; `Longbow`=30"/A1; `Crossbow`=30"/A1/Piercing; `Stone Thrower`=48"/A3/Piercing; `Cannon`=48"/AD3+3/Piercing; `Bolt Thrower`=48"/A3/Piercing-plus-single-target-assignment), rather than a hardcoded or unverified value, and SHALL maintain these as a Warhammer Fantasy-specific weapon table distinct from Warhammer 40k's own weapon table, since `Pistol` and `Rifle` differ in stats between the two systems.
+
+#### Scenario: Pistol differs between the two systems
+
+- **WHEN** a Warhammer 40k unit's Pistol and a Warhammer Fantasy unit's Pistol are each resolved
+- **THEN** the Warhammer 40k Pistol has no special rules, and the Warhammer Fantasy Pistol carries a Piercing rule reference, both with range `12"` and attacks `1`
+
+#### Scenario: Rifle differs between the two systems
+
+- **WHEN** a Warhammer 40k unit's Rifle and a Warhammer Fantasy unit's Rifle are each resolved
+- **THEN** the Warhammer 40k Rifle has range `30"`, attacks `1`, and no special rules, and the Warhammer Fantasy Rifle has range `24"`, attacks `1`, and a Piercing rule reference
+
+#### Scenario: A Fantasy-only standard weapon resolves correctly
+
+- **WHEN** a Warhammer Fantasy unit's equipment includes a `Bolt Thrower`
+- **THEN** its range is `48"`, its attacks is `3`, and its rules include Piercing and single-target-assignment
+
+#### Scenario: An extra printed rule beyond the standard is preserved
+
+- **WHEN** a Warhammer Fantasy unit's equipment includes a standard-named weapon (e.g. `Stone Thrower`) with an additional printed rule not in the base table (e.g. `Indirect`)
+- **THEN** its rules include both the table's baseline rule(s) and the additional rule, with no duplicate if they overlap
 
 ### Requirement: Common Upgrades (Sergeant/Musician/Standard) are resolvable rules
 
