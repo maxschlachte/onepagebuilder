@@ -74,8 +74,10 @@ export const chaosSpaceMarines = faction({
           },
         ],
         {
-          // No group-B unit has a baseline Medium CCW — one only exists if produced above.
-          requiresOneOfSelected: ['Pistol and Medium CCW', 'Plasma Pistol and Medium CCW'],
+          prerequisite: {
+            // No group-B unit has a baseline Medium CCW — one only exists if produced above.
+            requiresOneOfSelected: ['Pistol and Medium CCW', 'Plasma Pistol and Medium CCW'],
+          },
         },
       ),
       section(
@@ -87,11 +89,13 @@ export const chaosSpaceMarines = faction({
           { label: 'Plasmagun (Limited)', cost: 5, addEquipment: [weapon('plasmagun', { rules: rules('Limited') })] },
         ],
         {
-          blockedBySelectingOnSingleModel: [
-            'Pistol and Medium CCW',
-            'Linked Assault Rifle',
-            'Plasma Pistol and Medium CCW',
-          ],
+          prerequisite: {
+            blockedBySelectingOnSingleModel: [
+              'Pistol and Medium CCW',
+              'Linked Assault Rifle',
+              'Plasma Pistol and Medium CCW',
+            ],
+          },
         },
       ),
       section('Equip one model with one', 'one', [
@@ -111,7 +115,7 @@ export const chaosSpaceMarines = faction({
           { label: 'Psyker(2)', cost: 5, adds: ['Psyker(2)'] },
           { label: 'Psyker(3)', cost: 10, adds: ['Psyker(3)'] },
         ],
-        { requiresBaselineRule: ['Psyker(1)'] },
+        { prerequisite: { requiresBaselineRule: ['Psyker(1)'] } },
       ),
     ]),
     group('C', [
@@ -306,7 +310,7 @@ export const chaosSpaceMarines = faction({
           { label: 'Meltagun (Limited)', cost: 5, addEquipment: [weapon('meltagun', { rules: rules('Limited') })] },
           { label: 'Plasmagun (Limited)', cost: 5, addEquipment: [weapon('plasmagun', { rules: rules('Limited') })] },
         ],
-        { requiresOneOfSelected: ['Pintle Mount (Linked Assault Rifle)'] },
+        { prerequisite: { requiresOneOfSelected: ['Pintle Mount (Linked Assault Rifle)'] } },
       ),
       section('Upgrade with', 'one', [{ label: 'Extra Armor (Tough(+3))', cost: 35, adds: ['Tough(+3)'] }]),
     ]),

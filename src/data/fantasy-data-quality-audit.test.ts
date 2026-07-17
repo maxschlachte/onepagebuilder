@@ -78,6 +78,12 @@ describe('Age of Fantasy data-quality audit', () => {
     expect(problems).toEqual([])
   })
 
+  // Regression guard, not the primary safety net: after the fantasy-default-weapons
+  // consolidation, virtually every melee entry is built via `meleeWeapon()`, which
+  // derives attacks/innate-rules from `weapons.ts`/`meleeTypeRules` by construction
+  // and so can't drift. This only still fires for a `customWeapon()` call whose name
+  // happens to look like a tier-prefixed weapon (`"<Tier> <Type>"`) — i.e. it catches
+  // a reintroduction of the hand-typed-duplicate pattern this change eliminated.
   it('every melee weapon\'s attacks match its tier, and Halberd/Mace/Lance carry their innate rule', () => {
     const problems: string[] = []
 
@@ -122,6 +128,12 @@ describe('Age of Fantasy data-quality audit', () => {
     expect(problems).toEqual([])
   })
 
+  // Regression guard, not the primary safety net: after the fantasy-default-weapons
+  // consolidation, ranged entries whose stats match a `weaponsFantasy` table entry are
+  // built via `weaponFantasy()`, which resolves range/attacks/rules from that table by
+  // construction. This only still fires for a `customWeapon()` call whose name happens
+  // to match a canonical table entry's name — i.e. it catches a reintroduction of the
+  // hand-typed-duplicate pattern this change eliminated.
   it('every standard-named custom weapon matches the Fantasy Weapons table', () => {
     const problems: string[] = []
 
@@ -159,6 +171,76 @@ describe('Age of Fantasy data-quality audit', () => {
       }
     }
 
+    expect(problems).toEqual([])
+  })
+
+  // Regression guard for fantasy-upgrade-equipment-fixes: a "Mount on:"-style option
+  // (or an equivalent single-mount "Take one:"/"Replace <item>:" option that grants a
+  // named vehicle/beast) must grant that mount's own weapon and special rules, per its
+  // standalone-unit row in one-page-fantasy-army-lists.md — not a bare named equipment
+  // entry that carries neither, which silently makes taking the mount cost points for
+  // zero mechanical effect.
+  it('every mount-granting option grants a weapon or rules, not a bare placeholder', () => {
+    const problems: string[] = []
+    for (const faction of FANTASY_FACTIONS) {
+      for (const group of faction.upgradeGroups) {
+        for (const section of group.sections) {
+          if (!/^Mount on/.test(section.title)) continue
+          for (const option of section.options) {
+            const entries = option.effects?.addEquipment ?? []
+            const grantsSomething = entries.some((e) => e.weapon || (e.rules?.length ?? 0) > 0)
+              || (option.effects?.addRules?.length ?? 0) > 0
+            if (!grantsSomething) {
+              problems.push(`${faction.id}/${group.id}/"${section.title}" → "${option.label}"`)
+            }
+          }
+        }
+      }
+    }
+    expect(problems).toEqual([])
+  })
+
+  // Regression guard for fantasy-mount-inheritance: every "Mount on:"-style option must
+  // mark its mount's gear() entry with isMount, or applyUpgrades' mount-rule-inheritance
+  // fold (calc.ts) silently skips it — the mount's rules would then only ever show inline
+  // on the equipment line, never merged into the unit's own special-rules summary.
+  it('every option under a "Mount on:" section marks its mount equipment isMount', () => {
+    const problems: string[] = []
+    for (const faction of FANTASY_FACTIONS) {
+      for (const group of faction.upgradeGroups) {
+        for (const section of group.sections) {
+          if (!/^Mount on/.test(section.title)) continue
+          for (const option of section.options) {
+            const entries = option.effects?.addEquipment ?? []
+            if (!entries.some((e) => e.isMount)) {
+              problems.push(`${faction.id}/${group.id}/"${section.title}" → "${option.label}"`)
+            }
+          }
+        }
+      }
+    }
+    expect(problems).toEqual([])
+  })
+
+  // Regression guard for fantasy-upgrade-equipment-fixes: a section whose printed
+  // heading says it replaces existing equipment must actually remove it — otherwise a
+  // model ends up dual-wielding its starting weapon plus the "replacement".
+  it('every "Replace" section removes the equipment it claims to replace', () => {
+    const problems: string[] = []
+    for (const faction of FANTASY_FACTIONS) {
+      for (const group of faction.upgradeGroups) {
+        for (const section of group.sections) {
+          if (!/^Replace\b/.test(section.title)) continue
+          for (const option of section.options) {
+            const removes = (option.effects?.removeEquipment?.length ?? 0) > 0
+              || (option.effects?.removeOneEquipment?.length ?? 0) > 0
+            if (!removes) {
+              problems.push(`${faction.id}/${group.id}/"${section.title}" → "${option.label}"`)
+            }
+          }
+        }
+      }
+    }
     expect(problems).toEqual([])
   })
 })

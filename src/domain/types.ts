@@ -64,6 +64,12 @@ export interface EquipmentEntry {
   weapon?: Weapon
   /** Rules attached to this equipment entry (e.g. Linked, Rending) when not a full weapon. */
   rules?: RuleRef[]
+  /**
+   * Marks this entry as the unit's mount, per `one-page-fantasy-rules.md`'s "Mounts" rule —
+   * its rules are inherited by the mounted unit as its own (Tough summed), rather than only
+   * displayed alongside the equipment entry.
+   */
+  isMount?: boolean
 }
 
 export interface UnitProfile {
@@ -118,6 +124,15 @@ export interface UpgradeOption {
   /** Point delta as printed (0 for "Free"). */
   costDelta: number
   effects?: UpgradeEffect
+  /**
+   * Option-level counterpart to {@link SectionPrerequisite.requiresOneOfSelected}:
+   * this option is only selectable while at least one of these other option ids
+   * (elsewhere on the same unit, possibly a different group) is currently
+   * selected — e.g. a "(Mounted Only)" weapon option listing every option in the
+   * unit's own "Mount on:" section, so taking any one mount satisfies it. Unlike
+   * the section-level clause, there is no baseline-equipment fallback.
+   */
+  requiresOneOfSelected?: string[]
 }
 
 /**
@@ -161,6 +176,15 @@ export interface UpgradeSection {
   options: UpgradeOption[]
   /** Cross-section dependency on other options elsewhere in the unit, if any. */
   prerequisite?: SectionPrerequisite
+  /**
+   * True when this section's options are capped at one grant per unit
+   * regardless of model count, even though the section's own printed title
+   * doesn't say "all" (e.g. Warhammer Fantasy's Sergeant/Musician/Standard
+   * "Upgrade with:" sections) — an explicit escape hatch for the rare case
+   * where affectsAllModels' title heuristic can't distinguish this section
+   * from another, per-model section sharing the identical printed heading.
+   */
+  oncePerUnit?: boolean
 }
 
 export interface UpgradeGroup {

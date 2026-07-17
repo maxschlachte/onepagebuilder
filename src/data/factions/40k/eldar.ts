@@ -137,8 +137,10 @@ export const eldar = faction({
           },
         ],
         {
-          // No group-E unit has a baseline Medium CCW — one only exists if produced above.
-          requiresOneOfSelected: ['Pistol (Rending), Medium CCW', 'Pistols (Rending), Medium CCWs'],
+          prerequisite: {
+            // No group-E unit has a baseline Medium CCW — one only exists if produced above.
+            requiresOneOfSelected: ['Pistol (Rending), Medium CCW', 'Pistols (Rending), Medium CCWs'],
+          },
         },
       ),
     ]),

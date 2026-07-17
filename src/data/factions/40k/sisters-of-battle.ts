@@ -41,8 +41,10 @@ export const sistersOfBattle = faction({
           { label: 'Plasma Pistol', cost: 15, addEquipment: [weapon('plasma-pistol')], removeOneEquipment: ['Pistol'] },
         ],
         {
-          // The unit's baseline has no Pistol at all — one only exists if produced above.
-          requiresOneOfSelected: ['Pistol and Medium CCW', 'Pistol and Powersword'],
+          prerequisite: {
+            // The unit's baseline has no Pistol at all — one only exists if produced above.
+            requiresOneOfSelected: ['Pistol and Medium CCW', 'Pistol and Powersword'],
+          },
         },
       ),
       section(
@@ -54,11 +56,13 @@ export const sistersOfBattle = faction({
           { label: 'Plasmagun (Limited)', cost: 5, addEquipment: [weapon('plasmagun', { rules: rules('Limited') })] },
         ],
         {
-          blockedBySelectingOnSingleModel: [
-            'Shotgun',
-            'Pistol and Medium CCW',
-            'Pistol and Powersword',
-          ],
+          prerequisite: {
+            blockedBySelectingOnSingleModel: [
+              'Shotgun',
+              'Pistol and Medium CCW',
+              'Pistol and Powersword',
+            ],
+          },
         },
       ),
     ]),

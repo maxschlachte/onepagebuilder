@@ -9,6 +9,13 @@ import type { ListUnit } from '../domain/list'
 
 const sm = getFaction('space-marines')!
 const tacticals = sm.units.find((u) => u.name === 'Tactical Marines')!
+const empire = getFaction('empire')!
+const general = empire.units.find((u) => u.name === 'General')!
+const greatswords = empire.units.find((u) => u.name === 'Greatswords')!
+const harlequins = getFaction('harlequins')!
+const skyweavers = harlequins.units.find((u) => u.name === 'Skyweavers')!
+const tau = getFaction('tau')!
+const cadreFireblade = tau.units.find((u) => u.name === 'Cadre Fireblade')!
 
 function headingTexts(wrapper: ReturnType<typeof mount>) {
   return wrapper.findAll('div.text-xs.font-display.font-semibold').map((d) => d.text())
@@ -109,5 +116,95 @@ describe('EntryUpgradeControls section headings', () => {
     expect(headings.some((h) => h.startsWith('Q.') || h.startsWith('ba-b'))).toBe(false)
     expect(badgeTexts(wrapper).filter((t) => t === 'Q')).toHaveLength(1)
     expect(badgeTexts(wrapper).some((t) => t.startsWith('ba-b'))).toBe(false)
+  })
+})
+
+describe('EntryUpgradeControls option-level prerequisite ("Mounted Only")', () => {
+  function mountGeneral(selectedUpgrades: string[] = []) {
+    const listUnit: ListUnit = { instanceId: 'u1', unitId: general.id, selectedUpgrades }
+    return mount(EntryUpgradeControls, {
+      props: { listId: 'l1', profile: general, listUnit, faction: empire },
+    })
+  }
+
+  it('disables the "Heavy Lance (Mounted Only)" checkbox on a foot General', () => {
+    const wrapper = mountGeneral()
+    const label = wrapper.findAll('label').find((l) => l.text().includes('Heavy Lance'))!
+    const checkbox = label.find('input[type=checkbox]')
+    expect(checkbox.attributes('disabled')).toBeDefined()
+
+    // Its unrestricted section-mate stays enabled.
+    const swordLabel = wrapper.findAll('label').find((l) => l.text().includes('Master Sword'))!
+    expect(swordLabel.find('input[type=checkbox]').attributes('disabled')).toBeUndefined()
+  })
+
+  it('enables it once a mount is selected', () => {
+    const empireA = empire.upgradeGroups.find((g) => g.id === 'A')!
+    const warhorse = empireA.sections.find((s) => s.title === 'Mount on:')!.options.find((o) => o.label === 'Warhorse')!
+
+    const wrapper = mountGeneral([warhorse.id])
+    const label = wrapper.findAll('label').find((l) => l.text().includes('Heavy Lance'))!
+    expect(label.find('input[type=checkbox]').attributes('disabled')).toBeUndefined()
+  })
+})
+
+describe('EntryUpgradeControls gear-granted rule display', () => {
+  it('renders a bare gear-rule-name label like "Sergeant" as a hover tooltip, not a separate chip', () => {
+    const listUnit: ListUnit = { instanceId: 'u1', unitId: greatswords.id, selectedUpgrades: [] }
+    const wrapper = mount(EntryUpgradeControls, {
+      props: { listId: 'l1', profile: greatswords, listUnit, faction: empire },
+    })
+    const label = wrapper.findAll('label').find((l) => l.text().includes('Sergeant'))!
+    expect(label.find('.border-dotted').exists()).toBe(true)
+    // Exactly one tooltip on this label — the rule isn't also duplicated as a separate chip.
+    const tooltips = wrapper.findAllComponents(RuleTooltip).filter((t) => label.element.contains(t.element))
+    expect(tooltips).toHaveLength(1)
+    expect(tooltips[0].props('refData').ruleId).toBe('sergeant')
+  })
+
+  it('renders a distinct gear-name label like "Zephyrglaive" as plain text with its granted rule as a separate chip', () => {
+    const listUnit: ListUnit = { instanceId: 'u1', unitId: skyweavers.id, selectedUpgrades: [] }
+    const wrapper = mount(EntryUpgradeControls, {
+      props: { listId: 'l1', profile: skyweavers, listUnit, faction: harlequins },
+    })
+    const label = wrapper.findAll('label').find((l) => l.text().includes('Zephyrglaive'))!
+    const tooltips = wrapper.findAllComponents(RuleTooltip).filter((t) => label.element.contains(t.element))
+    // "Zephyrglaive" itself isn't a rule name, so it must not be swallowed into the tooltip path
+    // (a RuleTooltip's own visible name span, not its hidden hover-popup duplicate, is what counts).
+    expect(tooltips.some((t) => t.find('.whitespace-nowrap').text() === 'Zephyrglaive')).toBe(false)
+    // Exactly one rule chip for this option — not duplicated from a leftover hardcoded parenthetical.
+    expect(tooltips).toHaveLength(1)
+    expect(tooltips[0].props('refData').ruleId).toBe('impact')
+    expect(tooltips[0].find('.whitespace-nowrap').text()).toBe('Impact(1)')
+  })
+
+  it('renders a multi-rule gear label like "Drone (Markerlight)" without dropping either rule’s visible text', () => {
+    const listUnit: ListUnit = { instanceId: 'u1', unitId: cadreFireblade.id, selectedUpgrades: [] }
+    const wrapper = mount(EntryUpgradeControls, {
+      props: { listId: 'l1', profile: cadreFireblade, listUnit, faction: tau },
+    })
+    // The label's static text still ends in the printed "(Markerlight)" suffix (unchanged by this
+    // change — Tau's "Drone" options are deliberately left untouched, see design.md Risks).
+    const label = wrapper.findAll('label').find((l) => l.text().includes('(Markerlight)'))!
+    // "Drone" becomes an interactive tooltip (name collision with Tau's own "Drone" army rule)...
+    const tooltips = wrapper.findAllComponents(RuleTooltip).filter((t) => label.element.contains(t.element))
+    expect(tooltips.some((t) => t.find('.whitespace-nowrap').text() === 'Drone')).toBe(true)
+    // ...and "Markerlight" stays visible as static suffix text either way — a known, accepted
+    // limitation (design.md), not a regression: nothing that was visible before is now hidden.
+    expect(label.text()).toContain('Markerlight')
+  })
+})
+
+describe('EntryUpgradeControls mount options grant real equipment (fantasy-upgrade-equipment-fixes)', () => {
+  it('renders the "Warhorse" mount option\'s granted rules as chips, not a bare cosmetic pick', () => {
+    const listUnit: ListUnit = { instanceId: 'u1', unitId: general.id, selectedUpgrades: [] }
+    const wrapper = mount(EntryUpgradeControls, {
+      props: { listId: 'l1', profile: general, listUnit, faction: empire },
+    })
+    const label = wrapper.findAll('label').find((l) => l.text().includes('Warhorse'))!
+    const tooltips = wrapper.findAllComponents(RuleTooltip).filter((t) => label.element.contains(t.element))
+    expect(tooltips.map((t) => t.props('refData').ruleId)).toEqual(
+      expect.arrayContaining(['fast', 'nimble']),
+    )
   })
 })

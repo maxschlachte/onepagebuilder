@@ -1,4 +1,4 @@
-import { faction, customWeapon, gear, rules, armyRule, power, section, group, type UnitInput } from '../helpers'
+import { faction, customWeapon, weaponFantasy, meleeWeapon, gear, rules, armyRule, power, section, group, type UnitInput } from '../helpers'
 
 // Melee weapons are named "<Tier> <Type>" per one-page-fantasy-rules.md's weapon table:
 // tier gives attacks (Light 1, Medium 2, Heavy 3, Master 4, Force 5), type gives innate
@@ -7,23 +7,23 @@ import { faction, customWeapon, gear, rules, armyRule, power, section, group, ty
 // range/attacks/rules from that same table's ranged-weapon section.
 
 const units: UnitInput[] = [
-    { name: "General", size: 1, quality: "4+", equipment: [customWeapon("Heavy Sword", { range: null, attacks: "3", rules: rules("") })], special: "Hero, Hold the Line!, Tough(3)", upgrades: "A", cost: 60 },
-    { name: "Captain", size: 1, quality: "5+", equipment: [customWeapon("Heavy Sword", { range: null, attacks: "3", rules: rules("") })], special: "Hero, Hold the Line!, Tough(3)", upgrades: "A", cost: 50 },
-    { name: "Warrior Priest", size: 1, quality: "5+", equipment: [customWeapon("Medium Sword", { range: null, attacks: "2", rules: rules("") })], special: "Fury, Hero, Prayer, Resistance, Tough(3)", upgrades: "B", cost: 70 },
-    { name: "Witch Hunter", size: 1, quality: "5+", equipment: [customWeapon("Pistol", { range: 12, attacks: "1", rules: rules("Piercing") }), customWeapon("Medium Sword", { range: null, attacks: "2", rules: rules("") })], special: "Accusation, Hero, Resistance, Tough(3)", upgrades: "J", cost: 35 },
-    { name: "Battle Wizard", size: 1, quality: "5+", equipment: [customWeapon("Light Sword", { range: null, attacks: "1", rules: rules("") })], special: "Tough(3), Wizard(1)", upgrades: "C", cost: 35 },
-    { name: "Master Engineer", size: 1, quality: "5+", equipment: [customWeapon("Light Sword", { range: null, attacks: "1", rules: rules("") })], special: "Ballistic Master, Tough(3)", upgrades: "D", cost: 80 },
-    { name: "State Troops", size: 10, quality: "5+", equipment: [customWeapon("Light Swords", { range: null, attacks: "1", rules: rules("") })], special: "-", upgrades: "E, F", cost: 60 },
-    { name: "Flagellants", size: 10, quality: "5+", equipment: [customWeapon("Light Maces", { range: null, attacks: "1", rules: rules("Piercing, Poison") })], special: "End is Nigh!, Fearless, Furious", upgrades: "-", cost: 130 },
-    { name: "Greatswords", size: 10, quality: "4+", equipment: [customWeapon("Light Maces", { range: null, attacks: "1", rules: rules("Piercing, Poison") })], special: "Armored, Fearless", upgrades: "F", cost: 195 },
-    { name: "State Marksmen", size: 5, quality: "5+", equipment: [customWeapon("Bows", { range: 24, attacks: "1", rules: rules("") })], special: "-", upgrades: "F, G", cost: 50 },
-    { name: "Pistoliers", size: 5, quality: "5+", equipment: [customWeapon("Pistol Braces", { range: 12, attacks: "2", rules: rules("") }), customWeapon("Medium Swords", { range: null, attacks: "2", rules: rules("") })], special: "Fast, Nimble", upgrades: "F, H", cost: 75 },
-    { name: "Knightly Orders", size: 5, quality: "4+", equipment: [customWeapon("Light Lances", { range: null, attacks: "1", rules: rules("Impact(1)") })], special: "Armored, Nimble", upgrades: "F, I", cost: 85 },
-    { name: "Demigryph Knights", size: 3, quality: "4+", equipment: [customWeapon("Light Halberds", { range: null, attacks: "1", rules: rules("Piercing") }), customWeapon("Heavy Claws", { range: null, attacks: "3", rules: rules("Piercing") })], special: "Armored, Fear, Nimble, Impact(1), Tough(3)", upgrades: "F, K", cost: 160 },
-    { name: "Celestial Hurricanum", size: 1, quality: "4+", equipment: [customWeapon("Storm", { range: 24, attacks: "3", rules: rules("Piercing") }), customWeapon("Medium Claws", { range: null, attacks: "2", rules: rules("") })], special: "Armored, Fast, Impact(D6), Portents, Tough(6)", upgrades: "-", cost: 100 },
-    { name: "Luminark of Hysh", size: 1, quality: "4+", equipment: [customWeapon("Bolt", { range: 36, attacks: "3", rules: rules("Piercing, Single Target") }), customWeapon("Medium Claws", { range: null, attacks: "2", rules: rules("") })], special: "Armored, Fast, Impact(D6), Protection, Tough(6)", upgrades: "-", cost: 105 },
+    { name: "General", size: 1, quality: "4+", equipment: [meleeWeapon('Heavy', 'Sword', { key: 'heavy-sword', label: "Heavy Sword" })], special: "Hero, Hold the Line!, Tough(3)", upgrades: "A", cost: 60 },
+    { name: "Captain", size: 1, quality: "5+", equipment: [meleeWeapon('Heavy', 'Sword', { key: 'heavy-sword', label: "Heavy Sword" })], special: "Hero, Hold the Line!, Tough(3)", upgrades: "A", cost: 50 },
+    { name: "Warrior Priest", size: 1, quality: "5+", equipment: [meleeWeapon('Medium', 'Sword', { key: 'medium-sword', label: "Medium Sword" })], special: "Fury, Hero, Prayer, Resistance, Tough(3)", upgrades: "B", cost: 70 },
+    { name: "Witch Hunter", size: 1, quality: "5+", equipment: [weaponFantasy('pistol'), meleeWeapon('Medium', 'Sword', { key: 'medium-sword', label: "Medium Sword" })], special: "Accusation, Hero, Resistance, Tough(3)", upgrades: "J", cost: 35 },
+    { name: "Battle Wizard", size: 1, quality: "5+", equipment: [meleeWeapon('Light', 'Sword', { key: 'light-sword', label: "Light Sword" })], special: "Tough(3), Wizard(1)", upgrades: "C", cost: 35 },
+    { name: "Master Engineer", size: 1, quality: "5+", equipment: [meleeWeapon('Light', 'Sword', { key: 'light-sword', label: "Light Sword" })], special: "Ballistic Master, Tough(3)", upgrades: "D", cost: 80 },
+    { name: "State Troops", size: 10, quality: "5+", equipment: [meleeWeapon('Light', 'Swords', { key: 'light-sword', label: "Light Swords" })], special: "-", upgrades: "E, F", cost: 60 },
+    { name: "Flagellants", size: 10, quality: "5+", equipment: [meleeWeapon('Light', 'Mace', { key: 'light-mace', label: "Light Maces" })], special: "End is Nigh!, Fearless, Furious", upgrades: "-", cost: 130 },
+    { name: "Greatswords", size: 10, quality: "4+", equipment: [meleeWeapon('Light', 'Mace', { key: 'light-mace', label: "Light Maces" })], special: "Armored, Fearless", upgrades: "F", cost: 195 },
+    { name: "State Marksmen", size: 5, quality: "5+", equipment: [weaponFantasy('bow', { label: "Bows" })], special: "-", upgrades: "F, G", cost: 50 },
+    { name: "Pistoliers", size: 5, quality: "5+", equipment: [customWeapon("Pistol Braces", { range: 12, attacks: "2", rules: rules("") }), meleeWeapon('Medium', 'Swords', { key: 'medium-sword', label: "Medium Swords" })], special: "Fast, Nimble", upgrades: "F, H", cost: 75 },
+    { name: "Knightly Orders", size: 5, quality: "4+", equipment: [meleeWeapon('Light', 'Lance', { key: 'light-lance', label: "Light Lances" })], special: "Armored, Nimble", upgrades: "F, I", cost: 85 },
+    { name: "Demigryph Knights", size: 3, quality: "4+", equipment: [meleeWeapon('Light', 'Halberd', { key: 'light-halberd', label: "Light Halberds" }), meleeWeapon('Heavy', 'Claws', { key: 'heavy-claw', label: "Heavy Claws", rules: rules('Piercing') })], special: "Armored, Fear, Nimble, Impact(1), Tough(3)", upgrades: "F, K", cost: 160 },
+    { name: "Celestial Hurricanum", size: 1, quality: "4+", equipment: [customWeapon("Storm", { range: 24, attacks: "3", rules: rules("Piercing") }), meleeWeapon('Medium', 'Claws', { key: 'medium-claw', label: "Medium Claws" })], special: "Armored, Fast, Impact(D6), Portents, Tough(6)", upgrades: "-", cost: 100 },
+    { name: "Luminark of Hysh", size: 1, quality: "4+", equipment: [customWeapon("Bolt", { range: 36, attacks: "3", rules: rules("Piercing, Single Target") }), meleeWeapon('Medium', 'Claws', { key: 'medium-claw', label: "Medium Claws" })], special: "Armored, Fast, Impact(D6), Protection, Tough(6)", upgrades: "-", cost: 105 },
     { name: "Steam Tank", size: 1, quality: "4+", equipment: [customWeapon("Steam Cannon", { range: 36, attacks: "D3+3", rules: rules("Piercing") }), gear("Fiery Breath", { rules: rules("Fiery Breath") })], special: "Armored, Fast, Impact(D6), Tough(9)", upgrades: "-", cost: 175 },
-    { name: "Great Cannon", size: 1, quality: "5+", equipment: [customWeapon("Cannon", { range: 48, attacks: "D3+3", rules: rules("Piercing") })], special: "Armored, Ordnance, Tough(3)", upgrades: "-", cost: 85 },
+    { name: "Great Cannon", size: 1, quality: "5+", equipment: [weaponFantasy('cannon')], special: "Armored, Ordnance, Tough(3)", upgrades: "-", cost: 85 },
     { name: "Helstorm Battery", size: 1, quality: "5+", equipment: [customWeapon("Rocket Battery", { range: 48, attacks: "D3*3", rules: rules("Piercing, Indirect") })], special: "Armored, Ordnance, Tough(3)", upgrades: "-", cost: 115 },
     { name: "Helblaster Gun", size: 1, quality: "5+", equipment: [customWeapon("Volley Gun", { range: 24, attacks: "18", rules: rules("Piercing") })], special: "Armored, Ordnance, Tough(3)", upgrades: "-", cost: 130 },
     { name: "Mortar", size: 1, quality: "5+", equipment: [customWeapon("Mortar", { range: 48, attacks: "9", rules: rules("Piercing, Indirect") })], special: "Armored, Ordnance, Tough(3)", upgrades: "-", cost: 160 },
@@ -36,30 +36,50 @@ export const empire = faction({
   units,
   upgradeGroups: [
     group("A", [
-      section("Upgrade with:", 'any', [
-        { label: "Master Sword", cost: 5, addEquipment: [customWeapon("Master Sword", { range: null, attacks: '4', rules: rules('') })] },
-        // "(Mounted Only)" is a printed usage restriction, not a special rule the model gains — not modeled as a RuleRef (no prerequisite mechanism ties an option to "currently mounted" state today).
-        { label: "Heavy Lance (Mounted Only)", cost: 5, addEquipment: [customWeapon("Heavy Lance", { range: null, attacks: '3', rules: rules("Impact(1)") })] },
-        { label: "Heavy Mace", cost: 15, addEquipment: [customWeapon("Heavy Mace", { range: null, attacks: '3', rules: rules('Piercing, Poison') })] }
+      section("Replace Heavy Sword:", 'any', [
+        { label: "Master Sword", cost: 5, addEquipment: [meleeWeapon('Master', 'Sword', { key: 'master-sword', label: "Master Sword" })], removeEquipment: ["heavy-sword"] },
+        { label: "Heavy Lance", cost: 5, requiresOneOfSelected: ["Warhorse", "Imperial Pegasus", "War Altar of Sigmar", "Imperial Griffon", "Imperial Dragon"], addEquipment: [meleeWeapon('Heavy', 'Lance', { key: 'heavy-lance', label: "Heavy Lance" })], removeEquipment: ["heavy-sword"] },
+        { label: "Heavy Mace", cost: 15, addEquipment: [meleeWeapon('Heavy', 'Mace', { key: 'heavy-mace', label: "Heavy Mace" })], removeEquipment: ["heavy-sword"] }
       ]),
       section("Equip with one:", 'one', [
-        { label: "Pistol", cost: 5, addEquipment: [customWeapon("Pistol", { range: 12, attacks: '1', rules: rules('Piercing') })] },
+        { label: "Pistol", cost: 5, addEquipment: [weaponFantasy('pistol')] },
         { label: "Heavy Armor", cost: 10, adds: ["Armored"] },
-        { label: "Rifle", cost: 10, addEquipment: [customWeapon("Rifle", { range: 24, attacks: '1', rules: rules('Piercing') })] },
-        { label: "Longbow", cost: 15, addEquipment: [customWeapon("Longbow", { range: 30, attacks: '1', rules: rules('') })] }
+        { label: "Rifle", cost: 10, addEquipment: [weaponFantasy('rifle')] },
+        { label: "Longbow", cost: 15, addEquipment: [weaponFantasy('longbow')] }
       ]),
       section("Mount on:", 'any', [
-        { label: "Warhorse", cost: 10, addEquipment: [gear("Warhorse")] },
-        { label: "Imperial Pegasus", cost: 30, addEquipment: [gear("Imperial Pegasus")] },
-        { label: "War Altar of Sigmar", cost: 100, addEquipment: [gear("War Altar of Sigmar")] },
-        { label: "Imperial Griffon", cost: 100, addEquipment: [gear("Imperial Griffon")] },
-        { label: "Imperial Dragon", cost: 115, addEquipment: [gear("Imperial Dragon")] }
+        { label: "Warhorse", cost: 10, addEquipment: [
+            meleeWeapon('Light', 'Claws', { key: 'light-claws', label: "Light Claws" }),
+            gear("Warhorse", { mount: true, rules: [{ ruleId: "fast" }, { ruleId: "nimble" }] })
+          ]
+        },
+        { label: "Imperial Pegasus", cost: 30, addEquipment: [
+            meleeWeapon('Medium', 'Claws', { key: 'medium-claws', label: "Medium Claws" }),
+            gear("Imperial Pegasus", { mount: true, rules: [{ ruleId: "flying" }, { ruleId: "nimble" }, { ruleId: "impact", param: 1 }, { ruleId: "tough", param: 3 }] })
+          ]
+        },
+        { label: "War Altar of Sigmar", cost: 100, addEquipment: [
+            meleeWeapon('Medium', 'Claws', { key: 'medium-claws', label: "Medium Claws" }),
+            gear("War Altar of Sigmar", { mount: true, rules: [{ ruleId: "armored" }, { ruleId: "fast" }, { ruleId: "holy-fervour" }, { ruleId: "impact", param: "D6" }, { ruleId: "tough", param: 6 }] })
+          ]
+        },
+        { label: "Imperial Griffon", cost: 100, addEquipment: [
+            meleeWeapon('Master', 'Claws', { key: 'master-claws', label: "Master Claws", rules: rules('Piercing') }),
+            gear("Imperial Griffon", { mount: true, rules: [{ ruleId: "armored" }, { ruleId: "fear" }, { ruleId: "flying" }, { ruleId: "impact", param: "D6" }, { ruleId: "tough", param: 6 }] })
+          ]
+        },
+        { label: "Imperial Dragon", cost: 115, addEquipment: [
+            gear("Fiery Breath", { rules: rules("Fiery Breath") }),
+            meleeWeapon('Force', 'Claws', { key: 'force-claws', label: "Force Claws", rules: rules('Piercing') }),
+            gear("Imperial Dragon", { mount: true, rules: [{ ruleId: "armored" }, { ruleId: "fear" }, { ruleId: "flying" }, { ruleId: "impact", param: "D6" }, { ruleId: "tough", param: 6 }] })
+          ]
+        }
       ])
     ]),
     group("G", [
       section("Replace all Bows:", 'one', [
-        { label: "Rifles", cost: 10, addEquipment: [customWeapon("Rifles", { range: 24, attacks: '1', rules: rules('Piercing') })], removeEquipment: ["Bows"] },
-        { label: "Crossbows", cost: 20, addEquipment: [customWeapon("Crossbows", { range: 30, attacks: '1', rules: rules('Piercing') })], removeEquipment: ["Bows"] }
+        { label: "Rifles", cost: 10, addEquipment: [weaponFantasy('rifle', { label: "Rifles" })], removeEquipment: ["Bows"] },
+        { label: "Crossbows", cost: 20, addEquipment: [weaponFantasy('crossbow', { label: "Crossbows" })], removeEquipment: ["Bows"] }
       ]),
       section("Replace one Bow with one:", 'one', [
         { label: "Repeater Handgun", cost: 15, addEquipment: [customWeapon("Repeater Handgun", { range: 24, attacks: "3", rules: rules("Piercing") })], removeOneEquipment: ["Bow"] },
@@ -70,41 +90,45 @@ export const empire = faction({
       ])
     ]),
     group("H", [
-      section("Upgrade with:", 'any', [
-        { label: "Repeater Handguns", cost: 70, addEquipment: [customWeapon("Repeater Handguns", { range: 24, attacks: "3", rules: rules("Piercing") })] }
+      section("Replace all Pistol Braces:", 'any', [
+        { label: "Repeater Handguns", cost: 70, addEquipment: [customWeapon("Repeater Handguns", { range: 24, attacks: "3", rules: rules("Piercing") })], removeEquipment: ["Pistol Braces"] }
       ]),
       section("Replace one Pistol Brace:", 'one', [
         { label: "Repeater Handgun", cost: 15, addEquipment: [customWeapon("Repeater Handgun", { range: 24, attacks: "3", rules: rules("Piercing") })], removeOneEquipment: ["Pistol Brace"] }
       ])
     ]),
     group("I", [
-      section("Upgrade with:", 'any', [
-        { label: "Light Maces", cost: 10, addEquipment: [customWeapon("Light Maces", { range: null, attacks: '1', rules: rules('Piercing, Poison') })] }
+      section("Replace all Light Lances:", 'any', [
+        { label: "Light Maces", cost: 10, addEquipment: [meleeWeapon('Light', 'Mace', { key: 'light-mace', label: "Light Maces" })], removeEquipment: ["Light Lances"] }
       ]),
       section("Upgrade all models:", 'any', [
         { label: "Reiksguard Training", cost: 15, adds: ["Fearless"] }
       ])
     ]),
     group("B", [
-      section("Upgrade with:", 'any', [
-        { label: "Heavy Sword", cost: 5, addEquipment: [customWeapon("Heavy Sword", { range: null, attacks: '3', rules: rules('') })] },
-        { label: "Medium Mace", cost: 10, addEquipment: [customWeapon("Medium Mace", { range: null, attacks: '2', rules: rules('Piercing, Poison') })] }
+      section("Replace Medium Sword:", 'any', [
+        { label: "Heavy Sword", cost: 5, addEquipment: [meleeWeapon('Heavy', 'Sword', { key: 'heavy-sword', label: "Heavy Sword" })], removeEquipment: ["medium-sword"] },
+        { label: "Medium Mace", cost: 10, addEquipment: [meleeWeapon('Medium', 'Mace', { key: 'medium-mace', label: "Medium Mace" })], removeEquipment: ["medium-sword"] }
       ]),
       section("Equip with:", 'any', [
         { label: "Heavy Armor", cost: 10, adds: ["Armored"] }
       ]),
       section("Mount on:", 'any', [
-        { label: "Warhorse", cost: 5, addEquipment: [gear("Warhorse")] }
+        { label: "Warhorse", cost: 5, addEquipment: [
+            meleeWeapon('Light', 'Claws', { key: 'light-claws', label: "Light Claws" }),
+            gear("Warhorse", { mount: true, rules: [{ ruleId: "fast" }, { ruleId: "nimble" }] })
+          ]
+        }
       ])
     ]),
     group("J", [
-      section("Upgrade with:", 'any', [
-        { label: "Medium Mace", cost: 10, addEquipment: [customWeapon("Medium Mace", { range: null, attacks: '2', rules: rules('Piercing, Poison') })] }
+      section("Replace Medium Sword:", 'any', [
+        { label: "Medium Mace", cost: 10, addEquipment: [meleeWeapon('Medium', 'Mace', { key: 'medium-mace', label: "Medium Mace" })], removeEquipment: ["medium-sword"] }
       ])
     ]),
     group("K", [
-      section("Upgrade with:", 'any', [
-        { label: "Light Lances", cost: 5, addEquipment: [customWeapon("Light Lances", { range: null, attacks: '1', rules: rules('Impact(1)') })] }
+      section("Replace all Light Halberds:", 'any', [
+        { label: "Light Lances", cost: 5, addEquipment: [meleeWeapon('Light', 'Lance', { key: 'light-lance', label: "Light Lances" })], removeEquipment: ["Light Halberds"] }
       ])
     ]),
     group("C", [
@@ -112,7 +136,11 @@ export const empire = faction({
         { label: "Wizard(2)", cost: 5, adds: ["Wizard(2)"] }
       ]),
       section("Mount on:", 'any', [
-        { label: "Warhorse", cost: 5, addEquipment: [gear("Warhorse")] }
+        { label: "Warhorse", cost: 5, addEquipment: [
+            meleeWeapon('Light', 'Claws', { key: 'light-claws', label: "Light Claws" }),
+            gear("Warhorse", { mount: true, rules: [{ ruleId: "fast" }, { ruleId: "nimble" }] })
+          ]
+        }
       ])
     ]),
     group("L", [
@@ -131,8 +159,16 @@ export const empire = faction({
         { label: "Hochland Rifle", cost: 45, addEquipment: [customWeapon("Hochland Rifle", { range: 36, attacks: "1", rules: rules("Piercing, Sniper") })] }
       ]),
       section("Mount on:", 'any', [
-        { label: "Warhorse", cost: 5, addEquipment: [gear("Warhorse")] },
-        { label: "Mechanical Steed", cost: 20, addEquipment: [gear("Mechanical Steed")] }
+        { label: "Warhorse", cost: 5, addEquipment: [
+            meleeWeapon('Light', 'Claws', { key: 'light-claws', label: "Light Claws" }),
+            gear("Warhorse", { mount: true, rules: [{ ruleId: "fast" }, { ruleId: "nimble" }] })
+          ]
+        },
+        { label: "Mechanical Steed", cost: 20, addEquipment: [
+            meleeWeapon('Light', 'Claws', { key: 'light-claws', label: "Light Claws" }),
+            gear("Mechanical Steed", { mount: true, rules: [{ ruleId: "armored" }, { ruleId: "nimble" }, { ruleId: "impact", param: "D3" }] })
+          ]
+        }
       ])
     ]),
     group("M", [
@@ -143,9 +179,9 @@ export const empire = faction({
     ]),
     group("E", [
       section("Replace all Light Swords:", 'one', [
-        { label: "Light Spears", cost: 10, addEquipment: [customWeapon("Light Spears", { range: null, attacks: '1', rules: rules('') })], removeEquipment: ["Light Swords"] },
-        { label: "Light Halberds", cost: 10, addEquipment: [customWeapon("Light Halberds", { range: null, attacks: '1', rules: rules('Piercing') })], removeEquipment: ["Light Swords"] },
-        { label: "Medium Swords", cost: 20, addEquipment: [customWeapon("Medium Swords", { range: null, attacks: '2', rules: rules('') })], removeEquipment: ["Light Swords"] }
+        { label: "Light Spears", cost: 10, addEquipment: [meleeWeapon('Light', 'Spear', { key: 'light-spear', label: "Light Spears" })], removeEquipment: ["Light Swords"] },
+        { label: "Light Halberds", cost: 10, addEquipment: [meleeWeapon('Light', 'Halberd', { key: 'light-halberd', label: "Light Halberds" })], removeEquipment: ["Light Swords"] },
+        { label: "Medium Swords", cost: 20, addEquipment: [meleeWeapon('Medium', 'Swords', { key: 'medium-sword', label: "Medium Swords" })], removeEquipment: ["Light Swords"] }
       ])
     ]),
     group("F", [
@@ -153,7 +189,7 @@ export const empire = faction({
         { label: "Sergeant", cost: 5, addEquipment: [gear("Sergeant", { rules: rules("Sergeant") })] },
         { label: "Musician", cost: 10, addEquipment: [gear("Musician", { rules: rules("Musician") })] },
         { label: "Standard", cost: 10, addEquipment: [gear("Standard", { rules: rules("Standard") })] }
-      ])
+      ], { oncePerUnit: true })
     ])
   ],
   armyRules: [

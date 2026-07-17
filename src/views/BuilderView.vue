@@ -180,7 +180,7 @@ const displayRows = computed<DisplayRow[]>(() => {
           b: partner,
           effA,
           effB,
-          combined: combinedEffectiveUnit(effA, effB),
+          combined: combinedEffectiveUnit(effA, effB, faction.value!),
           attached: [...attachedTo(lu.instanceId), ...attachedTo(partner.instanceId)],
         })
         continue

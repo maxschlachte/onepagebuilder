@@ -3,13 +3,13 @@ import { faction, customWeapon, weaponFantasy, meleeWeapon, gear, rules, armyRul
 const units: UnitInput[] = [
     { name: "Prince", size: 1, quality: "4+", equipment: [meleeWeapon('Master', 'Sword', { key: 'master-sword', label: "Master Sword" })], special: "Hero, Prowess, Tough(3)", upgrades: "A", cost: 35 },
     { name: "Mage", size: 1, quality: "4+", equipment: [meleeWeapon('Light', 'Sword', { key: 'light-sword', label: "Light Sword" })], special: "Blessing, Prowess, Tough(3), Wizard(1)", upgrades: "B", cost: 45 },
-    { name: "Spearmen", size: 10, quality: "4+", equipment: [meleeWeapon('Light', 'Spears', { key: 'light-spear', label: "Light Spears" })], special: "Prowess", upgrades: "C", cost: 120 },
+    { name: "Spearmen", size: 10, quality: "4+", equipment: [meleeWeapon('Light', 'Spear', { key: 'light-spear', label: "Light Spears" })], special: "Prowess", upgrades: "C", cost: 120 },
     { name: "Phoenix Guard", size: 10, quality: "3+", equipment: [meleeWeapon('Light', 'Halberd', { key: 'light-halberd', label: "Light Halberds" })], special: "Armored, Fear, Prowess", upgrades: "C", cost: 225 },
     { name: "White Lions", size: 10, quality: "3+", equipment: [meleeWeapon('Light', 'Mace', { key: 'light-mace', label: "Light Maces" })], special: "Deflect, Fearless, Prowess, Strider", upgrades: "C", cost: 265 },
     { name: "Swordmasters", size: 10, quality: "3+", equipment: [meleeWeapon('Medium', 'Mace', { key: 'medium-mace', label: "Medium Maces" })], special: "Deflect, Prowess", upgrades: "C", cost: 310 },
-    { name: "Lothern Sea Guard", size: 5, quality: "4+", equipment: [weaponFantasy('bow', { label: "Bows" }), meleeWeapon('Light', 'Spears', { key: 'light-spear', label: "Light Spears" })], special: "Prowess", upgrades: "C", cost: 100 },
+    { name: "Lothern Sea Guard", size: 5, quality: "4+", equipment: [weaponFantasy('bow', { label: "Bows" }), meleeWeapon('Light', 'Spear', { key: 'light-spear', label: "Light Spears" })], special: "Prowess", upgrades: "C", cost: 100 },
     { name: "Archers", size: 5, quality: "4+", equipment: [weaponFantasy('longbow', { label: "Longbows" })], special: "Prowess", upgrades: "C", cost: 100 },
-    { name: "Ellyrian Reavers", size: 5, quality: "4+", equipment: [meleeWeapon('Light', 'Spears', { key: 'light-spear', label: "Light Spears" })], special: "Fast, Prowess, Nimble", upgrades: "C, F", cost: 85 },
+    { name: "Ellyrian Reavers", size: 5, quality: "4+", equipment: [meleeWeapon('Light', 'Spear', { key: 'light-spear', label: "Light Spears" })], special: "Fast, Prowess, Nimble", upgrades: "C, F", cost: 85 },
     { name: "Silver Helms", size: 5, quality: "4+", equipment: [meleeWeapon('Light', 'Lance', { key: 'light-lance', label: "Light Lances" })], special: "Armored, Prowess, Nimble", upgrades: "C", cost: 90 },
     { name: "Dragon Princes", size: 5, quality: "3+", equipment: [meleeWeapon('Medium', 'Lance', { key: 'medium-lance', label: "Medium Lances" })], special: "Armored, Prowess, Nimble", upgrades: "C", cost: 130 },
     { name: "Great Eagles", size: 3, quality: "3+", equipment: [meleeWeapon('Medium', 'Claws', { key: 'medium-claw', label: "Medium Claws" })], special: "Flying, Impact(1), Nimble, Tough(3)", upgrades: "D", cost: 125 },
@@ -40,7 +40,7 @@ export const highelves = faction({
         { label: "Force Sword", cost: 5, addEquipment: [meleeWeapon('Force', 'Sword', { key: 'force-sword', label: "Force Sword" })] },
         { label: "Master Spear", cost: 5, addEquipment: [meleeWeapon('Master', 'Spear', { key: 'master-spear', label: "Master Spear" })] },
         { label: "Master Halberd", cost: 5, addEquipment: [meleeWeapon('Master', 'Halberd', { key: 'master-halberd', label: "Master Halberd" })] },
-        { label: "Master Lance (Mounted Only)", cost: 5, addEquipment: [meleeWeapon('Master', 'Lance', { key: 'master-lance', label: "Master Lance", rules: rules('Mounted Only') })] },
+        { label: "Master Lance", cost: 5, requiresOneOfSelected: ["Elven Steed", "Great Eagle", "Griffon", "Frostheart Phoenix", "Dragon of Ulthuan", "Flamespyre Phoenix"], addEquipment: [meleeWeapon('Master', 'Lance', { key: 'master-lance', label: "Master Lance" })] },
         { label: "Master Mace", cost: 20, addEquipment: [meleeWeapon('Master', 'Mace', { key: 'master-mace', label: "Master Mace" })] }
       ]),
       section("Equip with one:", 'one', [
@@ -48,12 +48,37 @@ export const highelves = faction({
         { label: "Heavy Armor", cost: 10, adds: ["Armored"] }
       ]),
       section("Mount on:", 'any', [
-        { label: "Elven Steed", cost: 10, addEquipment: [gear("Elven Steed")] },
-        { label: "Great Eagle", cost: 35, addEquipment: [gear("Great Eagle")] },
-        { label: "Griffon", cost: 70, addEquipment: [gear("Griffon")] },
-        { label: "Frostheart Phoenix", cost: 110, addEquipment: [gear("Frostheart Phoenix")] },
-        { label: "Dragon of Ulthuan", cost: 120, addEquipment: [gear("Dragon of Ulthuan")] },
-        { label: "Flamespyre Phoenix", cost: 160, addEquipment: [gear("Flamespyre Phoenix")] }
+        { label: "Elven Steed", cost: 10, addEquipment: [
+            meleeWeapon('Light', 'Claws', { key: 'light-claws', label: "Light Claws" }),
+            gear("Elven Steed", { mount: true, rules: [{ ruleId: "fast" }, { ruleId: "nimble" }] })
+          ]
+        },
+        { label: "Great Eagle", cost: 35, addEquipment: [
+            meleeWeapon('Medium', 'Claws', { key: 'medium-claws', label: "Medium Claws" }),
+            gear("Great Eagle", { mount: true, rules: [{ ruleId: "flying" }, { ruleId: "impact", param: 1 }, { ruleId: "nimble" }, { ruleId: "tough", param: 3 }] })
+          ]
+        },
+        { label: "Griffon", cost: 70, addEquipment: [
+            meleeWeapon('Master', 'Claws', { key: 'master-claws', label: "Master Claws" }),
+            gear("Griffon", { mount: true, rules: [{ ruleId: "armored" }, { ruleId: "fear" }, { ruleId: "flying" }, { ruleId: "impact", param: "D6" }, { ruleId: "nimble" }, { ruleId: "tough", param: 3 }] })
+          ]
+        },
+        { label: "Frostheart Phoenix", cost: 110, addEquipment: [
+            meleeWeapon('Master', 'Claws', { key: 'master-claws', label: "Master Claws" }),
+            gear("Frostheart Phoenix", { mount: true, rules: [{ ruleId: "armored" }, { ruleId: "blizzard-aura" }, { ruleId: "fear" }, { ruleId: "flying" }, { ruleId: "impact", param: "D6" }, { ruleId: "tough", param: 6 }] })
+          ]
+        },
+        { label: "Dragon of Ulthuan", cost: 120, addEquipment: [
+            gear("Fiery Breath", { rules: rules("Fiery Breath") }),
+            meleeWeapon('Force', 'Claws', { key: 'force-claws', label: "Force Claws", rules: rules('Piercing') }),
+            gear("Dragon of Ulthuan", { mount: true, rules: [{ ruleId: "armored" }, { ruleId: "fear" }, { ruleId: "flying" }, { ruleId: "impact", param: "D6" }, { ruleId: "nimble" }, { ruleId: "tough", param: 6 }] })
+          ]
+        },
+        { label: "Flamespyre Phoenix", cost: 160, addEquipment: [
+            meleeWeapon('Heavy', 'Claws', { key: 'heavy-claws', label: "Heavy Claws" }),
+            gear("Flamespyre Phoenix", { mount: true, rules: [{ ruleId: "armored" }, { ruleId: "fear" }, { ruleId: "flying" }, { ruleId: "impact", param: "D6" }, { ruleId: "phoenix" }, { ruleId: "tough", param: 6 }, { ruleId: "wake-of-fire" }] })
+          ]
+        }
       ])
     ]),
     group("H", [
@@ -68,10 +93,27 @@ export const highelves = faction({
         { label: "Wizard(3)", cost: 20, adds: ["Wizard(3)"] }
       ]),
       section("Mount on:", 'any', [
-        { label: "Elven Steed", cost: 10, addEquipment: [gear("Elven Steed")] },
-        { label: "Great Eagle", cost: 35, addEquipment: [gear("Great Eagle")] },
-        { label: "Tiranoc Chariot", cost: 60, addEquipment: [customWeapon("Tiranoc Chariot", { range: null, attacks: '1', rules: rules('') })] },
-        { label: "Dragon of Ulthuan", cost: 120, addEquipment: [gear("Dragon of Ulthuan")] }
+        { label: "Elven Steed", cost: 10, addEquipment: [
+            meleeWeapon('Light', 'Claws', { key: 'light-claws', label: "Light Claws" }),
+            gear("Elven Steed", { mount: true, rules: [{ ruleId: "fast" }, { ruleId: "nimble" }] })
+          ]
+        },
+        { label: "Great Eagle", cost: 35, addEquipment: [
+            meleeWeapon('Medium', 'Claws', { key: 'medium-claws', label: "Medium Claws" }),
+            gear("Great Eagle", { mount: true, rules: [{ ruleId: "flying" }, { ruleId: "impact", param: 1 }, { ruleId: "nimble" }, { ruleId: "tough", param: 3 }] })
+          ]
+        },
+        { label: "Tiranoc Chariot", cost: 60, addEquipment: [
+            meleeWeapon('Medium', 'Claws', { key: 'medium-claws', label: "Medium Claws" }),
+            gear("Tiranoc Chariot", { mount: true, rules: [{ ruleId: "armored" }, { ruleId: "fast" }, { ruleId: "impact", param: "D6" }, { ruleId: "tough", param: 3 }] })
+          ]
+        },
+        { label: "Dragon of Ulthuan", cost: 120, addEquipment: [
+            gear("Fiery Breath", { rules: rules("Fiery Breath") }),
+            meleeWeapon('Force', 'Claws', { key: 'force-claws', label: "Force Claws", rules: rules('Piercing') }),
+            gear("Dragon of Ulthuan", { mount: true, rules: [{ ruleId: "armored" }, { ruleId: "fear" }, { ruleId: "flying" }, { ruleId: "impact", param: "D6" }, { ruleId: "nimble" }, { ruleId: "tough", param: 6 }] })
+          ]
+        }
       ])
     ]),
     group("C", [
@@ -79,7 +121,7 @@ export const highelves = faction({
         { label: "Sergeant", cost: 5, addEquipment: [gear("Sergeant", { rules: rules("Sergeant") })] },
         { label: "Musician", cost: 10, addEquipment: [gear("Musician", { rules: rules("Musician") })] },
         { label: "Standard", cost: 10, addEquipment: [gear("Standard", { rules: rules("Standard") })] }
-      ])
+      ], { oncePerUnit: true })
     ]),
     group("D", [
       section("Upgrade with:", 'any', [

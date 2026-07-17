@@ -11,6 +11,7 @@ import type {
   RuleRef,
   UnitProfile,
   UpgradeGroup,
+  UpgradeOption,
   UpgradeSection,
   UpgradeSelection,
 } from './types'
@@ -24,6 +25,8 @@ export interface EffectiveUnit {
   specialRules: RuleRef[]
   /** Selected option labels, for display. */
   upgradeLabels: string[]
+  /** Selected option ids that resolved to a real option, in selection order — mirrors `upgradeLabels` but as ids. */
+  selectedUpgradeIds: string[]
   cost: number
 }
 
@@ -92,17 +95,20 @@ export function sharedGroupDeployRuleId(
 }
 
 /**
- * An upgrade section affects all models only when its own title says so — the
+ * An upgrade section affects all models when its own title says so — the
  * rulebook consistently phrases a whole-unit section as "Replace all…" /
  * "Upgrade all models…" / "Equip all models…"; every other section (a
  * single-model swap, an "any"/"up to N" section, or an unqualified
  * single-item section like "Replace Autocannon") scopes to one model or a
  * bounded subset, regardless of whether its options carry an
  * equipment-replacement effect of their own (see design.md decision 1 of
- * fix-combined-unit-whole-upgrade-scope).
+ * fix-combined-unit-whole-upgrade-scope) — or when the section is explicitly
+ * marked `oncePerUnit`, for the rare case where a section's options are
+ * capped at one grant per unit even though its printed title doesn't say
+ * "all" (see design.md decision 1 of sergeant-musician-standard-whole-unit).
  */
 export function affectsAllModels(section: UpgradeSection): boolean {
-  return /\ball\b/i.test(section.title)
+  return section.oncePerUnit === true || /\ball\b/i.test(section.title)
 }
 
 /** All option ids across a faction's upgrade groups that affect all models. */
@@ -111,6 +117,22 @@ export function wholeUnitOptionIds(faction: Faction): Set<string> {
     faction.upgradeGroups
       .flatMap((g) => g.sections)
       .filter(affectsAllModels)
+      .filter((s) => !s.oncePerUnit)
+      .flatMap((s) => s.options.map((o) => o.id)),
+  )
+}
+
+/**
+ * All option ids belonging to a section explicitly marked `oncePerUnit` —
+ * used by `combinedEffectiveUnit` to charge such an option's cost exactly
+ * once for a combined pair, even though (per `wholeUnitOptionIds`) it's
+ * still mirrored onto both linked entries' `selectedUpgrades`.
+ */
+export function oncePerUnitOptionIds(faction: Faction): Set<string> {
+  return new Set(
+    faction.upgradeGroups
+      .flatMap((g) => g.sections)
+      .filter((s) => s.oncePerUnit === true)
       .flatMap((s) => s.options.map((o) => o.id)),
   )
 }
@@ -148,10 +170,24 @@ export interface CombinedUnit {
  * doubled size, summed cost, equipment merged by key (unitCount summed,
  * defaulting each side to its own full unit size), and special
  * rules/upgrade labels deduplicated. Does not touch `applyUpgrades` or
- * per-entry cost math — purely a display-layer aggregation reused by the
- * builder and print views.
+ * per-entry cost math beyond one exception: an option belonging to a
+ * `oncePerUnit` section (see `oncePerUnitOptionIds`) is mirrored onto both
+ * entries' `selectedUpgrades` (so the pair's selection state stays
+ * consistent), but its cost — and any equipment it adds — is only ever
+ * counted once for the pair, not once per entry — see design.md decisions
+ * 3 and 4 of sergeant-musician-standard-whole-unit.
  */
-export function combinedEffectiveUnit(a: EffectiveUnit, b: EffectiveUnit): CombinedUnit {
+export function combinedEffectiveUnit(a: EffectiveUnit, b: EffectiveUnit, faction: Faction): CombinedUnit {
+  const options = optionIndex(faction)
+  const onceIds = oncePerUnitOptionIds(faction)
+  const doubleCounted = a.selectedUpgradeIds.filter((id) => onceIds.has(id) && b.selectedUpgradeIds.includes(id))
+  const overcharge = doubleCounted.reduce((sum, id) => sum + (options.get(id)?.costDelta ?? 0), 0)
+  // A double-selected oncePerUnit option's own granted equipment (e.g. the Sergeant gear
+  // entry) is mirrored onto both entries too — merge it at the single-entry count, not summed.
+  const onceEquipmentKeys = new Set(
+    doubleCounted.flatMap((id) => options.get(id)?.effects?.addEquipment?.map(equipmentMergeKey) ?? []),
+  )
+
   const equipment: EquipmentEntry[] = []
   const seenKeys = new Set<string>()
   for (const e of [...a.equipment, ...b.equipment]) {
@@ -162,7 +198,8 @@ export function combinedEffectiveUnit(a: EffectiveUnit, b: EffectiveUnit): Combi
     const fromB = b.equipment.find((x) => equipmentMergeKey(x) === mergeKey)
     const countA = fromA ? (fromA.unitCount ?? a.profile.size) : 0
     const countB = fromB ? (fromB.unitCount ?? b.profile.size) : 0
-    equipment.push({ ...e, unitCount: countA + countB })
+    const unitCount = onceEquipmentKeys.has(mergeKey) ? Math.max(countA, countB) : countA + countB
+    equipment.push({ ...e, unitCount })
   }
 
   const specialRules: RuleRef[] = []
@@ -176,7 +213,7 @@ export function combinedEffectiveUnit(a: EffectiveUnit, b: EffectiveUnit): Combi
     equipment,
     specialRules,
     upgradeLabels: [...new Set([...a.upgradeLabels, ...b.upgradeLabels])],
-    cost: a.cost + b.cost,
+    cost: a.cost + b.cost - overcharge,
   }
 }
 
@@ -309,10 +346,33 @@ export function isSectionAvailable(
 }
 
 /**
- * Drop any selected upgrade ids whose owning section is no longer available
- * given the rest of the selection, repeating until a pass removes nothing.
- * Used to auto-clear selections invalidated by a change elsewhere on the unit
- * (e.g. deselecting the option that produced a prerequisite for another pick).
+ * Whether a specific option is currently selectable: its section's
+ * cross-section prerequisite (if any) must be satisfied, and — independent of
+ * whatever other options share its section — its own
+ * {@link UpgradeOption.requiresOneOfSelected} (if any) must also be satisfied.
+ * No `faction` parameter is needed since `requiresOneOfSelected` is resolved
+ * to concrete option ids at data-load time.
+ */
+export function isOptionAvailable(
+  unit: UnitProfile,
+  section: UpgradeSection,
+  option: UpgradeOption,
+  selectedUpgradeIds: string[],
+): boolean {
+  if (!isSectionAvailable(unit, section, selectedUpgradeIds)) return false
+  if (option.requiresOneOfSelected?.length) {
+    const selected = new Set(selectedUpgradeIds)
+    if (!option.requiresOneOfSelected.some((id) => selected.has(id))) return false
+  }
+  return true
+}
+
+/**
+ * Drop any selected upgrade ids whose owning section or option is no longer
+ * available given the rest of the selection, repeating until a pass removes
+ * nothing. Used to auto-clear selections invalidated by a change elsewhere on
+ * the unit (e.g. deselecting the option that produced a prerequisite for
+ * another pick, or deselecting a mount that a "(Mounted Only)" option depends on).
  */
 export function pruneInvalidSelections(
   faction: Faction,
@@ -323,7 +383,9 @@ export function pruneInvalidSelections(
   for (;;) {
     const next = current.filter((id) => {
       const owning = findSection(faction, id)
-      return !owning || isSectionAvailable(unit, owning.section, current)
+      if (!owning) return true
+      const option = owning.section.options.find((o) => o.id === id)
+      return option ? isOptionAvailable(unit, owning.section, option, current) : isSectionAvailable(unit, owning.section, current)
     })
     if (next.length === current.length) return next
     current = next
@@ -387,12 +449,14 @@ export function applyUpgrades(
   let equipment: EquipmentEntry[] = [...unit.equipment]
   let specialRules: RuleRef[] = [...unit.specialRules]
   const upgradeLabels: string[] = []
+  const appliedUpgradeIds: string[] = []
   let cost = unit.cost
 
   for (const id of selectedUpgradeIds) {
     const option = options.get(id)
     if (!option) continue
     upgradeLabels.push(option.label)
+    appliedUpgradeIds.push(id)
     cost += option.costDelta
     const effects = option.effects
     if (!effects) continue
@@ -427,7 +491,29 @@ export function applyUpgrades(
     equipment = [...equipment, { key: lightCcw.id, label: 'Light CCW', count: 1, weapon: lightCcw }]
   }
 
-  return { profile: unit, equipment, specialRules: mergeParameterizedRules(specialRules), upgradeLabels, cost }
+  // Age of Fantasy "Mounts" rule: a selected mount's own special rules become the
+  // unit's own, with Tough specifically summed rather than kept-at-max (see
+  // fantasy-mount-inheritance's design.md Decisions section).
+  const mountRules = equipment.filter((e) => e.isMount).flatMap((e) => e.rules ?? [])
+  if (mountRules.length) {
+    const isAbsoluteTough = (r: RuleRef) => r.ruleId === 'tough' && typeof r.param === 'number'
+    const toughFromMounts = mountRules.filter(isAbsoluteTough)
+    specialRules = [...specialRules, ...mountRules.filter((r) => !isAbsoluteTough(r))]
+    if (toughFromMounts.length) {
+      const mountSum = toughFromMounts.reduce((sum, r) => sum + (r.param as number), 0)
+      const base = specialRules.filter(isAbsoluteTough).reduce((max, r) => Math.max(max, r.param as number), 0)
+      specialRules = [...specialRules.filter((r) => !isAbsoluteTough(r)), { ruleId: 'tough', param: base + mountSum }]
+    }
+  }
+
+  return {
+    profile: unit,
+    equipment,
+    specialRules: mergeParameterizedRules(specialRules),
+    upgradeLabels,
+    selectedUpgradeIds: appliedUpgradeIds,
+    cost,
+  }
 }
 
 function findUnit(faction: Faction, unitId: string): UnitProfile | undefined {

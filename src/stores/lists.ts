@@ -11,8 +11,9 @@ import {
   findSection,
   groupDeployRuleIds,
   isInfantry,
-  isSectionAvailable,
+  isOptionAvailable,
   maxPicks,
+  oncePerUnitOptionIds,
   pruneInvalidSelections,
   sharedGroupDeployRuleId,
   wholeUnitOptionIds,
@@ -261,7 +262,15 @@ function removeUnit(listId: string, instanceId: string) {
  * linked, symmetric pair: any whole-unit (`affectsAllModels`) option already
  * selected on either entry is unioned onto both, so "must be bought for
  * both" holds from the moment they're combined (design.md open question,
- * resolved: auto-union).
+ * resolved: auto-union) — except a `oncePerUnit` option (e.g.
+ * Sergeant/Musician/Standard), which is collapsed onto entry `a` only: unlike
+ * a genuine whole-unit option (e.g. "Replace all Assault Rifles", where each
+ * entry really does carry its own replaced weapons and splitting back apart
+ * correctly leaves each half with its own full-price copy), a `oncePerUnit`
+ * option represents a single grant to the unit as a whole with nothing to
+ * duplicate — mirroring it onto both entries would leave *both* halves with
+ * their own copy after a future split, which the rulebook doesn't allow (see
+ * design.md decision 5 of sergeant-musician-standard-whole-unit).
  */
 function combineUnits(listId: string, instanceIdA: string, instanceIdB: string) {
   const list = find(listId)
@@ -274,12 +283,16 @@ function combineUnits(listId: string, instanceIdA: string, instanceIdB: string) 
   const profile = faction && findUnitInFaction(faction, a.unitId)
   if (!faction || !profile || !isInfantry(profile)) return
 
-  const wholeIds = wholeUnitOptionIds(faction)
+  const onceIds = oncePerUnitOptionIds(faction)
+  const wholeIds = new Set([...wholeUnitOptionIds(faction)].filter((id) => !onceIds.has(id)))
   const unionWholeUnit = [
     ...new Set([...a.selectedUpgrades, ...b.selectedUpgrades].filter((id) => wholeIds.has(id))),
   ]
-  const perModel = (u: ListUnit) => u.selectedUpgrades.filter((id) => !wholeIds.has(id))
-  a.selectedUpgrades = [...perModel(a), ...unionWholeUnit]
+  const onceSelected = [
+    ...new Set([...a.selectedUpgrades, ...b.selectedUpgrades].filter((id) => onceIds.has(id))),
+  ]
+  const perModel = (u: ListUnit) => u.selectedUpgrades.filter((id) => !wholeIds.has(id) && !onceIds.has(id))
+  a.selectedUpgrades = [...perModel(a), ...unionWholeUnit, ...onceSelected]
   b.selectedUpgrades = [...perModel(b), ...unionWholeUnit]
   a.combinedWith = b.instanceId
   b.combinedWith = a.instanceId
@@ -416,7 +429,8 @@ function applyToggle(
 
   const owning = faction && findSection(faction, optionId)
   if (owning) {
-    if (profile && !isSectionAvailable(profile, owning.section, unit.selectedUpgrades)) return // prerequisite not met: reject
+    const opt = owning.section.options.find((o) => o.id === optionId)
+    if (profile && opt && !isOptionAvailable(profile, owning.section, opt, unit.selectedUpgrades)) return // prerequisite not met: reject
 
     const siblingIds = new Set(owning.section.options.map((o) => o.id))
     const selectedSiblings = unit.selectedUpgrades.filter((o) => siblingIds.has(o))
@@ -439,7 +453,15 @@ function applyToggle(
  * combined pair and the option affects all models, the toggle is applied to
  * both linked entries in one atomic store update (design.md decision 4); a
  * per-model (`removeOneEquipment`-bearing) option continues to affect only
- * the entry it was toggled on.
+ * the entry it was toggled on. A `oncePerUnit` option (e.g.
+ * Sergeant/Musician/Standard) is a special case of "affects all models" for
+ * display purposes only: it still renders and toggles from the combined
+ * pair's whole-unit panel, but is written to exactly one of the two linked
+ * entries — selecting adds it to whichever entry the toggle was invoked on;
+ * deselecting removes it from wherever it currently lives (either entry) —
+ * so a later split leaves it on only the one entry that actually holds it,
+ * not duplicated onto both (see design.md decision 5 of
+ * sergeant-musician-standard-whole-unit).
  */
 function toggleUpgrade(listId: string, instanceId: string, optionId: string) {
   const list = find(listId)
@@ -450,6 +472,22 @@ function toggleUpgrade(listId: string, instanceId: string, optionId: string) {
   const profile = faction && findUnitInFaction(faction, unit.unitId)
   const owning = faction && findSection(faction, optionId)
   const partner = unit.combinedWith ? list.units.find((u) => u.instanceId === unit.combinedWith) : undefined
+
+  if (partner && owning?.section.oncePerUnit) {
+    const alreadyOnPair = unit.selectedUpgrades.includes(optionId) || partner.selectedUpgrades.includes(optionId)
+    if (alreadyOnPair) {
+      unit.selectedUpgrades = unit.selectedUpgrades.filter((o) => o !== optionId)
+      partner.selectedUpgrades = partner.selectedUpgrades.filter((o) => o !== optionId)
+      if (faction && profile) {
+        unit.selectedUpgrades = pruneInvalidSelections(faction, profile, unit.selectedUpgrades)
+        partner.selectedUpgrades = pruneInvalidSelections(faction, profile, partner.selectedUpgrades)
+      }
+    } else {
+      applyToggle(faction, profile, unit, optionId)
+    }
+    touch(list)
+    return
+  }
 
   applyToggle(faction, profile, unit, optionId)
   if (partner && owning && affectsAllModels(owning.section)) {
@@ -531,7 +569,8 @@ export function validateImported(raw: unknown): ArmyList {
           `Unit "${String(lu.unitId)}" selects too many options in group ${owning.group.id} ("${owning.section.title}") — limit is ${cap}.`,
         )
       }
-      if (profile && !isSectionAvailable(profile, owning.section, selected as string[])) {
+      const selectedOption = owning.section.options.find((o) => o.id === opt)
+      if (profile && selectedOption && !isOptionAvailable(profile, owning.section, selectedOption, selected as string[])) {
         throw new Error(
           `Unit "${String(lu.unitId)}" selects an option in group ${owning.group.id} ("${owning.section.title}") whose prerequisite isn't met.`,
         )

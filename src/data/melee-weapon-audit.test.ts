@@ -20,12 +20,9 @@ const NON_WEAPON_LABELS = new Map<string, string>([
   ['Lasher Tendrils', 'Chaos Space Marines Maulerfiend upgrade — grants Fear only, no printed attacks value (structured-equipment-model migration dropped the embedded rule text from the label)'],
   ['Lash Whips (Fear)', 'Tyranids Venomthropes — grants Fear only, no printed attacks value'],
   ['Lash Whips', 'Tyranids Venomthropes — grants Fear only, no printed attacks value (structured-equipment-model migration dropped the embedded rule text from the label)'],
-  ['Rot Proboscis (Rending)', 'Chaos Daemons upgrade — grants Rending only, no printed attacks value'],
-  ['Rot Proboscis', 'Chaos Daemons upgrade — grants Rending only, no printed attacks value (structured-equipment-model migration dropped the embedded rule text from the label)'],
-  ['Venom Sting (Deadly)', 'Chaos Daemons upgrade — grants Deadly only, no printed attacks value'],
-  ['Venom Sting', 'Chaos Daemons upgrade — grants Deadly only, no printed attacks value (structured-equipment-model migration dropped the embedded rule text from the label)'],
-  ['Zephyrglaive (Impact(1))', 'Harlequins upgrade — grants Impact(1) only, no printed attacks value'],
-  ['Zephyrglaive', 'Harlequins upgrade — grants Impact(1) only, no printed attacks value (structured-equipment-model migration dropped the embedded rule text from the label)'],
+  ['Rot Proboscis', 'Chaos Daemons upgrade — grants Rending only, no printed attacks value'],
+  ['Venom Sting', 'Chaos Daemons upgrade — grants Deadly only, no printed attacks value'],
+  ['Zephyrglaive', 'Harlequins upgrade — grants Impact(1) only, no printed attacks value'],
   // Army special rules (defined via `armyRule`, with their own glossary text), not weapons.
   ['Markerlight', 'Tau army special rule — a targeting aid, not a weapon with attack dice'],
   ['Markerlights', 'Tau army special rule (plural) — a targeting aid, not a weapon with attack dice'],
@@ -37,8 +34,7 @@ const NON_WEAPON_LABELS = new Map<string, string>([
   // Ranged "alias to a known weapon" pattern — out of scope for this melee-focused fix
   // (resolving these needs a different parsing feature: an inner parenthetical naming
   // another weapon rather than a rule).
-  ['Sporocyst (Mine Launcher)', "Aliases Biovore's Mine Launcher special rule — ranged, out of scope"],
-  ['Sporocyst', "Aliases Biovore's Mine Launcher special rule — ranged, out of scope (structured-equipment-model migration dropped the embedded rule text from the label)"],
+  ['Sporocyst', "Aliases Biovore's Mine Launcher special rule — ranged, out of scope"],
   ['Seeker Missile', 'Tau army special rule aliasing Missile Launcher (Limited) — ranged, out of scope'],
   ['6x Seeker Missiles', 'Tau Hammerhead baseline — same alias pattern as Seeker Missile, ranged, out of scope'],
   ['Hunter-Killer Missile (Missile Launcher (Limited))', 'Aliases the Missile Launcher profile — ranged, out of scope'],
@@ -143,6 +139,9 @@ const NON_WEAPON_LABELS = new Map<string, string>([
   ['Shriek', 'Vampire Counts Banshee/Wraith/Terrorgheist/Mortis Engine baseline army rule — an activated ability, no printed attacks value as equipment'],
   ['Grasp', 'Vampire Counts Wraith/Mortis Engine baseline army rule — an activated ability, no printed attacks value as equipment'],
   ['Tiranoc Chariot', 'High Elves mount — gear granting equipment/rules, not itself a weapon'],
+  ['Bell', 'Skaven Screaming Bell mount equipment-granted army rule — an activated random-effect table, no printed attacks value'],
+  ['Noxious Wrecker', 'Skaven Plague Furnace mount equipment-granted army rule — no printed attacks value as equipment'],
+  ['Seeker Chariot', 'Daemons of Chaos mount — gear granting equipment/rules, not itself a weapon'],
 ])
 
 describe('melee weapon parsing audit', () => {

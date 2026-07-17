@@ -1,25 +1,25 @@
-import { faction, customWeapon, gear, rules, armyRule, power, section, group, type UnitInput } from '../helpers'
+import { faction, customWeapon, weaponFantasy, meleeWeapon, gear, rules, armyRule, power, section, group, type UnitInput } from '../helpers'
 
 const units: UnitInput[] = [
-    { name: "Wargor", size: 1, quality: "4+", equipment: [customWeapon("Heavy Sword", { range: null, attacks: "3", rules: rules("") })], special: "Hatred, Hero, Tough(3)", upgrades: "A", cost: 30 },
-    { name: "Gorebull", size: 1, quality: "3+", equipment: [customWeapon("Master Sword", { range: null, attacks: "4", rules: rules("") })], special: "Fear, Furious, Hero, Impact(D3), Tough(3)", upgrades: "B", cost: 50 },
-    { name: "Bray-Shaman", size: 1, quality: "5+", equipment: [customWeapon("Light Sword", { range: null, attacks: "1", rules: rules("") })], special: "Hatred, Tough(3), Wizard(1)", upgrades: "C", cost: 30 },
-    { name: "Ungor Herd", size: 10, quality: "5+", equipment: [customWeapon("Light Swords", { range: null, attacks: "1", rules: rules("") })], special: "Ambush, Hatred", upgrades: "D, G", cost: 90 },
-    { name: "Harpies", size: 10, quality: "5+", equipment: [customWeapon("Medium Claws", { range: null, attacks: "2", rules: rules("") })], special: "Flying", upgrades: "F", cost: 100 },
-    { name: "Gor Herd", size: 10, quality: "4+", equipment: [customWeapon("Light Swords", { range: null, attacks: "1", rules: rules("") })], special: "Ambush, Hatred", upgrades: "D, J", cost: 130 },
-    { name: "Bestigor Herd", size: 10, quality: "3+", equipment: [customWeapon("Light Maces", { range: null, attacks: "1", rules: rules("Piercing, Poison") })], special: "Hatred", upgrades: "D", cost: 185 },
-    { name: "Ungor Raiders", size: 5, quality: "5+", equipment: [customWeapon("Shortbows", { range: 18, attacks: "1", rules: rules("") })], special: "Ambush, Hatred", upgrades: "D", cost: 70 },
-    { name: "Warhounds", size: 5, quality: "4+", equipment: [customWeapon("Light Claws", { range: null, attacks: "1", rules: rules("") })], special: "Fast, Nimble", upgrades: "E", cost: 70 },
-    { name: "Centigors", size: 5, quality: "3+", equipment: [customWeapon("Medium Spears", { range: null, attacks: "2", rules: rules("") })], special: "Drunkard, Fast, Hatred, Nimble", upgrades: "D, H", cost: 150 },
-    { name: "Razorgor Herd", size: 5, quality: "4+", equipment: [customWeapon("Master Claws", { range: null, attacks: "4", rules: rules("") })], special: "Armored, Fast, Fear, Nimble, Thunderous Charge, Tough(3)", upgrades: "-", cost: 250 },
-    { name: "Minotaurs", size: 3, quality: "3+", equipment: [customWeapon("Heavy Swords", { range: null, attacks: "3", rules: rules("") })], special: "Fear, Furious, Impact(1), Tough(3)", upgrades: "D, I", cost: 135 },
+    { name: "Wargor", size: 1, quality: "4+", equipment: [meleeWeapon('Heavy', 'Sword', { key: 'heavy-sword', label: "Heavy Sword" })], special: "Hatred, Hero, Tough(3)", upgrades: "A", cost: 30 },
+    { name: "Gorebull", size: 1, quality: "3+", equipment: [meleeWeapon('Master', 'Sword', { key: 'master-sword', label: "Master Sword" })], special: "Fear, Furious, Hero, Impact(D3), Tough(3)", upgrades: "B", cost: 50 },
+    { name: "Bray-Shaman", size: 1, quality: "5+", equipment: [meleeWeapon('Light', 'Sword', { key: 'light-sword', label: "Light Sword" })], special: "Hatred, Tough(3), Wizard(1)", upgrades: "C", cost: 30 },
+    { name: "Ungor Herd", size: 10, quality: "5+", equipment: [meleeWeapon('Light', 'Swords', { key: 'light-sword', label: "Light Swords" })], special: "Ambush, Hatred", upgrades: "D, G", cost: 90 },
+    { name: "Harpies", size: 10, quality: "5+", equipment: [meleeWeapon('Medium', 'Claws', { key: 'medium-claw', label: "Medium Claws" })], special: "Flying", upgrades: "F", cost: 100 },
+    { name: "Gor Herd", size: 10, quality: "4+", equipment: [meleeWeapon('Light', 'Swords', { key: 'light-sword', label: "Light Swords" })], special: "Ambush, Hatred", upgrades: "D, J", cost: 130 },
+    { name: "Bestigor Herd", size: 10, quality: "3+", equipment: [meleeWeapon('Light', 'Mace', { key: 'light-mace', label: "Light Maces" })], special: "Hatred", upgrades: "D", cost: 185 },
+    { name: "Ungor Raiders", size: 5, quality: "5+", equipment: [weaponFantasy('shortbow', { label: "Shortbows" })], special: "Ambush, Hatred", upgrades: "D", cost: 70 },
+    { name: "Warhounds", size: 5, quality: "4+", equipment: [meleeWeapon('Light', 'Claws', { key: 'light-claw', label: "Light Claws" })], special: "Fast, Nimble", upgrades: "E", cost: 70 },
+    { name: "Centigors", size: 5, quality: "3+", equipment: [meleeWeapon('Medium', 'Spear', { key: 'medium-spear', label: "Medium Spears" })], special: "Drunkard, Fast, Hatred, Nimble", upgrades: "D, H", cost: 150 },
+    { name: "Razorgor Herd", size: 5, quality: "4+", equipment: [meleeWeapon('Master', 'Claws', { key: 'master-claw', label: "Master Claws" })], special: "Armored, Fast, Fear, Nimble, Thunderous Charge, Tough(3)", upgrades: "-", cost: 250 },
+    { name: "Minotaurs", size: 3, quality: "3+", equipment: [meleeWeapon('Heavy', 'Swords', { key: 'heavy-sword', label: "Heavy Swords" })], special: "Fear, Furious, Impact(1), Tough(3)", upgrades: "D, I", cost: 135 },
     { name: "Chaos Spawn", size: 1, quality: "4+", equipment: [customWeapon("Tentacles", { range: null, attacks: "D6+1", rules: rules("") })], special: "Armored, Fear, Fearless, Impact(D6), Tough(3)", upgrades: "-", cost: 55 },
     { name: "Giant", size: 1, quality: "4+", equipment: [gear("Giant Attack")], special: "Armored, Fall Over, Fearless, Impact(D6), Tough(6)", upgrades: "-", cost: 100 },
-    { name: "Ghorgon", size: 1, quality: "3+", equipment: [customWeapon("Force Claws", { range: null, attacks: "5", rules: rules("Piercing") })], special: "Armored, Fear, Fearless, Furious, Impact(D6), Swallow, Tough(6)", upgrades: "-", cost: 160 },
-    { name: "Jabberslythe", size: 1, quality: "3+", equipment: [customWeapon("Slythey Tongue", { range: 12, attacks: "1", rules: rules("Piercing") }), customWeapon("Master Claws", { range: null, attacks: "4", rules: rules("Poison") })], special: "Armored, Bile-Blood, Fear, Fearless, Flying, Impact(D6), Madness, Tough(6)", upgrades: "-", cost: 170 },
-    { name: "Cygor", size: 1, quality: "3+", equipment: [customWeapon("Stone Thrower", { range: 48, attacks: "3", rules: rules("Piercing, Indirect, Unwieldy") }), customWeapon("Force Claws", { range: null, attacks: "5", rules: rules("Piercing, Unwieldy") })], special: "Armored, Fear, Fearless, Ghostsight, Impact(D6), Resistance, Souleater, Tough(6)", upgrades: "-", cost: 200 },
-    { name: "Tuskgor Chariot", size: 1, quality: "4+", equipment: [customWeapon("Medium Spear", { range: null, attacks: "2", rules: rules("") }), customWeapon("Medium Claws", { range: null, attacks: "2", rules: rules("") })], special: "Armored, Fast, Hatred, Impact(D6), Tough(3)", upgrades: "K", cost: 60 },
-    { name: "Razorgot Chariot", size: 1, quality: "4+", equipment: [customWeapon("Medium Spear", { range: null, attacks: "2", rules: rules("") }), customWeapon("Master Claws", { range: null, attacks: "4", rules: rules("") })], special: "Armored, Fast, Fear, Hatred, Impact(D6), Thunderous Charge, Tough(6)", upgrades: "K", cost: 100 },
+    { name: "Ghorgon", size: 1, quality: "3+", equipment: [meleeWeapon('Force', 'Claws', { key: 'force-claw', label: "Force Claws", rules: rules('Piercing') })], special: "Armored, Fear, Fearless, Furious, Impact(D6), Swallow, Tough(6)", upgrades: "-", cost: 160 },
+    { name: "Jabberslythe", size: 1, quality: "3+", equipment: [customWeapon("Slythey Tongue", { range: 12, attacks: "1", rules: rules("Piercing") }), meleeWeapon('Master', 'Claws', { key: 'master-claw', label: "Master Claws", rules: rules('Poison') })], special: "Armored, Bile-Blood, Fear, Fearless, Flying, Impact(D6), Madness, Tough(6)", upgrades: "-", cost: 170 },
+    { name: "Cygor", size: 1, quality: "3+", equipment: [weaponFantasy('stone-thrower', { rules: rules('Indirect, Unwieldy') }), meleeWeapon('Force', 'Claws', { key: 'force-claw', label: "Force Claws", rules: rules('Piercing, Unwieldy') })], special: "Armored, Fear, Fearless, Ghostsight, Impact(D6), Resistance, Souleater, Tough(6)", upgrades: "-", cost: 200 },
+    { name: "Tuskgor Chariot", size: 1, quality: "4+", equipment: [meleeWeapon('Medium', 'Spear', { key: 'medium-spear', label: "Medium Spear" }), meleeWeapon('Medium', 'Claws', { key: 'medium-claw', label: "Medium Claws" })], special: "Armored, Fast, Hatred, Impact(D6), Tough(3)", upgrades: "K", cost: 60 },
+    { name: "Razorgot Chariot", size: 1, quality: "4+", equipment: [meleeWeapon('Medium', 'Spear', { key: 'medium-spear', label: "Medium Spear" }), meleeWeapon('Master', 'Claws', { key: 'master-claw', label: "Master Claws" })], special: "Armored, Fast, Fear, Hatred, Impact(D6), Thunderous Charge, Tough(6)", upgrades: "K", cost: 100 },
 ]
 
 export const beastmen = faction({
@@ -30,21 +30,29 @@ export const beastmen = faction({
   upgradeGroups: [
     group("A", [
       section("Replace Heavy Sword:", 'one', [
-        { label: "Master Sword", cost: 5, addEquipment: [customWeapon("Master Sword", { range: null, attacks: '4', rules: rules('') })], removeEquipment: ["Heavy Sword"] },
-        { label: "Heavy Mace", cost: 15, addEquipment: [customWeapon("Heavy Mace", { range: null, attacks: '3', rules: rules("Piercing, Poison") })], removeEquipment: ["Heavy Sword"] }
+        { label: "Master Sword", cost: 5, addEquipment: [meleeWeapon('Master', 'Sword', { key: 'master-sword', label: "Master Sword" })], removeEquipment: ["Heavy Sword"] },
+        { label: "Heavy Mace", cost: 15, addEquipment: [meleeWeapon('Heavy', 'Mace', { key: 'heavy-mace', label: "Heavy Mace" })], removeEquipment: ["Heavy Sword"] }
       ]),
       section("Equip with:", 'any', [
         { label: "Heavy Armor", cost: 10, adds: ["Armored"] }
       ]),
       section("Mount on:", 'any', [
-        { label: "Tuskgor Chariot", cost: 60, addEquipment: [gear("Tuskgor Chariot")] },
-        { label: "Razorgor Chariot", cost: 100, addEquipment: [gear("Razorgor Chariot")] }
+        { label: "Tuskgor Chariot", cost: 60, addEquipment: [
+            meleeWeapon('Medium', 'Claws', { key: 'medium-claws', label: "Medium Claws" }),
+            gear("Tuskgor Chariot", { mount: true, rules: [{ ruleId: "armored" }, { ruleId: "fast" }, { ruleId: "impact", param: "D6" }, { ruleId: "tough", param: 3 }] })
+          ]
+        },
+        { label: "Razorgor Chariot", cost: 100, addEquipment: [
+            meleeWeapon('Master', 'Claws', { key: 'master-claws', label: "Master Claws" }),
+            gear("Razorgor Chariot", { mount: true, rules: [{ ruleId: "armored" }, { ruleId: "fast" }, { ruleId: "fear" }, { ruleId: "impact", param: "D6" }, { ruleId: "thunderous-charge" }, { ruleId: "tough", param: 6 }] })
+          ]
+        }
       ])
     ]),
     group("B", [
       section("Replace Master Sword:", 'one', [
-        { label: "Force Sword", cost: 5, addEquipment: [customWeapon("Force Sword", { range: null, attacks: '5', rules: rules('') })], removeEquipment: ["Master Sword"] },
-        { label: "Master Mace", cost: 20, addEquipment: [customWeapon("Master Mace", { range: null, attacks: '4', rules: rules("Piercing, Poison") })], removeEquipment: ["Master Sword"] }
+        { label: "Force Sword", cost: 5, addEquipment: [meleeWeapon('Force', 'Sword', { key: 'force-sword', label: "Force Sword" })], removeEquipment: ["Master Sword"] },
+        { label: "Master Mace", cost: 20, addEquipment: [meleeWeapon('Master', 'Mace', { key: 'master-mace', label: "Master Mace" })], removeEquipment: ["Master Sword"] }
       ]),
       section("Equip with:", 'any', [
         { label: "Heavy Armor", cost: 10, adds: ["Armored"] }
@@ -52,14 +60,22 @@ export const beastmen = faction({
     ]),
     group("C", [
       section("Replace Light Sword:", 'one', [
-        { label: "Medium Sword", cost: 5, addEquipment: [customWeapon("Medium Sword", { range: null, attacks: '2', rules: rules('') })], removeEquipment: ["Light Sword"] }
+        { label: "Medium Sword", cost: 5, addEquipment: [meleeWeapon('Medium', 'Sword', { key: 'medium-sword', label: "Medium Sword" })], removeEquipment: ["Light Sword"] }
       ]),
       section("Upgrade Wizard(1):", 'any', [
         { label: "Wizard(2)", cost: 5, adds: ["Wizard(2)"] }
       ]),
       section("Mount on:", 'any', [
-        { label: "Tuskgor Chariot", cost: 50, addEquipment: [gear("Tuskgor Chariot")] },
-        { label: "Razorgor Chariot", cost: 80, addEquipment: [gear("Razorgor Chariot")] }
+        { label: "Tuskgor Chariot", cost: 50, addEquipment: [
+            meleeWeapon('Medium', 'Claws', { key: 'medium-claws', label: "Medium Claws" }),
+            gear("Tuskgor Chariot", { mount: true, rules: [{ ruleId: "armored" }, { ruleId: "fast" }, { ruleId: "impact", param: "D6" }, { ruleId: "tough", param: 3 }] })
+          ]
+        },
+        { label: "Razorgor Chariot", cost: 80, addEquipment: [
+            meleeWeapon('Master', 'Claws', { key: 'master-claws', label: "Master Claws" }),
+            gear("Razorgor Chariot", { mount: true, rules: [{ ruleId: "armored" }, { ruleId: "fast" }, { ruleId: "fear" }, { ruleId: "impact", param: "D6" }, { ruleId: "thunderous-charge" }, { ruleId: "tough", param: 6 }] })
+          ]
+        }
       ])
     ]),
     group("D", [
@@ -67,7 +83,7 @@ export const beastmen = faction({
         { label: "Sergeant", cost: 5, addEquipment: [gear("Sergeant", { rules: rules("Sergeant") })] },
         { label: "Musician", cost: 10, addEquipment: [gear("Musician", { rules: rules("Musician") })] },
         { label: "Standard", cost: 10, addEquipment: [gear("Standard", { rules: rules("Standard") })] }
-      ])
+      ], { oncePerUnit: true })
     ]),
     group("E", [
       section("Upgrade with:", 'any', [
@@ -82,31 +98,31 @@ export const beastmen = faction({
     ]),
     group("G", [
       section("Replace all Light Swords:", 'one', [
-        { label: "Light Spears", cost: 15, addEquipment: [customWeapon("Light Spears", { range: null, attacks: '1', rules: rules('') })], removeEquipment: ["Light Swords"] }
+        { label: "Light Spears", cost: 15, addEquipment: [meleeWeapon('Light', 'Spear', { key: 'light-spear', label: "Light Spears" })], removeEquipment: ["Light Swords"] }
       ])
     ]),
     group("H", [
       section("Replace all Medium Spears:", 'one', [
-        { label: "Medium Maces", cost: 30, addEquipment: [customWeapon("Medium Maces", { range: null, attacks: '2', rules: rules("Piercing, Poison") })], removeEquipment: ["Medium Spears"] }
+        { label: "Medium Maces", cost: 30, addEquipment: [meleeWeapon('Medium', 'Mace', { key: 'medium-mace', label: "Medium Maces" })], removeEquipment: ["Medium Spears"] }
       ]),
       section("Equip all models with:", 'any', [
-        { label: "Throwing Weapons", cost: 25, addEquipment: [customWeapon("Throwing Weapons", { range: 12, attacks: '1', rules: rules('') })] }
+        { label: "Throwing Weapons", cost: 25, addEquipment: [weaponFantasy('throwing-weapon', { label: "Throwing Weapons" })] }
       ])
     ]),
     group("I", [
       section("Replace all Heavy Swords:", 'one', [
-        { label: "Master Swords", cost: 10, addEquipment: [customWeapon("Master Swords", { range: null, attacks: '4', rules: rules('') })], removeEquipment: ["Heavy Swords"] },
-        { label: "Heavy Maces", cost: 45, addEquipment: [customWeapon("Heavy Maces", { range: null, attacks: '3', rules: rules("Piercing, Poison") })], removeEquipment: ["Heavy Swords"] }
+        { label: "Master Swords", cost: 10, addEquipment: [meleeWeapon('Master', 'Swords', { key: 'master-sword', label: "Master Swords" })], removeEquipment: ["Heavy Swords"] },
+        { label: "Heavy Maces", cost: 45, addEquipment: [meleeWeapon('Heavy', 'Mace', { key: 'heavy-mace', label: "Heavy Maces" })], removeEquipment: ["Heavy Swords"] }
       ])
     ]),
     group("J", [
       section("Replace all Light Swords:", 'one', [
-        { label: "Medium Swords", cost: 40, addEquipment: [customWeapon("Medium Swords", { range: null, attacks: '2', rules: rules('') })], removeEquipment: ["Light Swords"] }
+        { label: "Medium Swords", cost: 40, addEquipment: [meleeWeapon('Medium', 'Swords', { key: 'medium-sword', label: "Medium Swords" })], removeEquipment: ["Light Swords"] }
       ])
     ]),
     group("K", [
       section("Replace Medium Spear:", 'one', [
-        { label: "Medium Mace", cost: 5, addEquipment: [customWeapon("Medium Mace", { range: null, attacks: '2', rules: rules("Piercing, Poison") })], removeEquipment: ["Medium Spear"] }
+        { label: "Medium Mace", cost: 5, addEquipment: [meleeWeapon('Medium', 'Mace', { key: 'medium-mace', label: "Medium Mace" })], removeEquipment: ["Medium Spear"] }
       ])
     ])
   ],

@@ -204,8 +204,10 @@ export const darkEldar = faction({
           { label: 'Medium CCW (Deadly)', cost: 20, addEquipment: [meleeWeapon('Medium', 'CCW', { rules: rules('Deadly') })], removeOneEquipment: ['Medium CCW'] },
         ],
         {
-          // No group-T unit has a baseline Medium CCW — one only exists if produced above.
-          requiresOneOfSelected: ['Pistol (Poison), Medium CCW'],
+          prerequisite: {
+            // No group-T unit has a baseline Medium CCW — one only exists if produced above.
+            requiresOneOfSelected: ['Pistol (Poison), Medium CCW'],
+          },
         },
       ),
     ]),

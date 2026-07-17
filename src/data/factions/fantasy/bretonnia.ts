@@ -1,21 +1,21 @@
-import { faction, customWeapon, gear, rules, armyRule, power, section, group, type UnitInput } from '../helpers'
+import { faction, customWeapon, weaponFantasy, meleeWeapon, gear, rules, armyRule, power, section, group, type UnitInput } from '../helpers'
 
 const units: UnitInput[] = [
-    { name: "Bretonnian Lord", size: 1, quality: "3+", equipment: [customWeapon("Master Sword", { range: null, attacks: "4", rules: rules("") })], special: "Armored, Fast, Fearless, Hero, Nimble, Tough(3)", upgrades: "A", cost: 60 },
-    { name: "Paladin", size: 1, quality: "5+", equipment: [customWeapon("Heavy Sword", { range: null, attacks: "3", rules: rules("") })], special: "Armored, Fast, Fearless, Hero, Nimble, Tough(3)", upgrades: "B", cost: 30 },
-    { name: "Prophetess of the Lady", size: 1, quality: "5+", equipment: [customWeapon("Light Sword", { range: null, attacks: "1", rules: rules("") })], special: "Hero, Resistance, Tough(3), Wizard(3)", upgrades: "C", cost: 55 },
-    { name: "Damsel of the Lady", size: 1, quality: "5+", equipment: [customWeapon("Light Sword", { range: null, attacks: "1", rules: rules("") })], special: "Resistance, Tough(3), Wizard(1)", upgrades: "D", cost: 40 },
-    { name: "Men-at-Arms", size: 10, quality: "6+", equipment: [customWeapon("Light Spears", { range: null, attacks: "1", rules: rules("") })], special: "Peasant’s Duty", upgrades: "E, G", cost: 40 },
-    { name: "Peasant Bowmen", size: 5, quality: "6+", equipment: [customWeapon("Longbows", { range: 30, attacks: "1", rules: rules("") })], special: "Adequate Shot, Peasant’s Duty", upgrades: "E, F", cost: 45 },
+    { name: "Bretonnian Lord", size: 1, quality: "3+", equipment: [meleeWeapon('Master', 'Sword', { key: 'master-sword', label: "Master Sword" })], special: "Armored, Fast, Fearless, Hero, Nimble, Tough(3)", upgrades: "A", cost: 60 },
+    { name: "Paladin", size: 1, quality: "5+", equipment: [meleeWeapon('Heavy', 'Sword', { key: 'heavy-sword', label: "Heavy Sword" })], special: "Armored, Fast, Fearless, Hero, Nimble, Tough(3)", upgrades: "B", cost: 30 },
+    { name: "Prophetess of the Lady", size: 1, quality: "5+", equipment: [meleeWeapon('Light', 'Sword', { key: 'light-sword', label: "Light Sword" })], special: "Hero, Resistance, Tough(3), Wizard(3)", upgrades: "C", cost: 55 },
+    { name: "Damsel of the Lady", size: 1, quality: "5+", equipment: [meleeWeapon('Light', 'Sword', { key: 'light-sword', label: "Light Sword" })], special: "Resistance, Tough(3), Wizard(1)", upgrades: "D", cost: 40 },
+    { name: "Men-at-Arms", size: 10, quality: "6+", equipment: [meleeWeapon('Light', 'Spear', { key: 'light-spear', label: "Light Spears" })], special: "Peasant’s Duty", upgrades: "E, G", cost: 40 },
+    { name: "Peasant Bowmen", size: 5, quality: "6+", equipment: [weaponFantasy('longbow', { label: "Longbows" })], special: "Adequate Shot, Peasant’s Duty", upgrades: "E, F", cost: 45 },
     // Size modeled as 13 (1 unique Reliquae model + 12 Men-at-Arms) — the app has no way to represent a composite unit with two different equipment/Tough profiles per model; see the "Grail Reliquae" army rule for the real mechanic.
     { name: "Grail Reliquae", size: 13, quality: "6+", equipment: [customWeapon("Grail Reliquae", { range: null, attacks: "1", rules: rules("") })], special: "Armored, Fearless, Furious", upgrades: "-", cost: 125 },
-    { name: "Mounted Yeomen", size: 5, quality: "5+", equipment: [customWeapon("Bows", { range: 24, attacks: "1", rules: rules("") }), customWeapon("Light Spears", { range: null, attacks: "1", rules: rules("") })], special: "Fast, Nimble, Peasant’s Duty", upgrades: "E", cost: 75 },
-    { name: "Knights Errant", size: 6, quality: "5+", equipment: [customWeapon("Light Lances", { range: null, attacks: "1", rules: rules("Impact(1)") })], special: "Armored, Fast, Fearless, Lance Formation, Nimble", upgrades: "E", cost: 115 },
-    { name: "Knights of the Realm", size: 6, quality: "4+", equipment: [customWeapon("Light Lances", { range: null, attacks: "1", rules: rules("Impact(1)") })], special: "Armored, Fast, Fearless, Lance Formation, Nimble", upgrades: "E", cost: 155 },
-    { name: "Questing Knights", size: 6, quality: "3+", equipment: [customWeapon("Light Maces", { range: null, attacks: "1", rules: rules("Piercing, Poison") })], special: "Armored, Fast, Fearless, Lance Formation, Nimble", upgrades: "E", cost: 200 },
-    { name: "Grail Knights", size: 6, quality: "3+", equipment: [customWeapon("Medium Lances", { range: null, attacks: "2", rules: rules("Impact(1)") })], special: "Armored, Fast, Fearless, Lance Formation, Nimble", upgrades: "E", cost: 210 },
-    { name: "Pegasus Knights", size: 3, quality: "4+", equipment: [customWeapon("Light Lances", { range: null, attacks: "1", rules: rules("Impact(1)") }), customWeapon("Light Claws", { range: null, attacks: "1", rules: rules("") })], special: "Armored, Fast, Fearless, Flying, Nimble, Tough(3)", upgrades: "E", cost: 140 },
-    { name: "Field Trebuchet", size: 1, quality: "5+", equipment: [customWeapon("Stone Thrower", { range: 48, attacks: "3", rules: rules("Piercing, Indirect") })], special: "Armored, Fixed, Ordnance, Peasant’s Duty, Tough(3)", upgrades: "-", cost: 60 },
+    { name: "Mounted Yeomen", size: 5, quality: "5+", equipment: [weaponFantasy('bow', { label: "Bows" }), meleeWeapon('Light', 'Spear', { key: 'light-spear', label: "Light Spears" })], special: "Fast, Nimble, Peasant’s Duty", upgrades: "E", cost: 75 },
+    { name: "Knights Errant", size: 6, quality: "5+", equipment: [meleeWeapon('Light', 'Lance', { key: 'light-lance', label: "Light Lances" })], special: "Armored, Fast, Fearless, Lance Formation, Nimble", upgrades: "E", cost: 115 },
+    { name: "Knights of the Realm", size: 6, quality: "4+", equipment: [meleeWeapon('Light', 'Lance', { key: 'light-lance', label: "Light Lances" })], special: "Armored, Fast, Fearless, Lance Formation, Nimble", upgrades: "E", cost: 155 },
+    { name: "Questing Knights", size: 6, quality: "3+", equipment: [meleeWeapon('Light', 'Mace', { key: 'light-mace', label: "Light Maces" })], special: "Armored, Fast, Fearless, Lance Formation, Nimble", upgrades: "E", cost: 200 },
+    { name: "Grail Knights", size: 6, quality: "3+", equipment: [meleeWeapon('Medium', 'Lance', { key: 'medium-lance', label: "Medium Lances" })], special: "Armored, Fast, Fearless, Lance Formation, Nimble", upgrades: "E", cost: 210 },
+    { name: "Pegasus Knights", size: 3, quality: "4+", equipment: [meleeWeapon('Light', 'Lance', { key: 'light-lance', label: "Light Lances" }), meleeWeapon('Light', 'Claws', { key: 'light-claw', label: "Light Claws" })], special: "Armored, Fast, Fearless, Flying, Nimble, Tough(3)", upgrades: "E", cost: 140 },
+    { name: "Field Trebuchet", size: 1, quality: "5+", equipment: [weaponFantasy('stone-thrower', { rules: rules('Indirect') })], special: "Armored, Fixed, Ordnance, Peasant’s Duty, Tough(3)", upgrades: "-", cost: 60 },
 ]
 
 export const bretonnia = faction({
@@ -26,27 +26,47 @@ export const bretonnia = faction({
   upgradeGroups: [
     group("A", [
       section("Replace Master Sword:", 'one', [
-        { label: "Master Lance", cost: 5, addEquipment: [customWeapon("Master Lance", { range: null, attacks: '4', rules: rules("Impact(1)") })], removeEquipment: ["Master Sword"] },
-        { label: "Master Mace", cost: 20, addEquipment: [customWeapon("Master Mace", { range: null, attacks: '4', rules: rules("Piercing, Poison") })], removeEquipment: ["Master Sword"] }
+        { label: "Master Lance", cost: 5, addEquipment: [meleeWeapon('Master', 'Lance', { key: 'master-lance', label: "Master Lance" })], removeEquipment: ["Master Sword"] },
+        { label: "Master Mace", cost: 20, addEquipment: [meleeWeapon('Master', 'Mace', { key: 'master-mace', label: "Master Mace" })], removeEquipment: ["Master Sword"] }
       ]),
       section("Mount on:", 'any', [
-        { label: "Royal Pegasus", cost: 50, addEquipment: [gear("Royal Pegasus")] },
-        { label: "Hippogryph", cost: 70, addEquipment: [gear("Hippogryph")] }
+        { label: "Royal Pegasus", cost: 50, addEquipment: [
+            meleeWeapon('Medium', 'Claws', { key: 'medium-claws', label: "Medium Claws" }),
+            gear("Royal Pegasus", { mount: true, rules: [{ ruleId: "flying" }, { ruleId: "impact", param: 1 }, { ruleId: "tough", param: 3 }] })
+          ]
+        },
+        { label: "Hippogryph", cost: 70, addEquipment: [
+            meleeWeapon('Master', 'Claws', { key: 'master-claws', label: "Master Claws" }),
+            gear("Hippogryph", { mount: true, rules: [{ ruleId: "fear" }, { ruleId: "flying" }, { ruleId: "impact", param: "D6" }, { ruleId: "tough", param: 3 }] })
+          ]
+        }
       ])
     ]),
     group("B", [
       section("Replace Heavy Sword:", 'one', [
-        { label: "Heavy Lance", cost: 5, addEquipment: [customWeapon("Heavy Lance", { range: null, attacks: '3', rules: rules("Impact(1)") })], removeEquipment: ["Heavy Sword"] },
-        { label: "Heavy Mace", cost: 10, addEquipment: [customWeapon("Heavy Mace", { range: null, attacks: '3', rules: rules("Piercing, Poison") })], removeEquipment: ["Heavy Sword"] }
+        { label: "Heavy Lance", cost: 5, addEquipment: [meleeWeapon('Heavy', 'Lance', { key: 'heavy-lance', label: "Heavy Lance" })], removeEquipment: ["Heavy Sword"] },
+        { label: "Heavy Mace", cost: 10, addEquipment: [meleeWeapon('Heavy', 'Mace', { key: 'heavy-mace', label: "Heavy Mace" })], removeEquipment: ["Heavy Sword"] }
       ]),
       section("Mount on:", 'any', [
-        { label: "Royal Pegasus", cost: 30, addEquipment: [gear("Royal Pegasus")] }
+        { label: "Royal Pegasus", cost: 30, addEquipment: [
+            meleeWeapon('Medium', 'Claws', { key: 'medium-claws', label: "Medium Claws" }),
+            gear("Royal Pegasus", { mount: true, rules: [{ ruleId: "flying" }, { ruleId: "impact", param: 1 }, { ruleId: "tough", param: 3 }] })
+          ]
+        }
       ])
     ]),
     group("C", [
       section("Mount on:", 'any', [
-        { label: "Bretonnian Warhorse", cost: 5, addEquipment: [gear("Bretonnian Warhorse")] },
-        { label: "Royal Pegasus", cost: 30, addEquipment: [gear("Royal Pegasus")] }
+        { label: "Bretonnian Warhorse", cost: 5, addEquipment: [
+            meleeWeapon('Light', 'Claws', { key: 'light-claws', label: "Light Claws" }),
+            gear("Bretonnian Warhorse", { mount: true, rules: [{ ruleId: "fast" }, { ruleId: "nimble" }] })
+          ]
+        },
+        { label: "Royal Pegasus", cost: 30, addEquipment: [
+            meleeWeapon('Medium', 'Claws', { key: 'medium-claws', label: "Medium Claws" }),
+            gear("Royal Pegasus", { mount: true, rules: [{ ruleId: "flying" }, { ruleId: "impact", param: 1 }, { ruleId: "tough", param: 3 }] })
+          ]
+        }
       ])
     ]),
     group("D", [
@@ -54,7 +74,11 @@ export const bretonnia = faction({
         { label: "Wizard(2)", cost: 10, adds: ["Wizard(2)"] }
       ]),
       section("Mount on:", 'any', [
-        { label: "Bretonnian Warhorse", cost: 5, addEquipment: [gear("Bretonnian Warhorse")] }
+        { label: "Bretonnian Warhorse", cost: 5, addEquipment: [
+            meleeWeapon('Light', 'Claws', { key: 'light-claws', label: "Light Claws" }),
+            gear("Bretonnian Warhorse", { mount: true, rules: [{ ruleId: "fast" }, { ruleId: "nimble" }] })
+          ]
+        }
       ])
     ]),
     group("E", [
@@ -62,7 +86,7 @@ export const bretonnia = faction({
         { label: "Sergeant", cost: 5, addEquipment: [gear("Sergeant", { rules: rules("Sergeant") })] },
         { label: "Musician", cost: 10, addEquipment: [gear("Musician", { rules: rules("Musician") })] },
         { label: "Standard", cost: 10, addEquipment: [gear("Standard", { rules: rules("Standard") })] }
-      ])
+      ], { oncePerUnit: true })
     ]),
     group("F", [
       section("Upgrade with:", 'any', [
@@ -71,7 +95,7 @@ export const bretonnia = faction({
     ]),
     group("G", [
       section("Replace all Light Spears:", 'one', [
-        { label: "Light Halberds", cost: 0, addEquipment: [customWeapon("Light Halberds", { range: null, attacks: '1', rules: rules("Piercing") })], removeEquipment: ["Light Spears"] }
+        { label: "Light Halberds", cost: 0, addEquipment: [meleeWeapon('Light', 'Halberd', { key: 'light-halberd', label: "Light Halberds" })], removeEquipment: ["Light Spears"] }
       ])
     ])
   ],

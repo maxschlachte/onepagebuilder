@@ -66,8 +66,10 @@ export const spaceMarines = faction({
           },
         ],
         {
-          // No group-A unit has a baseline Medium CCW — one only exists if produced above.
-          requiresOneOfSelected: ['Pistol, Medium CCW', 'Plasma Pistol, Medium CCW'],
+          prerequisite: {
+            // No group-A unit has a baseline Medium CCW — one only exists if produced above.
+            requiresOneOfSelected: ['Pistol, Medium CCW', 'Plasma Pistol, Medium CCW'],
+          },
         },
       ),
       section(
@@ -79,14 +81,16 @@ export const spaceMarines = faction({
           { label: 'Plasmagun', cost: 5, addEquipment: [weapon('plasmagun', { rules: rules('Limited') })] },
         ],
         {
-          // On a single-model unit, replacing its one Assault Rifle leaves nothing to attach to.
-          blockedBySelectingOnSingleModel: [
-            'Pistol, Medium CCW',
-            'Stormbolter',
-            'Plasma Pistol, Medium CCW',
-          ],
-          // Replacing ALL Assault Rifles (group F) removes them regardless of unit size.
-          blockedBySelecting: ['Pistols and Medium CCWs'],
+          prerequisite: {
+            // On a single-model unit, replacing its one Assault Rifle leaves nothing to attach to.
+            blockedBySelectingOnSingleModel: [
+              'Pistol, Medium CCW',
+              'Stormbolter',
+              'Plasma Pistol, Medium CCW',
+            ],
+            // Replacing ALL Assault Rifles (group F) removes them regardless of unit size.
+            blockedBySelecting: ['Pistols and Medium CCWs'],
+          },
         },
       ),
       section('Upgrade one model with one', 'one', [
@@ -95,7 +99,7 @@ export const spaceMarines = faction({
         { label: 'Terminator Armor', cost: 15, adds: ['Armored', 'Deep Strike'] },
       ]),
       section('Upgrade Psyker(1)', 'one', [{ label: 'Psyker(2)', cost: 5, adds: ['Psyker(2)'] }], {
-        requiresBaselineRule: ['Psyker(1)'],
+        prerequisite: { requiresBaselineRule: ['Psyker(1)'] },
       }),
     ]),
     group('B', [
@@ -185,11 +189,13 @@ export const spaceMarines = faction({
           },
         ],
         {
-          // Captain/Librarian (group A + H) have no baseline Stormbolter — only group A's
-          // "Stormbolter" option produces one. Terminators (group H only) already
-          // carry Stormbolters at baseline, so satisfiedByEquipment covers them directly.
-          requiresOneOfSelected: ['Stormbolter'],
-          satisfiedByEquipment: ['Stormbolters (24”, A2)'],
+          prerequisite: {
+            // Captain/Librarian (group A + H) have no baseline Stormbolter — only group A's
+            // "Stormbolter" option produces one. Terminators (group H only) already
+            // carry Stormbolters at baseline, so satisfiedByEquipment covers them directly.
+            requiresOneOfSelected: ['Stormbolter'],
+            satisfiedByEquipment: ['Stormbolters (24”, A2)'],
+          },
         },
       ),
       section('Replace all Stormbolters', 'one', [
@@ -200,8 +206,10 @@ export const spaceMarines = faction({
           removeEquipment: ['Stormbolter (24”, A2)']
         },
       ], {
-        requiresOneOfSelected: ['Stormbolter'],
-        satisfiedByEquipment: ['Stormbolters (24”, A2)'],
+        prerequisite: {
+          requiresOneOfSelected: ['Stormbolter'],
+          satisfiedByEquipment: ['Stormbolters (24”, A2)'],
+        },
       }),
       section('Equip one model with', 'one', [
         { label: 'Missile Launcher', cost: 50, addEquipment: [weapon('missile-launcher')] },

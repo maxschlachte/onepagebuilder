@@ -17,10 +17,10 @@ const units: UnitInput[] = [
     { name: "Rangers", size: 5, quality: "4+", equipment: [customWeapon("Rapid Crossbows", { range: null, attacks: "1", rules: rules("") }), meleeWeapon('Light', 'Mace', { key: 'light-mace', label: "Light Maces" })], special: "Fearless, Furious, Scout, Slow", upgrades: "B, L", cost: 165 },
     { name: "Gyrocopter", size: 1, quality: "4+", equipment: [customWeapon("Steam Gun", { range: 12, attacks: "6", rules: rules("Piercing") }), meleeWeapon('Medium', 'Sword', { key: 'medium-sword', label: "Medium Sword" })], special: "Armored, Dive Bomb, Fearless, Flying, Furious, Tough(3)", upgrades: "D", cost: 80 },
     { name: "Gyrobomber", size: 1, quality: "4+", equipment: [customWeapon("Clattergun", { range: 24, attacks: "4", rules: rules("Piercing") }), meleeWeapon('Medium', 'Sword', { key: 'medium-sword', label: "Medium Sword" })], special: "Armored, Bombing Run, Fearless, Flying, Furious, Tough(3)", upgrades: "-", cost: 160 },
-    { name: "Flame Cannon", size: 1, quality: "4+", equipment: [customWeapon("Fire Thrower", { range: 18, attacks: "6", rules: rules("") })], special: "Armored, Fearless, Ordnance, Slow, Tough(3)", upgrades: "H", cost: 50 },
+    { name: "Flame Cannon", size: 1, quality: "4+", equipment: [weaponFantasy('fire-thrower')], special: "Armored, Fearless, Ordnance, Slow, Tough(3)", upgrades: "H", cost: 50 },
     { name: "Bolt Thrower", size: 1, quality: "4+", equipment: [weaponFantasy('bolt-thrower')], special: "Armored, Fearless, Ordnance, Slow, Tough(3)", upgrades: "H", cost: 75 },
-    { name: "Grudge Thrower", size: 1, quality: "4+", equipment: [customWeapon("Stone Thrower", { range: 48, attacks: "3", rules: rules("Piercing, Indirect") })], special: "Armored, Fearless, Ordnance, Slow, Tough(3)", upgrades: "H", cost: 100 },
-    { name: "Dwarf Cannon", size: 1, quality: "4+", equipment: [customWeapon("Cannon", { range: 48, attacks: "D3+3", rules: rules("Piercing") })], special: "Armored, Fearless, Ordnance, Slow, Tough(3)", upgrades: "H", cost: 120 },
+    { name: "Grudge Thrower", size: 1, quality: "4+", equipment: [weaponFantasy('stone-thrower', { rules: rules('Indirect') })], special: "Armored, Fearless, Ordnance, Slow, Tough(3)", upgrades: "H", cost: 100 },
+    { name: "Dwarf Cannon", size: 1, quality: "4+", equipment: [weaponFantasy('cannon')], special: "Armored, Fearless, Ordnance, Slow, Tough(3)", upgrades: "H", cost: 120 },
     { name: "Organ Gun", size: 1, quality: "4+", equipment: [customWeapon("Organ Gun", { range: 30, attacks: "12", rules: rules("Piercing") })], special: "Armored, Fearless, Ordnance, Slow, Tough(3)", upgrades: "H", cost: 165 },
 ]
 
@@ -51,8 +51,12 @@ export const dwarfs = faction({
         { label: "Rapid Crossbow", cost: 20, addEquipment: [customWeapon("Rapid Crossbow", { range: null, attacks: '1', rules: rules('') })] }
       ]),
       section("Mount on:", 'any', [
-        { label: "Shieldbearers", cost: 40, addEquipment: [gear("Shieldbearers")] },
-        { label: "Oathstone", cost: 50, adds: ["Oathstone"], addEquipment: [gear("Oathstone")] }
+        { label: "Shieldbearers", cost: 40, addEquipment: [
+            meleeWeapon('Medium', 'Sword', { key: 'shieldbearers-medium-swords', label: "Medium Swords" }),
+            gear("Shieldbearers", { mount: true, rules: rules("Tough(3)") })
+          ]
+        },
+        { label: "Oathstone", cost: 50, adds: ["Oathstone"], addEquipment: [gear("Oathstone", { mount: true })] }
       ])
     ]),
     group("K", [
@@ -71,7 +75,7 @@ export const dwarfs = faction({
         { label: "Sergeant", cost: 5, addEquipment: [gear("Sergeant", { rules: rules("Sergeant") })] },
         { label: "Musician", cost: 10, addEquipment: [gear("Musician", { rules: rules("Musician") })] },
         { label: "Standard", cost: 10, addEquipment: [gear("Standard", { rules: rules("Standard") })] }
-      ])
+      ], { oncePerUnit: true })
     ]),
     group("M", [
       section("Upgrade with:", 'any', [

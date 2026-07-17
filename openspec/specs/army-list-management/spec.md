@@ -160,7 +160,7 @@ The system SHALL allow a user to export a single army list to a JSON file and to
 
 ### Requirement: Combine Infantry units and attach Heroes/Psykers
 
-The system SHALL let a user combine two list entries of the same Infantry-eligible unit into one linked pair that displays and costs as a single bigger unit, where any upgrade option that affects all models SHALL be selected identically on both entries, while an option that affects one model or a bounded subset of models remains independently selectable on each entry. The system SHALL let a user split a combined pair back into two independent entries at any time. A unit is Infantry-eligible when its special rules do not include Hero, Psyker, Monster, or Vehicle. An upgrade option affects all models only when it belongs to an upgrade section whose scope is every model in the unit (the sections the rules define as "Replace all…"/"Upgrade all models…"/"Equip all models…"); an option belonging to any other section — including a single-model swap, an "any"/"up to N models" section, or an unqualified single-item replacement that only ever applies to one specific model in the unit — is not whole-unit, regardless of whether it carries an equipment-replacement effect of its own. When the two entries' equipment is merged for display, entries that are the same item but carry different attached rules (e.g. a plain copy of a weapon and a "Limited" copy of the same weapon) SHALL remain separate entries, each with its own model count, rather than being combined into one entry that reports only one side's rules.
+The system SHALL let a user combine two list entries of the same Infantry-eligible unit into one linked pair that displays and costs as a single bigger unit, where any upgrade option that affects all models SHALL be selected identically on both entries, while an option that affects one model or a bounded subset of models remains independently selectable on each entry. The system SHALL let a user split a combined pair back into two independent entries at any time. A unit is Infantry-eligible when its special rules do not include Hero, Psyker, Monster, or Vehicle. An upgrade option affects all models when it belongs to an upgrade section whose scope is every model in the unit (the sections the rules define as "Replace all…"/"Upgrade all models…"/"Equip all models…"), or when it belongs to a section the data explicitly marks as capped at one grant per unit regardless of model count (e.g. a Warhammer Fantasy faction's Sergeant/Musician/Standard "Upgrade with:" section) even though that section's own printed title doesn't say "all"; an option belonging to any other section — including a single-model swap, an "any"/"up to N models" section, or an unqualified single-item replacement that only ever applies to one specific model in the unit — is not whole-unit, regardless of whether it carries an equipment-replacement effect of its own. A whole-unit option's point cost SHALL be added once per linked entry it is selected on. An option belonging to a section capped at one grant per unit is an exception to this "selected identically on both entries" rule: the system SHALL record it on at most one of the two linked entries (never both), so that the combined pair's cost and any equipment that option grants are inherently counted exactly once, and so that splitting the pair afterward leaves the grant on only the entry that held it — not duplicated onto both, since the unit as a whole only ever had one such grant to begin with. It SHALL still render and toggle from the same "applies to the whole combined pair" control as a genuine whole-unit option, and remains independently purchasable again on either resulting entry once split. When the two entries' equipment is merged for display, entries that are the same item but carry different attached rules (e.g. a plain copy of a weapon and a "Limited" copy of the same weapon) SHALL remain separate entries, each with its own model count, rather than being combined into one entry that reports only one side's rules.
 
 The system SHALL also let a user attach a Hero or Psyker list entry to an Infantry-eligible list entry of the same Quality in the same list, purely for organizational display, with no effect on cost or on points-cap/hero-limit validation, and SHALL let the user detach it at any time.
 
@@ -173,6 +173,26 @@ The system SHALL also let a user attach a Hero or Psyker list entry to an Infant
 
 - **WHEN** the user selects an upgrade option from a section scoped to every model in the unit (e.g. "Replace all Assault Rifles") on a combined pair
 - **THEN** that option is recorded as selected on both linked entries and its point cost is added once per entry
+
+#### Scenario: A once-per-unit upgrade is charged only once for a combined pair
+
+- **WHEN** the user selects an option from a section the data marks as capped at one grant per unit (e.g. Sergeant) on a combined pair, via the same control a genuine whole-unit option uses
+- **THEN** the option is recorded on only one of the two linked entries, and the combined pair's cost includes that option's point delta exactly once
+
+#### Scenario: A once-per-unit upgrade's equipment is shown once for a combined pair
+
+- **WHEN** a once-per-unit option (e.g. Sergeant) is selected on a combined pair
+- **THEN** the combined pair's displayed equipment shows that option's granted equipment (e.g. the Sergeant gear entry) with a model count of one, not doubled
+
+#### Scenario: Combining two entries that each already independently selected the same once-per-unit option collapses to one
+
+- **WHEN** each of two entries of the same Infantry-eligible unit independently selected the same once-per-unit option before being combined (a state the app allowed prior to this fix, or a previously-saved list), and the user combines them
+- **THEN** the resulting combined pair records that option on only one of the two linked entries, not both
+
+#### Scenario: Splitting a combined pair leaves a once-per-unit upgrade on only the entry that held it
+
+- **WHEN** a combined pair has a once-per-unit option (e.g. Sergeant) selected, and the user splits the pair back into two independent entries
+- **THEN** only the one entry that actually held the selection keeps it; the other entry has none, and may independently purchase its own copy going forward
 
 #### Scenario: A single-model upgrade stays independent per combined entry
 

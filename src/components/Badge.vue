@@ -4,14 +4,19 @@ defineProps<{
 }>()
 
 const variantClasses: Record<string, string> = {
-  hero: 'bg-amber-300 text-amber-700',
-  attached: 'bg-amber-300 text-amber-700',
-  psyker: 'bg-purple-800 text-purple-200 dark:bg-purple-900 dark:text-purple-300',
-  group: 'bg-teal-100 text-teal-800 dark:bg-teal-900 dark:text-teal-200',
-  combined: 'bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200',
+  hero: 'bg-green-700 dark:bg-green-500',
+  attached: 'bg-yellow-700 dark:bg-yellow-500',
+  psyker: 'bg-purple-700 dark:bg-purple-500',
+  group: 'bg-teal-700 dark:bg-teal-500',
+  combined: 'bg-blue-700 dark:bg-blue-500',
 }
 </script>
 
 <template>
-  <span class="rounded px-1 text-xs" :class="variantClasses[variant]"><slot /></span>
+  <span
+      class="inline-block align-middle rounded px-1 pb-0.5 text-[9px] first-letter:text-[11px] text-black text-opacity-75 font-bold uppercase"
+      :class="variantClasses[variant]"
+  >
+    <slot />
+  </span>
 </template>

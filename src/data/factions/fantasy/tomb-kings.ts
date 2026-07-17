@@ -1,4 +1,4 @@
-import { faction, customWeapon, meleeWeapon, gear, rules, armyRule, power, section, group, type UnitInput } from '../helpers'
+import { faction, customWeapon, weaponFantasy, meleeWeapon, gear, rules, armyRule, power, section, group, type UnitInput } from '../helpers'
 
 const units: UnitInput[] = [
     { name: "Tomb Prince", size: 1, quality: "4+", equipment: [meleeWeapon('Heavy', 'Sword', { key: 'heavy-sword', label: "Heavy Sword" })], special: "Curse, Hero, Tough(3), Undead", upgrades: "A", cost: 35 },
@@ -6,14 +6,14 @@ const units: UnitInput[] = [
     { name: "Liche Priest", size: 1, quality: "5+", equipment: [meleeWeapon('Light', 'Sword', { key: 'light-sword', label: "Light Sword" })], special: "Tough(3), Undead, Wizard(1)", upgrades: "B", cost: 40 },
     { name: "Skeleton Warriors", size: 10, quality: "6+", equipment: [meleeWeapon('Light', 'Swords', { key: 'light-sword', label: "Light Swords" })], special: "Undead", upgrades: "C, H", cost: 40 },
     { name: "Tomb Guard", size: 10, quality: "5+", equipment: [meleeWeapon('Light', 'Swords', { key: 'light-sword', label: "Light Swords" })], special: "Undead", upgrades: "C, I", cost: 80 },
-    { name: "Skeleton Archers", size: 5, quality: "6+", equipment: [customWeapon("Bows", { range: 24, attacks: "1", rules: rules("") })], special: "Asaph’s Arrows, Undead", upgrades: "C", cost: 35 },
-    { name: "Skeleton Horsemen", size: 5, quality: "5+", equipment: [meleeWeapon('Light', 'Spears', { key: 'light-spear', label: "Light Spears" })], special: "Fast, Nimble, Undead, Vanguard", upgrades: "C", cost: 65 },
-    { name: "Horse Archers", size: 5, quality: "5+", equipment: [customWeapon("Bows", { range: 24, attacks: "1", rules: rules("") })], special: "Asaph’s Arrows, Fast, Nimble, Scout, Undead", upgrades: "C", cost: 90 },
+    { name: "Skeleton Archers", size: 5, quality: "6+", equipment: [weaponFantasy('bow', { label: "Bows" })], special: "Asaph’s Arrows, Undead", upgrades: "C", cost: 35 },
+    { name: "Skeleton Horsemen", size: 5, quality: "5+", equipment: [meleeWeapon('Light', 'Spear', { key: 'light-spear', label: "Light Spears" })], special: "Fast, Nimble, Undead, Vanguard", upgrades: "C", cost: 65 },
+    { name: "Horse Archers", size: 5, quality: "5+", equipment: [weaponFantasy('bow', { label: "Bows" })], special: "Asaph’s Arrows, Fast, Nimble, Scout, Undead", upgrades: "C", cost: 90 },
     { name: "Tomb Swarms", size: 3, quality: "6+", equipment: [meleeWeapon('Force', 'Claws', { key: 'force-claw', label: "Force Claws", rules: rules('Poison') })], special: "Entombed, Tough(6), Undead", upgrades: "-", cost: 100 },
     { name: "Carrions", size: 3, quality: "4+", equipment: [meleeWeapon('Heavy', 'Claws', { key: 'heavy-claw', label: "Heavy Claws" })], special: "Fast, Flying, Nimble, Tough(3), Undead", upgrades: "-", cost: 115 },
     { name: "Ushabti", size: 3, quality: "3+", equipment: [meleeWeapon('Heavy', 'Swords', { key: 'heavy-sword', label: "Heavy Swords" })], special: "Impact(1), Tough(3), Undead", upgrades: "C, K", cost: 130 },
     { name: "Sepulchral Stalkers", size: 3, quality: "4+", equipment: [meleeWeapon('Medium', 'Halberd', { key: 'medium-halberd', label: "Medium Halberds", rules: rules('Piercing') })], special: "Entombed, Gaze, Impact(1), Nimble, Tough(3), Undead", upgrades: "-", cost: 165 },
-    { name: "Necropolis Knights", size: 3, quality: "3+", equipment: [meleeWeapon('Medium', 'Spears', { key: 'medium-spear', label: "Medium Spears", rules: rules('Deadly') }), meleeWeapon('Heavy', 'Claws', { key: 'heavy-claw', label: "Heavy Claws", rules: rules('Poison') })], special: "Armored, Impact(1), Nimble, Tough(3), Undead", upgrades: "C, J", cost: 275 },
+    { name: "Necropolis Knights", size: 3, quality: "3+", equipment: [meleeWeapon('Medium', 'Spear', { key: 'medium-spear', label: "Medium Spears", rules: rules('Deadly') }), meleeWeapon('Heavy', 'Claws', { key: 'heavy-claw', label: "Heavy Claws", rules: rules('Poison') })], special: "Armored, Impact(1), Nimble, Tough(3), Undead", upgrades: "C, J", cost: 275 },
     { name: "Tomb Scorpion", size: 1, quality: "3+", equipment: [meleeWeapon('Master', 'Claws', { key: 'master-claw', label: "Master Claws", rules: rules('Deadly') })], special: "Armored, Entombed, Impact(1), Resistance, Tough(3), Undead", upgrades: "-", cost: 100 },
     { name: "Necrolith Colossus", size: 1, quality: "4+", equipment: [meleeWeapon('Master', 'Sword', { key: 'master-sword', label: "Master Sword", rules: rules('Piercing') })], special: "Armored, Impact(D6), Tough(6), Undead, Unstoppable", upgrades: "E", cost: 90 },
     // Printed profile "(24”, AD6*2)" — the "*2" notation isn't defined anywhere in the source docs
@@ -21,8 +21,8 @@ const units: UnitInput[] = [
     { name: "Hierotitan", size: 1, quality: "4+", equipment: [customWeapon("Icon of Ptra", { range: 24, attacks: "D6", rules: rules("") }), meleeWeapon('Heavy', 'Sword', { key: 'heavy-sword', label: "Heavy Sword", rules: rules('Piercing') })], special: "Armored, Impact(D6), Spirit Conduit, Tough(6), Undead", upgrades: "-", cost: 140 },
     { name: "Warsphinx", size: 1, quality: "3+", equipment: [meleeWeapon('Master', 'Spear', { key: 'master-spear', label: "Master Spear", rules: rules('Deadly') }), meleeWeapon('Master', 'Claws', { key: 'master-claw', label: "Master Claws" })], special: "Armored, Impact(D6), Thundercrush, Tough(6), Undead", upgrades: "D", cost: 150 },
     { name: "Necrosphinx", size: 1, quality: "3+", equipment: [meleeWeapon('Force', 'Claws', { key: 'force-claw', label: "Force Claws", rules: rules('Deadly') })], special: "Armored, Flying, Impact(D6), Tough(6), Undead", upgrades: "F", cost: 150 },
-    { name: "Skeleton Chariots", size: 3, quality: "5+", equipment: [customWeapon("Bows", { range: 24, attacks: "1", rules: rules("") }, { count: 2 }), meleeWeapon('Master', 'Spears', { key: 'master-spear', label: "Master Spears" }), meleeWeapon('Medium', 'Claws', { key: 'medium-claw', label: "Medium Claws" })], special: "Armored, Asaph’s Arrows, Fast, Impact(D6), Tough(3)", upgrades: "C", cost: 170 },
-    { name: "Skull Catapult", size: 1, quality: "5+", equipment: [customWeapon("Stone Thrower", { range: 48, attacks: "3", rules: rules("Piercing, Indirect") })], special: "Armored, Ordnance, Screaming Skulls, Tough(3), Undead", upgrades: "G", cost: 85 },
+    { name: "Skeleton Chariots", size: 3, quality: "5+", equipment: [weaponFantasy('bow', { count: 2 }), meleeWeapon('Master', 'Spear', { key: 'master-spear', label: "Master Spears" }), meleeWeapon('Medium', 'Claws', { key: 'medium-claw', label: "Medium Claws" })], special: "Armored, Asaph’s Arrows, Fast, Impact(D6), Tough(3)", upgrades: "C", cost: 170 },
+    { name: "Skull Catapult", size: 1, quality: "5+", equipment: [weaponFantasy('stone-thrower', { rules: rules('Indirect') })], special: "Armored, Ordnance, Screaming Skulls, Tough(3), Undead", upgrades: "G", cost: 85 },
     { name: "Casket of Souls", size: 1, quality: "4+", equipment: [meleeWeapon('Medium', 'Sword', { key: 'medium-sword', label: "Medium Sword" }), meleeWeapon('Master', 'Mace', { key: 'master-mace', label: "Master Mace", rules: rules('Piercing, Poison, Deadly') })], special: "Armored, Covenant, Light of Death, Ordnance, Tough(6), Unleashed, Undead", upgrades: "-", cost: 285 },
 ]
 
@@ -44,18 +44,34 @@ export const tombkings = faction({
         { label: "Prince’s Will", cost: 120, adds: ["Prince’s Will"] }
       ]),
       section("Mount on:", 'any', [
-        { label: "Skeletal Steed", cost: 10, addEquipment: [gear("Skeletal Steed")] },
-        { label: "Skeleton Chariot", cost: 55, addEquipment: [gear("Skeleton Chariot")] },
-        { label: "Warsphinx", cost: 85, addEquipment: [gear("Warsphinx")] }
+        { label: "Skeletal Steed", cost: 10, addEquipment: [
+            meleeWeapon('Light', 'Claws', { key: 'light-claws', label: "Light Claws" }),
+            gear("Skeletal Steed", { mount: true, rules: [{ ruleId: "fast" }, { ruleId: "nimble" }] })
+          ]
+        },
+        { label: "Skeleton Chariot", cost: 55, addEquipment: [
+            meleeWeapon('Medium', 'Claws', { key: 'medium-claws', label: "Medium Claws" }),
+            gear("Skeleton Chariot", { mount: true, rules: [{ ruleId: "armored" }, { ruleId: "fast" }, { ruleId: "impact", param: "D6" }, { ruleId: "tough", param: 3 }] })
+          ]
+        },
+        { label: "Warsphinx", cost: 85, addEquipment: [
+            meleeWeapon('Master', 'Claws', { key: 'warsphinx-master-claws', label: "Master Claws" }),
+            gear("Warsphinx", { mount: true, rules: [{ ruleId: "armored" }, { ruleId: "impact", param: "D6" }, { ruleId: "thundercrush" }, { ruleId: "tough", param: 6 }] })
+          ]
+        }
       ])
     ]),
     group("B", [
       section("Upgrade Wizard(1):", 'any', [
         { label: "Wizard(2)", cost: 10, adds: ["Wizard(2)"] },
         { label: "Wizard(3)", cost: 20, adds: ["Wizard(3)"] }
-      ], { requiresBaselineRule: ["Wizard(1)"] }),
+      ], { prerequisite: { requiresBaselineRule: ["Wizard(1)"] } }),
       section("Mount on:", 'any', [
-        { label: "Skeletal Steed", cost: 5, addEquipment: [gear("Skeletal Steed")] }
+        { label: "Skeletal Steed", cost: 5, addEquipment: [
+            meleeWeapon('Light', 'Claws', { key: 'light-claws', label: "Light Claws" }),
+            gear("Skeletal Steed", { mount: true, rules: [{ ruleId: "fast" }, { ruleId: "nimble" }] })
+          ]
+        }
       ])
     ]),
     group("C", [
@@ -63,7 +79,7 @@ export const tombkings = faction({
         { label: "Sergeant", cost: 5, addEquipment: [gear("Sergeant", { rules: rules("Sergeant") })] },
         { label: "Musician", cost: 10, addEquipment: [gear("Musician", { rules: rules("Musician") })] },
         { label: "Standard", cost: 10, addEquipment: [gear("Standard", { rules: rules("Standard") })] }
-      ])
+      ], { oncePerUnit: true })
     ]),
     group("D", [
       section("Upgrade with any:", 'any', [
@@ -77,7 +93,7 @@ export const tombkings = faction({
         { label: "Force Mace", cost: 20, addEquipment: [meleeWeapon('Force', 'Mace', { key: 'force-mace', label: "Force Mace", rules: rules('Piercing, Poison') })], removeEquipment: ["Master Sword"] }
       ]),
       section("Equip with:", 'any', [
-        { label: "Bolt Thrower", cost: 55, addEquipment: [customWeapon("Bolt Thrower", { range: 48, attacks: "3", rules: rules("Piercing, Single Target, Asaph’s Arrows") })] }
+        { label: "Bolt Thrower", cost: 55, addEquipment: [weaponFantasy('bolt-thrower', { rules: rules("Asaph’s Arrows") })] }
       ])
     ]),
     group("F", [
@@ -92,7 +108,7 @@ export const tombkings = faction({
     ]),
     group("H", [
       section("Replace all Light Swords:", 'one', [
-        { label: "Light Spears", cost: 5, addEquipment: [meleeWeapon('Light', 'Spears', { key: 'light-spear', label: "Light Spears" })], removeEquipment: ["Light Swords"] }
+        { label: "Light Spears", cost: 5, addEquipment: [meleeWeapon('Light', 'Spear', { key: 'light-spear', label: "Light Spears" })], removeEquipment: ["Light Swords"] }
       ])
     ]),
     group("I", [

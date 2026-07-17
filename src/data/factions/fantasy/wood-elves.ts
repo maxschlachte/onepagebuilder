@@ -1,26 +1,26 @@
-import { faction, customWeapon, gear, rules, armyRule, power, section, group, type UnitInput } from '../helpers'
+import { faction, customWeapon, weaponFantasy, meleeWeapon, gear, rules, armyRule, power, section, group, type UnitInput } from '../helpers'
 
 const units: UnitInput[] = [
-    { name: "Glade Captain", size: 1, quality: "4+", equipment: [customWeapon("Longbow", { range: 30, attacks: "1", rules: rules("") }), customWeapon("Heavy Sword", { range: null, attacks: "3", rules: rules("") })], special: "Arrow of Kurnous, Hero, Stalker, Strider, Tough(3)", upgrades: "A", cost: 50 },
-    { name: "Spellsinger", size: 1, quality: "4+", equipment: [customWeapon("Light Sword", { range: null, attacks: "1", rules: rules("") })], special: "Blessing, Hero, Stalker, Strider, Tough(3), Wizard(1)", upgrades: "B", cost: 50 },
-    { name: "Branchwraith", size: 1, quality: "4+", equipment: [customWeapon("Heavy Claws", { range: null, attacks: "3", rules: rules("") })], special: "Blessing, Fear, Furious, Hero, Strider, Tough(3), Wizard(1)", upgrades: "-", cost: 55 },
-    { name: "Waystalker", size: 1, quality: "4+", equipment: [customWeapon("Longbow", { range: 30, attacks: "1", rules: rules("Sniper") }), customWeapon("Medium Sword", { range: null, attacks: "2", rules: rules("") })], special: "Hawk-eyed, Hero, Scout, Stalker, Strider, Tough(3)", upgrades: "-", cost: 70 },
-    { name: "Shadowdancer", size: 1, quality: "3+", equipment: [customWeapon("Master Sword", { range: null, attacks: "4", rules: rules("") })], special: "Dancer, Fearless, Hero, Stalker, Strider, Tough(3)", upgrades: "C", cost: 55 },
-    { name: "Treeman Ancient", size: 1, quality: "3+", equipment: [gear("Tree Whack"), customWeapon("Heavy Claws", { range: null, attacks: "3", rules: rules("") })], special: "Armored, Blessing, Fear, Fearless, Impact(D6), Strider, Tough(6), Wizard(2)", upgrades: "F, G", cost: 145 },
-    { name: "Dryads", size: 10, quality: "4+", equipment: [customWeapon("Medium Claws", { range: null, attacks: "2", rules: rules("") })], special: "Fear, Furious, Strider", upgrades: "-", cost: 180 },
-    { name: "Eternal Guard", size: 10, quality: "3+", equipment: [customWeapon("Light Spears", { range: null, attacks: "1", rules: rules("") })], special: "Fearless, Stalker, Strider", upgrades: "E", cost: 215 },
-    { name: "Wardancers", size: 10, quality: "3+", equipment: [customWeapon("Light Spears", { range: null, attacks: "1", rules: rules("") })], special: "Dancer, Fearless, Stalker, Strider", upgrades: "E, H", cost: 255 },
-    { name: "Wildwood Rangers", size: 10, quality: "3+", equipment: [customWeapon("Light Maces", { range: null, attacks: "1", rules: rules("Piercing, Poison") })], special: "Fearless, Guardian, Stalker, Strider", upgrades: "E", cost: 265 },
-    { name: "Glade Guard", size: 5, quality: "4+", equipment: [customWeapon("Longbows", { range: 30, attacks: "1", rules: rules("") }), customWeapon("Light Swords", { range: null, attacks: "1", rules: rules("") })], special: "Stalker, Strider", upgrades: "D, E", cost: 110 },
-    { name: "Deepwood Scouts", size: 5, quality: "4+", equipment: [customWeapon("Longbows", { range: 30, attacks: "1", rules: rules("") }), customWeapon("Light Swords", { range: null, attacks: "1", rules: rules("") })], special: "Scout, Stalker, Strider", upgrades: "D, E", cost: 125 },
-    { name: "Waywatchers", size: 5, quality: "4+", equipment: [customWeapon("Longbows", { range: 30, attacks: "1", rules: rules("") }), customWeapon("Medium Swords", { range: null, attacks: "2", rules: rules("") })], special: "Hawk-eyed, Scout, Stalker, Strider", upgrades: "-", cost: 195 },
-    { name: "Wild Riders", size: 5, quality: "3+", equipment: [customWeapon("Light Spears", { range: null, attacks: "1", rules: rules("") })], special: "Fast, Fear, Furious, Nimble, Stalker, Strider", upgrades: "E", cost: 150 },
-    { name: "Glade Riders", size: 5, quality: "4+", equipment: [customWeapon("Longbows", { range: 30, attacks: "1", rules: rules("") }), customWeapon("Light Spears", { range: null, attacks: "1", rules: rules("") })], special: "Ambush, Fast, Nimble, Stalker, Strider", upgrades: "D, E", cost: 155 },
-    { name: "Sisters of the Thorn", size: 5, quality: "4+", equipment: [customWeapon("Throwing Weapons", { range: 12, attacks: "1", rules: rules("Poison") }), customWeapon("Light Swords", { range: null, attacks: "1", rules: rules("Poison") })], special: "Armored, Deepwood Coven, Fast, Nimble, Stalker, Strider", upgrades: "E", cost: 175 },
-    { name: "Great Eagles", size: 3, quality: "3+", equipment: [customWeapon("Medium Claws", { range: null, attacks: "2", rules: rules("") })], special: "Flying, Nimble, Impact(1), Tough(3)", upgrades: "-", cost: 125 },
-    { name: "Tree Kin", size: 3, quality: "3+", equipment: [customWeapon("Heavy Claws", { range: null, attacks: "3", rules: rules("") })], special: "Armored, Fear, Fearless, Impact(1), Strider, Tough(3)", upgrades: "-", cost: 175 },
-    { name: "Warhawk Riders", size: 3, quality: "4+", equipment: [customWeapon("Longbows", { range: 30, attacks: "1", rules: rules("") }), customWeapon("Light Spears", { range: null, attacks: "1", rules: rules("") }), customWeapon("Medium Claws", { range: null, attacks: "2", rules: rules("Piercing") })], special: "Fast, Flying, Furious, Impact(1), Nimble, Predator’s Descent, Stalker, Tough(3)", upgrades: "-", cost: 200 },
-    { name: "Treeman", size: 1, quality: "3+", equipment: [gear("Tree Whack"), customWeapon("Force Claws", { range: null, attacks: "5", rules: rules("") })], special: "Armored, Fear, Fearless, Impact(D6), Strider, Tough(6)", upgrades: "G", cost: 120 },
+    { name: "Glade Captain", size: 1, quality: "4+", equipment: [weaponFantasy('longbow'), meleeWeapon('Heavy', 'Sword', { key: 'heavy-sword', label: "Heavy Sword" })], special: "Arrow of Kurnous, Hero, Stalker, Strider, Tough(3)", upgrades: "A", cost: 50 },
+    { name: "Spellsinger", size: 1, quality: "4+", equipment: [meleeWeapon('Light', 'Sword', { key: 'light-sword', label: "Light Sword" })], special: "Blessing, Hero, Stalker, Strider, Tough(3), Wizard(1)", upgrades: "B", cost: 50 },
+    { name: "Branchwraith", size: 1, quality: "4+", equipment: [meleeWeapon('Heavy', 'Claws', { key: 'heavy-claw', label: "Heavy Claws" })], special: "Blessing, Fear, Furious, Hero, Strider, Tough(3), Wizard(1)", upgrades: "-", cost: 55 },
+    { name: "Waystalker", size: 1, quality: "4+", equipment: [weaponFantasy('longbow', { rules: rules('Sniper') }), meleeWeapon('Medium', 'Sword', { key: 'medium-sword', label: "Medium Sword" })], special: "Hawk-eyed, Hero, Scout, Stalker, Strider, Tough(3)", upgrades: "-", cost: 70 },
+    { name: "Shadowdancer", size: 1, quality: "3+", equipment: [meleeWeapon('Master', 'Sword', { key: 'master-sword', label: "Master Sword" })], special: "Dancer, Fearless, Hero, Stalker, Strider, Tough(3)", upgrades: "C", cost: 55 },
+    { name: "Treeman Ancient", size: 1, quality: "3+", equipment: [gear("Tree Whack"), meleeWeapon('Heavy', 'Claws', { key: 'heavy-claw', label: "Heavy Claws" })], special: "Armored, Blessing, Fear, Fearless, Impact(D6), Strider, Tough(6), Wizard(2)", upgrades: "F, G", cost: 145 },
+    { name: "Dryads", size: 10, quality: "4+", equipment: [meleeWeapon('Medium', 'Claws', { key: 'medium-claw', label: "Medium Claws" })], special: "Fear, Furious, Strider", upgrades: "-", cost: 180 },
+    { name: "Eternal Guard", size: 10, quality: "3+", equipment: [meleeWeapon('Light', 'Spear', { key: 'light-spear', label: "Light Spears" })], special: "Fearless, Stalker, Strider", upgrades: "E", cost: 215 },
+    { name: "Wardancers", size: 10, quality: "3+", equipment: [meleeWeapon('Light', 'Spear', { key: 'light-spear', label: "Light Spears" })], special: "Dancer, Fearless, Stalker, Strider", upgrades: "E, H", cost: 255 },
+    { name: "Wildwood Rangers", size: 10, quality: "3+", equipment: [meleeWeapon('Light', 'Mace', { key: 'light-mace', label: "Light Maces" })], special: "Fearless, Guardian, Stalker, Strider", upgrades: "E", cost: 265 },
+    { name: "Glade Guard", size: 5, quality: "4+", equipment: [weaponFantasy('longbow', { label: "Longbows" }), meleeWeapon('Light', 'Swords', { key: 'light-sword', label: "Light Swords" })], special: "Stalker, Strider", upgrades: "D, E", cost: 110 },
+    { name: "Deepwood Scouts", size: 5, quality: "4+", equipment: [weaponFantasy('longbow', { label: "Longbows" }), meleeWeapon('Light', 'Swords', { key: 'light-sword', label: "Light Swords" })], special: "Scout, Stalker, Strider", upgrades: "D, E", cost: 125 },
+    { name: "Waywatchers", size: 5, quality: "4+", equipment: [weaponFantasy('longbow', { label: "Longbows" }), meleeWeapon('Medium', 'Swords', { key: 'medium-sword', label: "Medium Swords" })], special: "Hawk-eyed, Scout, Stalker, Strider", upgrades: "-", cost: 195 },
+    { name: "Wild Riders", size: 5, quality: "3+", equipment: [meleeWeapon('Light', 'Spear', { key: 'light-spear', label: "Light Spears" })], special: "Fast, Fear, Furious, Nimble, Stalker, Strider", upgrades: "E", cost: 150 },
+    { name: "Glade Riders", size: 5, quality: "4+", equipment: [weaponFantasy('longbow', { label: "Longbows" }), meleeWeapon('Light', 'Spear', { key: 'light-spear', label: "Light Spears" })], special: "Ambush, Fast, Nimble, Stalker, Strider", upgrades: "D, E", cost: 155 },
+    { name: "Sisters of the Thorn", size: 5, quality: "4+", equipment: [weaponFantasy('throwing-weapon', { label: "Throwing Weapons", rules: rules('Poison') }), meleeWeapon('Light', 'Swords', { key: 'light-sword', label: "Light Swords", rules: rules('Poison') })], special: "Armored, Deepwood Coven, Fast, Nimble, Stalker, Strider", upgrades: "E", cost: 175 },
+    { name: "Great Eagles", size: 3, quality: "3+", equipment: [meleeWeapon('Medium', 'Claws', { key: 'medium-claw', label: "Medium Claws" })], special: "Flying, Nimble, Impact(1), Tough(3)", upgrades: "-", cost: 125 },
+    { name: "Tree Kin", size: 3, quality: "3+", equipment: [meleeWeapon('Heavy', 'Claws', { key: 'heavy-claw', label: "Heavy Claws" })], special: "Armored, Fear, Fearless, Impact(1), Strider, Tough(3)", upgrades: "-", cost: 175 },
+    { name: "Warhawk Riders", size: 3, quality: "4+", equipment: [weaponFantasy('longbow', { label: "Longbows" }), meleeWeapon('Light', 'Spear', { key: 'light-spear', label: "Light Spears" }), meleeWeapon('Medium', 'Claws', { key: 'medium-claw', label: "Medium Claws", rules: rules('Piercing') })], special: "Fast, Flying, Furious, Impact(1), Nimble, Predator’s Descent, Stalker, Tough(3)", upgrades: "-", cost: 200 },
+    { name: "Treeman", size: 1, quality: "3+", equipment: [gear("Tree Whack"), meleeWeapon('Force', 'Claws', { key: 'force-claw', label: "Force Claws" })], special: "Armored, Fear, Fearless, Impact(D6), Strider, Tough(6)", upgrades: "G", cost: 120 },
 ]
 
 export const woodelves = faction({
@@ -31,28 +31,57 @@ export const woodelves = faction({
   upgradeGroups: [
     group("A", [
       section("Replace Heavy Sword:", 'one', [
-        { label: "Master Sword", cost: 5, addEquipment: [customWeapon("Master Sword", { range: null, attacks: '4', rules: rules('') })], removeEquipment: ["Heavy Sword"] },
-        { label: "Heavy Spear", cost: 5, addEquipment: [customWeapon("Heavy Spear", { range: null, attacks: '3', rules: rules('') })], removeEquipment: ["Heavy Sword"] },
-        { label: "Heavy Mace", cost: 15, addEquipment: [customWeapon("Heavy Mace", { range: null, attacks: '3', rules: rules("Piercing, Poison") })], removeEquipment: ["Heavy Sword"] }
+        { label: "Master Sword", cost: 5, addEquipment: [meleeWeapon('Master', 'Sword', { key: 'master-sword', label: "Master Sword" })], removeEquipment: ["Heavy Sword"] },
+        { label: "Heavy Spear", cost: 5, addEquipment: [meleeWeapon('Heavy', 'Spear', { key: 'heavy-spear', label: "Heavy Spear" })], removeEquipment: ["Heavy Sword"] },
+        { label: "Heavy Mace", cost: 15, addEquipment: [meleeWeapon('Heavy', 'Mace', { key: 'heavy-mace', label: "Heavy Mace" })], removeEquipment: ["Heavy Sword"] }
       ]),
       section("Mount on:", 'any', [
-        { label: "Elven Steed", cost: 10, addEquipment: [gear("Elven Steed")] },
-        { label: "Great Eagle", cost: 35, addEquipment: [gear("Great Eagle")] },
-        { label: "Great Stag", cost: 40, addEquipment: [gear("Great Stag")] },
-        { label: "Forest Dragon", cost: 120, addEquipment: [gear("Forest Dragon")] }
+        { label: "Elven Steed", cost: 10, addEquipment: [
+            meleeWeapon('Light', 'Claws', { key: 'light-claws', label: "Light Claws" }),
+            gear("Elven Steed", { mount: true, rules: [{ ruleId: "fast" }, { ruleId: "nimble" }] })
+          ]
+        },
+        { label: "Great Eagle", cost: 35, addEquipment: [
+            meleeWeapon('Medium', 'Claws', { key: 'medium-claws', label: "Medium Claws" }),
+            gear("Great Eagle", { mount: true, rules: [{ ruleId: "flying" }, { ruleId: "impact", param: 1 }, { ruleId: "nimble" }, { ruleId: "tough", param: 3 }] })
+          ]
+        },
+        { label: "Great Stag", cost: 40, addEquipment: [
+            meleeWeapon('Medium', 'Claws', { key: 'medium-claws', label: "Medium Claws" }),
+            gear("Great Stag", { mount: true, rules: [{ ruleId: "fast" }, { ruleId: "fear" }, { ruleId: "impact", param: "D3" }, { ruleId: "nimble" }, { ruleId: "tough", param: 3 }] })
+          ]
+        },
+        { label: "Forest Dragon", cost: 120, addEquipment: [
+            gear("Fiery Breath", { rules: rules("Fiery Breath") }),
+            meleeWeapon('Force', 'Claws', { key: 'force-claws', label: "Force Claws", rules: rules('Piercing') }),
+            gear("Forest Dragon", { mount: true, rules: [{ ruleId: "armored" }, { ruleId: "fear" }, { ruleId: "flying" }, { ruleId: "impact", param: "D6" }, { ruleId: "tough", param: 6 }] })
+          ]
+        }
       ])
     ]),
     group("B", [
       section("Equip with:", 'any', [
-        { label: "Longbow", cost: 10, addEquipment: [customWeapon("Longbow", { range: 30, attacks: '1', rules: rules('') })] }
+        { label: "Longbow", cost: 10, addEquipment: [weaponFantasy('longbow')] }
       ]),
       section("Upgrade Wizard(1):", 'any', [
         { label: "Wizard(2)", cost: 10, adds: ["Wizard(2)"] }
       ]),
       section("Mount on:", 'any', [
-        { label: "Elven Steed", cost: 10, addEquipment: [gear("Elven Steed")] },
-        { label: "Great Eagle", cost: 35, addEquipment: [gear("Great Eagle")] },
-        { label: "Unicorn", cost: 50, addEquipment: [gear("Unicorn")] }
+        { label: "Elven Steed", cost: 10, addEquipment: [
+            meleeWeapon('Light', 'Claws', { key: 'light-claws', label: "Light Claws" }),
+            gear("Elven Steed", { mount: true, rules: [{ ruleId: "fast" }, { ruleId: "nimble" }] })
+          ]
+        },
+        { label: "Great Eagle", cost: 35, addEquipment: [
+            meleeWeapon('Medium', 'Claws', { key: 'medium-claws', label: "Medium Claws" }),
+            gear("Great Eagle", { mount: true, rules: [{ ruleId: "flying" }, { ruleId: "impact", param: 1 }, { ruleId: "nimble" }, { ruleId: "tough", param: 3 }] })
+          ]
+        },
+        { label: "Unicorn", cost: 50, addEquipment: [
+            meleeWeapon('Medium', 'Claws', { key: 'medium-claws', label: "Medium Claws" }),
+            gear("Unicorn", { mount: true, rules: [{ ruleId: "fast" }, { ruleId: "fear" }, { ruleId: "impact", param: 1 }, { ruleId: "impale" }, { ruleId: "nimble" }, { ruleId: "resistance" }, { ruleId: "tough", param: 3 }] })
+          ]
+        }
       ])
     ]),
     group("C", [
@@ -75,7 +104,7 @@ export const woodelves = faction({
         { label: "Sergeant", cost: 5, addEquipment: [gear("Sergeant", { rules: rules("Sergeant") })] },
         { label: "Musician", cost: 10, addEquipment: [gear("Musician", { rules: rules("Musician") })] },
         { label: "Standard", cost: 10, addEquipment: [gear("Standard", { rules: rules("Standard") })] }
-      ])
+      ], { oncePerUnit: true })
     ]),
     group("F", [
       section("Upgrade Wizard(2):", 'any', [
@@ -89,7 +118,7 @@ export const woodelves = faction({
     ]),
     group("H", [
       section("Replace all Light Spears:", 'one', [
-        { label: "Medium Swords", cost: 25, addEquipment: [customWeapon("Medium Swords", { range: null, attacks: '2', rules: rules('') })], removeEquipment: ["Light Spears"] }
+        { label: "Medium Swords", cost: 25, addEquipment: [meleeWeapon('Medium', 'Swords', { key: 'medium-sword', label: "Medium Swords" })], removeEquipment: ["Light Spears"] }
       ])
     ])
   ],

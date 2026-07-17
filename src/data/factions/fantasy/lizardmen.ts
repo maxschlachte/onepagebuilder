@@ -7,18 +7,18 @@ const units: UnitInput[] = [
     { name: "Skink Priest", size: 1, quality: "6+", equipment: [meleeWeapon('Light', 'Sword', { key: 'light-sword', label: "Light Sword" })], special: "Arcane Vassal, Fearless, Strider, Tough(3), Wizard(1)", upgrades: "-", cost: 40 },
     { name: "Saurus Warriors", size: 10, quality: "4+", equipment: [meleeWeapon('Medium', 'Swords', { key: 'medium-sword', label: "Medium Swords" })], special: "Fearless, Predatory", upgrades: "C, H", cost: 170 },
     { name: "Temple Guard", size: 10, quality: "3+", equipment: [meleeWeapon('Medium', 'Halberd', { key: 'medium-halberd', label: "Medium Halberds" })], special: "Fearless, Predatory", upgrades: "C", cost: 260 },
-    { name: "Skinks", size: 5, quality: "6+", equipment: [customWeapon("Throwing Weapons", { range: 12, attacks: "1", rules: rules("Poison") })], special: "Fearless, Strider", upgrades: "C, J", cost: 45 },
+    { name: "Skinks", size: 5, quality: "6+", equipment: [weaponFantasy('throwing-weapon', { label: "Throwing Weapons", rules: rules('Poison') })], special: "Fearless, Strider", upgrades: "C, J", cost: 45 },
     { name: "Chameleon Skinks", size: 5, quality: "5+", equipment: [customWeapon("Blowpipes", { range: 12, attacks: "2", rules: rules("Poison") })], special: "Chameleon, Fearless, Scout, Strider", upgrades: "-", cost: 115 },
     { name: "Cold One Riders", size: 5, quality: "4+", equipment: [meleeWeapon('Medium', 'Swords', { key: 'medium-sword', label: "Medium Swords" }), meleeWeapon('Light', 'Claws', { key: 'light-claw', label: "Light Claws" })], special: "Fast, Fear, Fearless, Nimble, Predatory", upgrades: "C, I", cost: 145 },
     { name: "Terradon Riders", size: 3, quality: "5+", equipment: [customWeapon("Fireleech Bolas", { range: 6, attacks: "1", rules: rules("") })], special: "Drop Rocks, Fear, Fearless, Flying, Impact(1), Nimble, Tough(3)", upgrades: "D", cost: 85 },
-    { name: "Ripperdactyl Riders", size: 3, quality: "5+", equipment: [meleeWeapon('Light', 'Spears', { key: 'light-spear', label: "Light Spears" }), meleeWeapon('Light', 'Claws', { key: 'light-claw', label: "Light Claws", rules: rules('Piercing, Deadly') })], special: "Fear, Flying, Furious, Impact(1), Nimble, Toad Rage, Tough(3)", upgrades: "-", cost: 120 },
+    { name: "Ripperdactyl Riders", size: 3, quality: "5+", equipment: [meleeWeapon('Light', 'Spear', { key: 'light-spear', label: "Light Spears" }), meleeWeapon('Light', 'Claws', { key: 'light-claw', label: "Light Claws", rules: rules('Piercing, Deadly') })], special: "Fear, Flying, Furious, Impact(1), Nimble, Toad Rage, Tough(3)", upgrades: "-", cost: 120 },
     { name: "Kroxigors", size: 3, quality: "4+", equipment: [meleeWeapon('Heavy', 'Mace', { key: 'heavy-mace', label: "Heavy Maces" })], special: "Armored, Fear, Fearless, Impact(1), Predatory, Strider, Tough(3)", upgrades: "-", cost: 190 },
     { name: "Jungle Swarms", size: 3, quality: "5+", equipment: [meleeWeapon('Force', 'Claws', { key: 'force-claw', label: "Force Claws", rules: rules('Poison') })], special: "Fearless, Strider, Tough(6)", upgrades: "-", cost: 155 },
     { name: "Razordon Pack", size: 1, quality: "4+", equipment: [customWeapon("Shoot Barbs", { range: 18, attacks: "D6", rules: rules("") }), meleeWeapon('Medium', 'Claws', { key: 'medium-claw', label: "Medium Claws" })], special: "Fear, Fearless, Handlers, Impact(1), Strider, Tough(3)", upgrades: "-", cost: 55 },
-    { name: "Salamander Pack", size: 1, quality: "4+", equipment: [customWeapon("Fire Thrower", { range: 18, attacks: "6", rules: rules("") }), meleeWeapon('Medium', 'Claws', { key: 'medium-claw', label: "Medium Claws" })], special: "Fear, Fearless, Handlers, Impact(1), Strider, Tough(3)", upgrades: "-", cost: 60 },
-    { name: "Stegadon", size: 1, quality: "4+", equipment: [meleeWeapon('Master', 'Claws', { key: 'master-claw', label: "Master Claws" }), meleeWeapon('Medium', 'Sword', { key: 'medium-sword', label: "Medium Sword" }), customWeapon("Throwing Weapon", { range: 12, attacks: "1", rules: rules("Poison") }, { count: 2 })], special: "Armored, Fear, Fearless, Impact(D6), Tough(6)", upgrades: "E", cost: 100 },
+    { name: "Salamander Pack", size: 1, quality: "4+", equipment: [weaponFantasy('fire-thrower'), meleeWeapon('Medium', 'Claws', { key: 'medium-claw', label: "Medium Claws" })], special: "Fear, Fearless, Handlers, Impact(1), Strider, Tough(3)", upgrades: "-", cost: 60 },
+    { name: "Stegadon", size: 1, quality: "4+", equipment: [meleeWeapon('Master', 'Claws', { key: 'master-claw', label: "Master Claws" }), meleeWeapon('Medium', 'Sword', { key: 'medium-sword', label: "Medium Sword" }), weaponFantasy('throwing-weapon', { rules: rules('Poison'), count: 2 })], special: "Armored, Fear, Fearless, Impact(D6), Tough(6)", upgrades: "E", cost: 100 },
     { name: "Troglodon", size: 1, quality: "4+", equipment: [customWeapon("Spit Venom", { range: 18, attacks: "D3", rules: rules("Poison") }), meleeWeapon('Heavy', 'Claws', { key: 'heavy-claw', label: "Heavy Claws", rules: rules('Poison') })], special: "Arcane Vassal, Fear, Fearless, Predatory, Roar, Strider, Tough(6)", upgrades: "-", cost: 120 },
-    { name: "Bastiladon", size: 1, quality: "4+", equipment: [meleeWeapon('Heavy', 'Claws', { key: 'heavy-claw', label: "Heavy Claws" }), meleeWeapon('Medium', 'Sword', { key: 'medium-sword', label: "Medium Sword" }), customWeapon("Throwing Weapon", { range: 12, attacks: "1", rules: rules("Poison") }, { count: 2 })], special: "Armored, Bludgeon, Fear, Fearless, Impact(D6), Tough(9)", upgrades: "F", cost: 135 },
+    { name: "Bastiladon", size: 1, quality: "4+", equipment: [meleeWeapon('Heavy', 'Claws', { key: 'heavy-claw', label: "Heavy Claws" }), meleeWeapon('Medium', 'Sword', { key: 'medium-sword', label: "Medium Sword" }), weaponFantasy('throwing-weapon', { rules: rules('Poison'), count: 2 })], special: "Armored, Bludgeon, Fear, Fearless, Impact(D6), Tough(9)", upgrades: "F", cost: 135 },
 ]
 
 export const lizardmen = faction({
@@ -29,7 +29,7 @@ export const lizardmen = faction({
   upgradeGroups: [
     group("I", [
       section("Upgrade with:", 'any', [
-        { label: "Medium Spears", cost: 10, addEquipment: [meleeWeapon('Medium', 'Spears', { key: 'medium-spear', label: "Medium Spears" })] }
+        { label: "Medium Spears", cost: 10, addEquipment: [meleeWeapon('Medium', 'Spear', { key: 'medium-spear', label: "Medium Spears" })] }
       ])
     ]),
     group("A", [
@@ -43,8 +43,16 @@ export const lizardmen = faction({
         { label: "Heavy Armor", cost: 10, adds: ["Armored"] }
       ]),
       section("Mount on:", 'any', [
-        { label: "Cold One", cost: 15, addEquipment: [gear("Cold One")] },
-        { label: "Carnosaur", cost: 100, addEquipment: [gear("Carnosaur")] }
+        { label: "Cold One", cost: 15, addEquipment: [
+            meleeWeapon('Medium', 'Claws', { key: 'medium-claws', label: "Medium Claws" }),
+            gear("Cold One", { mount: true, rules: [{ ruleId: "fast" }, { ruleId: "nimble" }] })
+          ]
+        },
+        { label: "Carnosaur", cost: 100, addEquipment: [
+            meleeWeapon('Master', 'Claws', { key: 'master-claws', label: "Master Claws", rules: rules('Piercing') }),
+            gear("Carnosaur", { mount: true, rules: [{ ruleId: "armored" }, { ruleId: "fear" }, { ruleId: "furious" }, { ruleId: "impact", param: "D6" }, { ruleId: "tough", param: 6 }] })
+          ]
+        }
       ])
     ]),
     group("J", [
@@ -66,8 +74,16 @@ export const lizardmen = faction({
         { label: "Shield", cost: 10, adds: ["Armored"] }
       ]),
       section("Mount on:", 'any', [
-        { label: "Terradon", cost: 15, addEquipment: [gear("Terradon")] },
-        { label: "Ripperdactyl", cost: 35, addEquipment: [gear("Ripperdactyl")] }
+        { label: "Terradon", cost: 15, addEquipment: [
+            meleeWeapon('Light', 'Claws', { key: 'light-claws', label: "Light Claws" }),
+            gear("Terradon", { mount: true, rules: [{ ruleId: "drop-rocks" }, { ruleId: "fear" }, { ruleId: "flying" }, { ruleId: "impact", param: 1 }, { ruleId: "nimble" }, { ruleId: "tough", param: 3 }] })
+          ]
+        },
+        { label: "Ripperdactyl", cost: 35, addEquipment: [
+            meleeWeapon('Medium', 'Claws', { key: 'medium-claws', label: "Medium Claws", rules: rules('Piercing, Deadly') }),
+            gear("Ripperdactyl", { mount: true, rules: [{ ruleId: "fear" }, { ruleId: "flying" }, { ruleId: "furious" }, { ruleId: "impact", param: 1 }, { ruleId: "nimble" }, { ruleId: "toad-rage" }, { ruleId: "tough", param: 3 }] })
+          ]
+        }
       ])
     ]),
     group("C", [
@@ -75,7 +91,7 @@ export const lizardmen = faction({
         { label: "Sergeant", cost: 5, addEquipment: [gear("Sergeant", { rules: rules("Sergeant") })] },
         { label: "Musician", cost: 10, addEquipment: [gear("Musician", { rules: rules("Musician") })] },
         { label: "Standard", cost: 10, addEquipment: [gear("Standard", { rules: rules("Standard") })] }
-      ])
+      ], { oncePerUnit: true })
     ]),
     group("D", [
       section("Upgrade with:", 'any', [
@@ -107,7 +123,7 @@ export const lizardmen = faction({
     ]),
     group("H", [
       section("Replace all Medium Swords:", 'one', [
-        { label: "Medium Spears", cost: 15, addEquipment: [meleeWeapon('Medium', 'Spears', { key: 'medium-spear', label: "Medium Spears" })], removeEquipment: ["Medium Swords"] }
+        { label: "Medium Spears", cost: 15, addEquipment: [meleeWeapon('Medium', 'Spear', { key: 'medium-spear', label: "Medium Spears" })], removeEquipment: ["Medium Swords"] }
       ])
     ])
   ],

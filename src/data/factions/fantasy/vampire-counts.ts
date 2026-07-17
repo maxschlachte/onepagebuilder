@@ -37,7 +37,7 @@ export const vampirecounts = faction({
     group("A", [
       section("Replace Master Sword:", 'any', [
         { label: "Force Sword", cost: 5, addEquipment: [meleeWeapon('Force', 'Sword', { key: 'force-sword', label: "Force Sword" })], removeEquipment: ["Master Sword"] },
-        { label: "Master Lance (Mounted Only)", cost: 5, addEquipment: [meleeWeapon('Master', 'Lance', { key: 'master-lance', label: "Master Lance", rules: rules('Impact(1), Mounted Only') })], removeEquipment: ["Master Sword"] },
+        { label: "Master Lance", cost: 5, requiresOneOfSelected: ["Nightmare", "Hellsteed", "Abyssal Terror", "Coven Throne", "Terrorgheist", "Zombie Dragon"], addEquipment: [meleeWeapon('Master', 'Lance', { key: 'master-lance', label: "Master Lance", rules: rules('Impact(1)') })], removeEquipment: ["Master Sword"] },
         { label: "Master Mace", cost: 20, addEquipment: [meleeWeapon('Master', 'Mace', { key: 'master-mace', label: "Master Mace", rules: rules('Piercing, Poison') })], removeEquipment: ["Master Sword"] }
       ]),
       section("Equip with:", 'any', [
@@ -45,36 +45,74 @@ export const vampirecounts = faction({
       ]),
       section("Upgrade Wizard(1):", 'any', [
         { label: "Wizard(2)", cost: 5, adds: ["Wizard(2)"] }
-      ], { requiresBaselineRule: ["Wizard(1)"] }),
+      ], { prerequisite: { requiresBaselineRule: ["Wizard(1)"] } }),
       section("Mount on:", 'any', [
-        { label: "Nightmare", cost: 10, addEquipment: [gear("Nightmare")] },
-        { label: "Hellsteed", cost: 10, addEquipment: [gear("Hellsteed")] },
-        { label: "Abyssal Terror", cost: 60, addEquipment: [gear("Abyssal Terror")] },
-        { label: "Coven Throne", cost: 100, addEquipment: [gear("Coven Throne")] },
-        { label: "Terrorgheist", cost: 105, addEquipment: [gear("Terrorgheist")] },
-        { label: "Zombie Dragon", cost: 110, addEquipment: [gear("Zombie Dragon")] }
+        { label: "Nightmare", cost: 10, addEquipment: [
+            meleeWeapon('Light', 'Claws', { key: 'light-claws', label: "Light Claws" }),
+            gear("Nightmare", { mount: true, rules: [{ ruleId: "fast" }, { ruleId: "nimble" }] })
+          ]
+        },
+        { label: "Hellsteed", cost: 10, addEquipment: [
+            meleeWeapon('Light', 'Claws', { key: 'light-claws', label: "Light Claws" }),
+            gear("Hellsteed", { mount: true, rules: [{ ruleId: "fast" }, { ruleId: "flying" }, { ruleId: "nimble" }] })
+          ]
+        },
+        { label: "Abyssal Terror", cost: 60, addEquipment: [
+            meleeWeapon('Heavy', 'Claws', { key: 'heavy-claws', label: "Heavy Claws" }),
+            gear("Abyssal Terror", { mount: true, rules: [{ ruleId: "armored" }, { ruleId: "flying" }, { ruleId: "impact", param: "D6" }, { ruleId: "tough", param: 3 }] })
+          ]
+        },
+        { label: "Coven Throne", cost: 100, addEquipment: [
+            customWeapon("Spirit Horde", { range: null, attacks: "2D6", rules: rules("") }),
+            gear("Coven Throne", { mount: true, rules: [{ ruleId: "armored" }, { ruleId: "fast" }, { ruleId: "impact", param: "D6" }, { ruleId: "tough", param: 6 }] })
+          ]
+        },
+        { label: "Terrorgheist", cost: 105, addEquipment: [
+            gear("Shriek", { rules: rules("Shriek") }),
+            meleeWeapon('Master', 'Claws', { key: 'terrorgheist-master-claws', label: "Master Claws" }),
+            gear("Terrorgheist", { mount: true, rules: [{ ruleId: "armored" }, { ruleId: "flying" }, { ruleId: "impact", param: "D6" }, { ruleId: "tough", param: 6 }] })
+          ]
+        },
+        { label: "Zombie Dragon", cost: 110, addEquipment: [
+            gear("Fiery Breath", { rules: rules("Fiery Breath") }),
+            meleeWeapon('Force', 'Claws', { key: 'force-claws', label: "Force Claws", rules: rules('Piercing') }),
+            gear("Zombie Dragon", { mount: true, rules: [{ ruleId: "armored" }, { ruleId: "flying" }, { ruleId: "impact", param: "D6" }, { ruleId: "tough", param: 6 }] })
+          ]
+        }
       ])
     ]),
     group("B", [
       section("Replace Heavy Sword:", 'any', [
         { label: "Heavy Mace", cost: 5, addEquipment: [meleeWeapon('Heavy', 'Mace', { key: 'heavy-mace', label: "Heavy Mace", rules: rules('Piercing, Poison, Deadly') })], removeEquipment: ["Heavy Sword"] },
-        { label: "Heavy Lance (Deadly, Mounted Only)", cost: 5, addEquipment: [meleeWeapon('Heavy', 'Lance', { key: 'heavy-lance', label: "Heavy Lance", rules: rules('Impact(1), Deadly, Mounted Only') })], removeEquipment: ["Heavy Sword"] },
+        { label: "Heavy Lance (Deadly, Mounted Only)", cost: 5, requiresOneOfSelected: ["Skeletal Steed"], addEquipment: [meleeWeapon('Heavy', 'Lance', { key: 'heavy-lance', label: "Heavy Lance", rules: rules('Impact(1), Deadly') })], removeEquipment: ["Heavy Sword"] },
         { label: "Master Sword", cost: 10, addEquipment: [meleeWeapon('Master', 'Sword', { key: 'master-sword', label: "Master Sword", rules: rules('Deadly') })], removeEquipment: ["Heavy Sword"] }
       ]),
       section("Equip with:", 'any', [
         { label: "Heavy Armor", cost: 10, adds: ["Armored"] }
       ]),
       section("Mount on:", 'any', [
-        { label: "Skeletal Steed", cost: 15, addEquipment: [gear("Skeletal Steed")] }
+        { label: "Skeletal Steed", cost: 15, addEquipment: [
+            meleeWeapon('Light', 'Claws', { key: 'light-claws', label: "Light Claws" }),
+            gear("Skeletal Steed", { mount: true, rules: [{ ruleId: "ethereal" }, { ruleId: "fast" }, { ruleId: "nimble" }] })
+          ]
+        }
       ])
     ]),
     group("C", [
       section("Upgrade Wizard(1):", 'any', [
         { label: "Wizard(2)", cost: 5, adds: ["Wizard(2)"] }
-      ], { requiresBaselineRule: ["Wizard(1)"] }),
+      ], { prerequisite: { requiresBaselineRule: ["Wizard(1)"] } }),
       section("Mount on:", 'any', [
-        { label: "Nightmare", cost: 5, addEquipment: [gear("Nightmare")] },
-        { label: "Corpse Cart", cost: 120, addEquipment: [gear("Corpse Cart")] }
+        { label: "Nightmare", cost: 5, addEquipment: [
+            meleeWeapon('Light', 'Claws', { key: 'light-claws', label: "Light Claws" }),
+            gear("Nightmare", { mount: true, rules: [{ ruleId: "fast" }, { ruleId: "nimble" }] })
+          ]
+        },
+        { label: "Corpse Cart", cost: 120, addEquipment: [
+            customWeapon("Restless Dead", { range: null, attacks: "2D6", rules: rules("") }),
+            gear("Corpse Cart", { mount: true, rules: [{ ruleId: "armored" }, { ruleId: "fast" }, { ruleId: "impact", param: "D6" }, { ruleId: "regeneration" }, { ruleId: "tough", param: 3 }, { ruleId: "vigor" }] })
+          ]
+        }
       ])
     ]),
     group("D", [
@@ -82,7 +120,7 @@ export const vampirecounts = faction({
         { label: "Sergeant", cost: 5, addEquipment: [gear("Sergeant", { rules: rules("Sergeant") })] },
         { label: "Musician", cost: 10, addEquipment: [gear("Musician", { rules: rules("Musician") })] },
         { label: "Standard", cost: 10, addEquipment: [gear("Standard", { rules: rules("Standard") })] }
-      ])
+      ], { oncePerUnit: true })
     ]),
     group("E", [
       section("Upgrade with any:", 'any', [
@@ -104,7 +142,7 @@ export const vampirecounts = faction({
     ]),
     group("H", [
       section("Replace all Light Swords:", 'one', [
-        { label: "Light Spears", cost: 5, addEquipment: [meleeWeapon('Light', 'Spears', { key: 'light-spear', label: "Light Spears" })], removeEquipment: ["Light Swords"] }
+        { label: "Light Spears", cost: 5, addEquipment: [meleeWeapon('Light', 'Spear', { key: 'light-spear', label: "Light Spears" })], removeEquipment: ["Light Swords"] }
       ])
     ]),
     group("I", [

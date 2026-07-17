@@ -83,3 +83,53 @@ describe('affectsAllModels database audit', () => {
     }
   })
 })
+
+describe('oncePerUnit database audit (sergeant-musician-standard-whole-unit)', () => {
+  const SERGEANT_MUSICIAN_STANDARD = new Set(['Sergeant', 'Musician', 'Standard'])
+
+  function isSergeantMusicianStandardSection(section: { options: { label: string }[] }): boolean {
+    const labels = new Set(section.options.map((o) => o.label))
+    return labels.size === SERGEANT_MUSICIAN_STANDARD.size && [...labels].every((l) => SERGEANT_MUSICIAN_STANDARD.has(l))
+  }
+
+  it('every faction\'s Sergeant/Musician/Standard section is marked oncePerUnit and classified whole-unit', () => {
+    const problems: string[] = []
+    for (const faction of rulesDatabase.factions) {
+      for (const group of faction.upgradeGroups) {
+        for (const section of group.sections) {
+          if (!isSergeantMusicianStandardSection(section)) continue
+          if (!section.oncePerUnit) {
+            problems.push(`${faction.id}/${group.id}/"${section.title}": Sergeant/Musician/Standard section is missing oncePerUnit`)
+          }
+          if (!affectsAllModels(section)) {
+            problems.push(`${faction.id}/${group.id}/"${section.title}": affectsAllModels() returned false`)
+          }
+        }
+      }
+    }
+    expect(problems).toEqual([])
+  })
+
+  it('no non-Sergeant/Musician/Standard section is marked oncePerUnit', () => {
+    const problems: string[] = []
+    for (const faction of rulesDatabase.factions) {
+      for (const group of faction.upgradeGroups) {
+        for (const section of group.sections) {
+          if (section.oncePerUnit && !isSergeantMusicianStandardSection(section)) {
+            problems.push(`${faction.id}/${group.id}/"${section.title}": marked oncePerUnit but isn't the Sergeant/Musician/Standard section`)
+          }
+        }
+      }
+    }
+    expect(problems).toEqual([])
+  })
+
+  it('exactly 16 Sergeant/Musician/Standard sections exist, one per Warhammer Fantasy faction', () => {
+    const fantasyFactions = rulesDatabase.factions.filter((f) => f.system === 'system-fantasy')
+    expect(fantasyFactions).toHaveLength(16)
+    for (const faction of fantasyFactions) {
+      const matches = faction.upgradeGroups.flatMap((g) => g.sections).filter(isSergeantMusicianStandardSection)
+      expect(matches, `expected exactly one Sergeant/Musician/Standard section for ${faction.id}`).toHaveLength(1)
+    }
+  })
+})

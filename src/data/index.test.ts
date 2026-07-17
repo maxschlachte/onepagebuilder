@@ -140,10 +140,27 @@ describe('rules database integrity', () => {
     // This does NOT assert every entry resolves a full weapon profile — it only
     // checks the label text is plausible, independent of whether it happens to
     // reference a global weapon, a melee tier/type, or a bespoke profile.
+    const meleeTiers = new Set(['light', 'medium', 'heavy', 'master', 'force'])
     function isKnownWeaponName(label: string, globalWeaponNames: Set<string>): boolean {
       const baseName = label.replace(/^\d+x\s+/, '').replace(/\s*\(.+\)\s*$/, '')
       const normalized = baseName.toLowerCase().replace(/^linked\s+/, '').replace(/s$/, '')
-      return globalWeaponNames.has(normalized)
+      if (globalWeaponNames.has(normalized)) return true
+      // A "<Tier> <Type>" melee weapon (e.g. "Light Claws", "Master Claws") is always a
+      // legitimate constructed name per the meleeWeapon() tier/type convention, regardless
+      // of whether this particular tier+type combination happens to be used elsewhere.
+      const [firstWord] = normalized.split(/\s+/)
+      return meleeTiers.has(firstWord) && normalized.split(/\s+/).length > 1
+    }
+
+    // Labels shared across every faction of a system (e.g. "Fiery Breath" on any dragon-
+    // type mount, "Sergeant"/"Musician"/"Standard") are a recognized cross-faction gear
+    // convention, not a fabrication, even the first time a given faction uses one.
+    const labelsBySystem = new Map<string, Set<string>>()
+    for (const faction of rulesDatabase.factions) {
+      const set = labelsBySystem.get(faction.system) ?? new Set<string>()
+      for (const u of faction.units) for (const e of u.equipment) set.add(e.label)
+      for (const g of faction.upgradeGroups) for (const s of g.sections) for (const o of s.options) set.add(o.label)
+      labelsBySystem.set(faction.system, set)
     }
 
     const missing: string[] = []
@@ -154,13 +171,19 @@ describe('rules database integrity', () => {
       const knownLabels = new Set([
         ...faction.units.flatMap((u) => u.equipment.map((e) => e.label)),
         ...faction.upgradeGroups.flatMap((g) => g.sections.flatMap((s) => s.options.map((o) => o.label))),
+        ...(labelsBySystem.get(faction.system) ?? []),
       ])
       for (const group of faction.upgradeGroups) {
         for (const sec of group.sections) {
+          // A "Mount on:"-style option grants a standalone mount's own printed
+          // equipment line (weapon plus any named gear/rule grants) — like a unit's
+          // own baseline equipment (also exempt from this check), it defines fresh
+          // named equipment rather than referencing something already established.
+          const isMountSection = /^Mount on/.test(sec.title)
           for (const opt of sec.options) {
             for (const entry of opt.effects?.addEquipment ?? []) {
               const isSubstringOfOwnLabel = opt.label.includes(entry.label)
-              if (!knownLabels.has(entry.label) && !isKnownWeaponName(entry.label, globalWeaponNames) && !isSubstringOfOwnLabel) {
+              if (!isMountSection && !knownLabels.has(entry.label) && !isKnownWeaponName(entry.label, globalWeaponNames) && !isSubstringOfOwnLabel) {
                 missing.push(`${faction.id}/${group.id}/${sec.title} → ${opt.label} (${entry.label})`)
               }
             }

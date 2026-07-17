@@ -47,8 +47,10 @@ export const orks = faction({
           { label: 'Grenade Launcher (Limited)', cost: 5, addEquipment: [weapon('grenade-launcher', { rules: rules('Limited') })] },
         ],
         {
-          requiresOneOfSelected: ['Carbine', 'Linked Carbine', 'Mega Armor (Armored, Linked Carbine, Medium Powerfist)'],
-          satisfiedByEquipment: ['Linked Carbines'],
+          prerequisite: {
+            requiresOneOfSelected: ['Carbine', 'Linked Carbine', 'Mega Armor (Armored, Linked Carbine, Medium Powerfist)'],
+            satisfiedByEquipment: ['Linked Carbines'],
+          },
         },
       ),
       // Warbike/Mega Armor's parentheticals are descriptive flavor (already captured via
@@ -64,7 +66,7 @@ export const orks = faction({
     ]),
     group('B', [
       section('Upgrade Psyker(1)', 'one', [{ label: 'Psyker(2)', cost: 5, adds: ['Psyker(2)'] }], {
-        requiresBaselineRule: ['Psyker(1)'],
+        prerequisite: { requiresBaselineRule: ['Psyker(1)'] },
       }),
     ]),
     group('C', [

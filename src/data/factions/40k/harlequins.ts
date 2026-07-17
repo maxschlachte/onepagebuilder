@@ -17,7 +17,7 @@ export const harlequins = faction({
   upgradeGroups: [
     group('A', [
       section('Upgrade Psyker(1)', 'one', [{ label: 'Psyker(2)', cost: 5, adds: ['Psyker(2)'] }], {
-        requiresBaselineRule: ['Psyker(1)'],
+        prerequisite: { requiresBaselineRule: ['Psyker(1)'] },
       }),
       section('Replace Pistol', 'one', [
         { label: 'Pistol (Piercing)', cost: 0, addEquipment: [weapon('pistol', { rules: rules('Piercing') })], removeOneEquipment: ['Pistol (Rending)'] },
@@ -39,7 +39,7 @@ export const harlequins = faction({
     ]),
     group('C', [
       section('Equip any model with', 'any', [
-        { label: 'Zephyrglaive (Impact(1))', cost: 5, addEquipment: [gear('Zephyrglaive', { rules: rules('Impact(1)') })] },
+        { label: 'Zephyrglaive', cost: 5, addEquipment: [gear('Zephyrglaive', { rules: rules('Impact(1)') })] },
         { label: 'Star Bolas', cost: 20, addEquipment: [customWeapon('Star Bolas', { range: 12, attacks: '3', rules: rules('Piercing') })] },
       ]),
       section('Replace any Shuriken Cannon', 'any', [

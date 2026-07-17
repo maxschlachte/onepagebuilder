@@ -44,10 +44,10 @@ export const chaosDaemons = faction({
           { label: 'Psyker(2)', cost: 5, adds: ['Psyker(2)'] },
           { label: 'Psyker(3)', cost: 10, adds: ['Psyker(3)'] },
         ],
-        { requiresBaselineRule: ['Psyker(1)'] },
+        { prerequisite: { requiresBaselineRule: ['Psyker(1)'] } },
       ),
       section('Upgrade Psyker(2)', 'one', [{ label: 'Psyker(3)', cost: 5, adds: ['Psyker(3)'] }], {
-        requiresBaselineRule: ['Psyker(2)'],
+        prerequisite: { requiresBaselineRule: ['Psyker(2)'] },
       }),
     ]),
     group('B', [
@@ -106,8 +106,8 @@ export const chaosDaemons = faction({
       // "Replace all X" section, regardless of unit size.
       section('Equip all models with one', 'one', [
         { label: 'Death’s Heads', cost: 25, addEquipment: [customWeapon('Death’s Heads', { range: 12, attacks: '2', rules: rules('Poison') })], removeEquipment: ['Heavy CCWs (Poison)'] },
-        { label: 'Rot Proboscis (Rending)', cost: 25, addEquipment: [gear('Rot Proboscis', { rules: rules('Rending') })], removeEquipment: ['Heavy CCWs (Poison)'] },
-        { label: 'Venom Sting (Deadly)', cost: 80, addEquipment: [gear('Venom Sting', { rules: rules('Deadly') })], removeEquipment: ['Heavy CCWs (Poison)'] },
+        { label: 'Rot Proboscis', cost: 25, addEquipment: [gear('Rot Proboscis', { rules: rules('Rending') })], removeEquipment: ['Heavy CCWs (Poison)'] },
+        { label: 'Venom Sting', cost: 80, addEquipment: [gear('Venom Sting', { rules: rules('Deadly') })], removeEquipment: ['Heavy CCWs (Poison)'] },
       ]),
     ]),
     group('M', [

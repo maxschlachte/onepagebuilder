@@ -223,8 +223,10 @@ export const tau = faction({
           },
         ],
         {
-          // No baseline unit in this group has a Missile Pod — one only exists via Support Turret.
-          requiresOneOfSelected: ['Support Turret'],
+          prerequisite: {
+            // No baseline unit in this group has a Missile Pod — one only exists via Support Turret.
+            requiresOneOfSelected: ['Support Turret'],
+          },
         },
       ),
     ]),

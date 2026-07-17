@@ -99,7 +99,7 @@ const printRows = computed<PrintRow[]>(() => {
         rendered.add(partner.instanceId)
         rows.push({
           kind: 'unit',
-          pu: toPrintable(combinedEffectiveUnit(effA, effB)),
+          pu: toPrintable(combinedEffectiveUnit(effA, effB, faction.value!)),
           combined: true,
           attached: [...attachedTo(lu.instanceId), ...attachedTo(partner.instanceId)],
         })

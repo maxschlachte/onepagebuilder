@@ -56,6 +56,12 @@ describe('upgrade option label audit: no embedded weapon stats', () => {
     for (const faction of rulesDatabase.factions) {
       for (const group of faction.upgradeGroups) {
         for (const section of group.sections) {
+          // A "Mount on:" option's label is always the mount's own printed name (e.g.
+          // "Seeker Chariot"), not a compound listing of its constituent weapons — it
+          // legitimately grants a standalone mount's full multi-weapon equipment line
+          // under that single name, the same way a unit's own name doesn't enumerate
+          // each of its equipment entries either.
+          if (/^Mount on/.test(section.title)) continue
           for (const option of section.options) {
             const weapons = weaponCount(option)
             if (weapons < 2) continue

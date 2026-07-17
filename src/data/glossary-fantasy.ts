@@ -162,4 +162,9 @@ export const fantasyGlossary: SpecialRule[] = [
     name: 'Vanguard',
     text: 'After all other non-vanguard units have been deployed this unit may immediately move by up to 12” (if both players have Vanguard units roll-off to see who starts moving first).',
   },
+  {
+    id: 'spear',
+    name: 'Spear',
+    text: 'Gets +1 Attack when charged.'
+  }
 ]

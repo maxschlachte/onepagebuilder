@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 import { useListsStore } from '../stores/lists'
-import { affectsAllModels, isSectionAvailable, maxPicks } from '../domain/calc'
+import { affectsAllModels, isOptionAvailable, isSectionAvailable, maxPicks } from '../domain/calc'
 import { createResolver } from '../domain/resolve'
 import { rulesDatabase } from '../data/index'
 import RuleTooltip from './RuleTooltip.vue'
@@ -45,15 +45,17 @@ function isSectionUnavailable(section: UpgradeSection): boolean {
 
 /**
  * True when this option can't currently be selected: either its whole section
- * is unavailable per a cross-section prerequisite, or its capped section's
- * selection limit is reached and this option isn't already selected. "one"
- * sections are never disabled by the cap — clicking an unselected option
- * there swaps the selection via `toggleUpgrade` instead of requiring the
- * current one to be unchecked first.
+ * is unavailable per a cross-section prerequisite, or the option's own
+ * `requiresOneOfSelected` (e.g. a "(Mounted Only)" weapon) isn't met, or its
+ * capped section's selection limit is reached and this option isn't already
+ * selected. "one" sections are never disabled by the cap — clicking an
+ * unselected option there swaps the selection via `toggleUpgrade` instead of
+ * requiring the current one to be unchecked first.
  */
 function isOptionDisabled(section: UpgradeSection, optionId: string): boolean {
   if (readonly.value) return false
-  if (isSectionUnavailable(section)) return true
+  const opt = section.options.find((o) => o.id === optionId)
+  if (!opt || !isOptionAvailable(props.profile, section, opt, props.listUnit!.selectedUpgrades)) return true
   if (section.selection === 'one') return false
   if (props.listUnit!.selectedUpgrades.includes(optionId)) return false
   const siblingIds = new Set(section.options.map((o) => o.id))
@@ -62,6 +64,19 @@ function isOptionDisabled(section: UpgradeSection, optionId: string): boolean {
 }
 
 const resolver = createResolver(rulesDatabase, props.faction)
+
+/**
+ * Every rule `option` grants, regardless of source: directly via `adds`
+ * (`effects.addRules`), or indirectly via a weapon-less `addEquipment` entry
+ * (e.g. a `gear(...)` item carrying `rules`) — a mount or command-group item
+ * still shows its granted rule the same way a direct `adds` rule would.
+ * Weapon-bearing `addEquipment` entries are excluded here; their rules render
+ * via `weaponsFor`/`WeaponProfileLabel` instead.
+ */
+function grantedRules(option: UpgradeOption): RuleRef[] {
+  const gearRules = (option.effects?.addEquipment ?? []).flatMap((e) => (!e.weapon ? e.rules ?? [] : []))
+  return [...(option.effects?.addRules ?? []), ...gearRules]
+}
 
 /**
  * If `option`'s label names one of its granted rules — the whole label, or
@@ -74,7 +89,7 @@ function labelTooltip(option: UpgradeOption): { tooltip?: RuleRef; prefix: strin
   const parenIdx = option.label.indexOf(' (')
   const prefix = parenIdx === -1 ? option.label : option.label.slice(0, parenIdx)
   const suffix = parenIdx === -1 ? '' : option.label.slice(parenIdx)
-  const tooltip = option.effects?.addRules?.find((r) => resolver.resolve(r).name === prefix)
+  const tooltip = grantedRules(option).find((r) => resolver.resolve(r).name === prefix)
   return { tooltip, prefix, suffix }
 }
 
@@ -84,7 +99,7 @@ function weaponsFor(option: UpgradeOption): Weapon[] {
 }
 
 function rulesFor(option: UpgradeOption): RuleRef[] {
-  return option.effects?.addRules ?? []
+  return grantedRules(option)
 }
 
 function labelsFor(optionIds: string[]): string[] {
@@ -170,8 +185,8 @@ function unavailableReason(section: UpgradeSection): string | undefined {
                     v-if="!opt.label.includes(w.name)"
                     class="text-xs"
                     :class="[
-                    !readonly && isOptionDisabled(section, opt.id) ? 'text-stone-800 dark:text-slate-600' : 'text-stone-600 dark:text-slate-400'
-                  ]"
+                      !readonly && isOptionDisabled(section, opt.id) ? 'text-stone-800 dark:text-slate-600' : 'text-stone-600 dark:text-slate-400'
+                    ]"
                 >
                   {{ w.name }}
                 </span>

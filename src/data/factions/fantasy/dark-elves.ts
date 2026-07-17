@@ -1,9 +1,9 @@
-import { faction, customWeapon, meleeWeapon, gear, rules, armyRule, power, section, group, type UnitInput } from '../helpers'
+import { faction, customWeapon, weaponFantasy, meleeWeapon, gear, rules, armyRule, power, section, group, type UnitInput } from '../helpers'
 
 const units: UnitInput[] = [
     { name: "Dreadlord", size: 1, quality: "4+", equipment: [meleeWeapon('Master', 'Sword', { key: 'master-sword', label: "Master Sword" })], special: "Hatred, Hero, Tough(3)", upgrades: "A", cost: 35 },
     { name: "Sorceress", size: 1, quality: "4+", equipment: [meleeWeapon('Light', 'Sword', { key: 'light-sword', label: "Light Sword" })], special: "Blessing, Hatred, Tough(3), Wizard(1)", upgrades: "B", cost: 50 },
-    { name: "Shadowblade", size: 1, quality: "3+", equipment: [customWeapon("Throwing Weapon", { range: 12, attacks: "1", rules: rules("Poison") }), meleeWeapon('Master', 'Sword', { key: 'master-sword', label: "Master Sword", rules: rules('Piercing, Deadly') })], special: "Hatred, Hero, Hidden, Tough(3)", upgrades: "-", cost: 110 },
+    { name: "Shadowblade", size: 1, quality: "3+", equipment: [weaponFantasy('throwing-weapon', { rules: rules('Poison') }), meleeWeapon('Master', 'Sword', { key: 'master-sword', label: "Master Sword", rules: rules('Piercing, Deadly') })], special: "Hatred, Hero, Hidden, Tough(3)", upgrades: "-", cost: 110 },
     { name: "Bleakswords", size: 10, quality: "4+", equipment: [meleeWeapon('Light', 'Swords', { key: 'light-sword', label: "Light Swords" })], special: "Hatred", upgrades: "C, F", cost: 100 },
     { name: "Harpies", size: 10, quality: "4+", equipment: [meleeWeapon('Medium', 'Claws', { key: 'medium-claw', label: "Medium Claws" })], special: "Flying", upgrades: "-", cost: 150 },
     { name: "Corsairs", size: 10, quality: "4+", equipment: [meleeWeapon('Medium', 'Swords', { key: 'medium-sword', label: "Medium Swords" })], special: "Armored, Hatred", upgrades: "C, I", cost: 170 },
@@ -17,7 +17,7 @@ const units: UnitInput[] = [
     // Likely column-bleed from a neighboring unit's upgrade text in the PDF extraction; omitted
     // (group H dropped) as unreachable/misattributed rather than guessed at.
     { name: "Shades", size: 5, quality: "3+", equipment: [customWeapon("Rapid Crossbows", { range: 30, attacks: "1", rules: rules("Piercing, Rapid") })], special: "Hatred, Scout", upgrades: "C", cost: 200 },
-    { name: "Dark Riders", size: 5, quality: "4+", equipment: [meleeWeapon('Light', 'Spears', { key: 'light-spear', label: "Light Spears" })], special: "Fast, Hatred, Nimble", upgrades: "C, J", cost: 85 },
+    { name: "Dark Riders", size: 5, quality: "4+", equipment: [meleeWeapon('Light', 'Spear', { key: 'light-spear', label: "Light Spears" })], special: "Fast, Hatred, Nimble", upgrades: "C, J", cost: 85 },
     { name: "Cold One Knights", size: 5, quality: "3+", equipment: [meleeWeapon('Light', 'Lance', { key: 'light-lance', label: "Light Lances", rules: rules('Impact(1)') }), meleeWeapon('Light', 'Claws', { key: 'light-claw', label: "Light Claws" })], special: "Fast, Fear, Hatred, Nimble", upgrades: "C", cost: 155 },
     { name: "Doomfire Warlocks", size: 5, quality: "3+", equipment: [meleeWeapon('Medium', 'Swords', { key: 'medium-sword', label: "Medium Swords", rules: rules('Poison') })], special: "Armored, Cursed, Fast, Hatred, Nimble", upgrades: "-", cost: 200 },
     { name: "War Hydra", size: 1, quality: "3+", equipment: [gear("Hydra Heads", { rules: rules("Hydra Heads") })], special: "Armored, Fear, Impact(D6), Regeneration, Tough(6)", upgrades: "D", cost: 125 },
@@ -39,7 +39,7 @@ export const darkelves = faction({
       section("Replace Master Sword:", 'any', [
         { label: "Force Sword", cost: 5, addEquipment: [meleeWeapon('Force', 'Sword', { key: 'force-sword', label: "Force Sword" })], removeEquipment: ["Master Sword"] },
         { label: "Master Halberd", cost: 5, addEquipment: [meleeWeapon('Master', 'Halberd', { key: 'master-halberd', label: "Master Halberd", rules: rules('Piercing') })], removeEquipment: ["Master Sword"] },
-        { label: "Master Lance (Mounted Only)", cost: 5, addEquipment: [meleeWeapon('Master', 'Lance', { key: 'master-lance', label: "Master Lance", rules: rules('Impact(1)') })], removeEquipment: ["Master Sword"] },
+        { label: "Master Lance", cost: 5, requiresOneOfSelected: ["Cold One", "Dark Steed", "Dark Pegasus", "Manticore", "Black Dragon", "Cauldron of Blood"], addEquipment: [meleeWeapon('Master', 'Lance', { key: 'master-lance', label: "Master Lance", rules: rules('Impact(1)') })], removeEquipment: ["Master Sword"] },
         { label: "Master Mace", cost: 20, addEquipment: [meleeWeapon('Master', 'Mace', { key: 'master-mace', label: "Master Mace", rules: rules('Piercing, Poison') })], removeEquipment: ["Master Sword"] }
       ]),
       section("Equip with one:", 'one', [
@@ -48,12 +48,37 @@ export const darkelves = faction({
         { label: "Rapid Crossbow", cost: 20, addEquipment: [customWeapon("Rapid Crossbow", { range: 30, attacks: '1', rules: rules("Piercing, Rapid") })] }
       ]),
       section("Mount on:", 'any', [
-        { label: "Cold One", cost: 15, addEquipment: [gear("Cold One")] },
-        { label: "Dark Steed", cost: 10, addEquipment: [gear("Dark Steed")] },
-        { label: "Dark Pegasus", cost: 35, addEquipment: [gear("Dark Pegasus")] },
-        { label: "Manticore", cost: 105, addEquipment: [gear("Manticore")] },
-        { label: "Black Dragon", cost: 120, addEquipment: [gear("Black Dragon")] },
-        { label: "Cauldron of Blood", cost: 210, addEquipment: [gear("Cauldron of Blood")] }
+        { label: "Cold One", cost: 15, addEquipment: [
+            meleeWeapon('Medium', 'Claws', { key: 'medium-claws', label: "Medium Claws" }),
+            gear("Cold One", { mount: true, rules: [{ ruleId: "fast" }, { ruleId: "fear" }, { ruleId: "nimble" }] })
+          ]
+        },
+        { label: "Dark Steed", cost: 10, addEquipment: [
+            meleeWeapon('Light', 'Claws', { key: 'light-claws', label: "Light Claws" }),
+            gear("Dark Steed", { mount: true, rules: [{ ruleId: "fast" }, { ruleId: "nimble" }] })
+          ]
+        },
+        { label: "Dark Pegasus", cost: 35, addEquipment: [
+            meleeWeapon('Medium', 'Claws', { key: 'medium-claws', label: "Medium Claws" }),
+            gear("Dark Pegasus", { mount: true, rules: [{ ruleId: "flying" }, { ruleId: "nimble" }, { ruleId: "impact", param: 1 }, { ruleId: "tough", param: 3 }] })
+          ]
+        },
+        { label: "Manticore", cost: 105, addEquipment: [
+            meleeWeapon('Master', 'Claws', { key: 'master-claws', label: "Master Claws", rules: rules('Deadly') }),
+            gear("Manticore", { mount: true, rules: [{ ruleId: "armored" }, { ruleId: "fear" }, { ruleId: "flying" }, { ruleId: "impact", param: "D6" }, { ruleId: "tough", param: 3 }] })
+          ]
+        },
+        { label: "Black Dragon", cost: 120, addEquipment: [
+            gear("Fiery Breath", { rules: rules("Fiery Breath") }),
+            meleeWeapon('Force', 'Claws', { key: 'force-claws', label: "Force Claws", rules: rules('Piercing') }),
+            gear("Black Dragon", { mount: true, rules: [{ ruleId: "armored" }, { ruleId: "fear" }, { ruleId: "flying" }, { ruleId: "impact", param: "D6" }, { ruleId: "tough", param: 6 }] })
+          ]
+        },
+        { label: "Cauldron of Blood", cost: 210, addEquipment: [
+            meleeWeapon('Master', 'Sword', { key: 'cauldron-master-sword', label: "Master Sword", rules: rules('Poison') }),
+            gear("Cauldron of Blood", { mount: true, rules: [{ ruleId: "armored" }, { ruleId: "fast" }, { ruleId: "fear" }, { ruleId: "fury" }, { ruleId: "impact", param: "D6" }, { ruleId: "resistance" }, { ruleId: "strength" }, { ruleId: "tough", param: 6 }] })
+          ]
+        }
       ])
     ]),
     group("G", [
@@ -74,11 +99,23 @@ export const darkelves = faction({
     group("B", [
       section("Upgrade Wizard(1):", 'any', [
         { label: "Wizard(2)", cost: 10, adds: ["Wizard(2)"] }
-      ], { requiresBaselineRule: ["Wizard(1)"] }),
+      ], { prerequisite: { requiresBaselineRule: ["Wizard(1)"] } }),
       section("Mount on:", 'any', [
-        { label: "Cold One", cost: 15, addEquipment: [gear("Cold One")] },
-        { label: "Dark Steed", cost: 10, addEquipment: [gear("Dark Steed")] },
-        { label: "Dark Pegasus", cost: 35, addEquipment: [gear("Dark Pegasus")] }
+        { label: "Cold One", cost: 15, addEquipment: [
+            meleeWeapon('Medium', 'Claws', { key: 'medium-claws', label: "Medium Claws" }),
+            gear("Cold One", { mount: true, rules: [{ ruleId: "fast" }, { ruleId: "fear" }, { ruleId: "nimble" }] })
+          ]
+        },
+        { label: "Dark Steed", cost: 10, addEquipment: [
+            meleeWeapon('Light', 'Claws', { key: 'light-claws', label: "Light Claws" }),
+            gear("Dark Steed", { mount: true, rules: [{ ruleId: "fast" }, { ruleId: "nimble" }] })
+          ]
+        },
+        { label: "Dark Pegasus", cost: 35, addEquipment: [
+            meleeWeapon('Medium', 'Claws', { key: 'medium-claws', label: "Medium Claws" }),
+            gear("Dark Pegasus", { mount: true, rules: [{ ruleId: "flying" }, { ruleId: "nimble" }, { ruleId: "impact", param: 1 }, { ruleId: "tough", param: 3 }] })
+          ]
+        }
       ])
     ]),
     group("C", [
@@ -86,7 +123,7 @@ export const darkelves = faction({
         { label: "Sergeant", cost: 5, addEquipment: [gear("Sergeant", { rules: rules("Sergeant") })] },
         { label: "Musician", cost: 10, addEquipment: [gear("Musician", { rules: rules("Musician") })] },
         { label: "Standard", cost: 10, addEquipment: [gear("Standard", { rules: rules("Standard") })] }
-      ])
+      ], { oncePerUnit: true })
     ]),
     group("D", [
       section("Upgrade with any:", 'any', [
@@ -102,7 +139,7 @@ export const darkelves = faction({
     ]),
     group("F", [
       section("Replace all Light Swords:", 'one', [
-        { label: "Light Spears", cost: 20, addEquipment: [meleeWeapon('Light', 'Spears', { key: 'light-spear', label: "Light Spears" })], removeEquipment: ["Light Swords"] }
+        { label: "Light Spears", cost: 20, addEquipment: [meleeWeapon('Light', 'Spear', { key: 'light-spear', label: "Light Spears" })], removeEquipment: ["Light Swords"] }
       ])
     ])
   ],

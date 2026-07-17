@@ -50,7 +50,7 @@ export const bloodAngelsBundle: ChapterBundle = {
           { label: 'Plasmagun (Limited)', cost: 5, addEquipment: [weapon('plasmagun', { rules: rules('Limited') })] },
         ],
         {
-          requiresOneOfSelected: ['Assault Rifle'],
+          prerequisite: { requiresOneOfSelected: ['Assault Rifle'] },
         },
       ),
     ]),

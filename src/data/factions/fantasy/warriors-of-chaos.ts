@@ -10,7 +10,7 @@ const units: UnitInput[] = [
     { name: "Forsaken", size: 10, quality: "3+", equipment: [customWeapon("Freakish Limbs", { range: null, attacks: "D3", rules: rules("") })], special: "Armored, Fearless, Furious, Mutations", upgrades: "N", cost: 280 },
     { name: "Chaos Warhounds", size: 5, quality: "4+", equipment: [meleeWeapon('Light', 'Claws', { key: 'light-claw', label: "Light Claws" })], special: "Fast, Nimble", upgrades: "E", cost: 70 },
     { name: "Marauder Horsemen", size: 5, quality: "4+", equipment: [meleeWeapon('Light', 'Swords', { key: 'light-sword', label: "Light Swords" })], special: "Fast, Nimble", upgrades: "C, J, M", cost: 70 },
-    { name: "Hellstriders", size: 5, quality: "4+", equipment: [meleeWeapon('Light', 'Spears', { key: 'light-spear', label: "Light Spears", rules: rules('Piercing, Poison') })], special: "Fast, Fear, Nimble", upgrades: "C", cost: 115 },
+    { name: "Hellstriders", size: 5, quality: "4+", equipment: [meleeWeapon('Light', 'Spear', { key: 'light-spear', label: "Light Spears", rules: rules('Piercing, Poison') })], special: "Fast, Fear, Nimble", upgrades: "C", cost: 115 },
     { name: "Chaos Knights", size: 5, quality: "3+", equipment: [meleeWeapon('Medium', 'Swords', { key: 'medium-sword', label: "Medium Swords" })], special: "Armored, Fear, Nimble", upgrades: "C, I, N", cost: 125 },
     { name: "Skullcrushers", size: 3, quality: "3+", equipment: [meleeWeapon('Medium', 'Swords', { key: 'medium-sword', label: "Medium Swords" }), meleeWeapon('Heavy', 'Claws', { key: 'heavy-claw', label: "Heavy Claws" })], special: "Armored, Fear, Impact(1), Nimble, Tough(3)", upgrades: "C, I", cost: 185 },
     { name: "Chaos Ogres", size: 3, quality: "4+", equipment: [meleeWeapon('Heavy', 'Swords', { key: 'heavy-sword', label: "Heavy Swords" })], special: "Fear, Impact(D3), Tough(3)", upgrades: "C, L, M", cost: 110 },
@@ -27,7 +27,7 @@ const units: UnitInput[] = [
     { name: "Gorebeast Chariot", size: 1, quality: "3+", equipment: [meleeWeapon('Master', 'Halberd', { key: 'master-halberd', label: "Master Halberd" }), meleeWeapon('Heavy', 'Claws', { key: 'heavy-claw', label: "Heavy Claws" })], special: "Armored, Fast, Fear, Gorebeast, Impact(D6), Tough(6)", upgrades: "A", cost: 150 },
     { name: "Chaos Warshrine", size: 1, quality: "3+", equipment: [customWeapon("Shrine Bearers", { range: null, attacks: "D6+4", rules: rules("") })], special: "Armored, Fear, Giver of Glory, Tough(6)", upgrades: "A", cost: 190 },
     { name: "Mutalith Beast", size: 1, quality: "3+", equipment: [gear("Maelstrom", { rules: rules("Maelstrom") }), customWeapon("Maw", { range: null, attacks: "D6+2", rules: rules("") })], special: "Armored, Fear, Impact(D6), Regeneration, Tough(6)", upgrades: "-", cost: 150 },
-    { name: "Hellcannon", size: 1, quality: "3+", equipment: [customWeapon("Stone Thrower", { range: 48, attacks: "3", rules: rules("Piercing, Indirect") }), meleeWeapon('Force', 'Claws', { key: 'force-claw', label: "Force Claws" })], special: "Armored, Fear, Fearless, Impact(D6), Tough(6)", upgrades: "-", cost: 195 },
+    { name: "Hellcannon", size: 1, quality: "3+", equipment: [weaponFantasy('stone-thrower', { rules: rules('Indirect') }), meleeWeapon('Force', 'Claws', { key: 'force-claw', label: "Force Claws" })], special: "Armored, Fear, Fearless, Impact(D6), Tough(6)", upgrades: "-", cost: 195 },
 ]
 
 export const warriorsofchaos = faction({
@@ -59,18 +59,51 @@ export const warriorsofchaos = faction({
     group("B", [
       section("Upgrade with:", 'any', [
         { label: "Force Sword", cost: 5, addEquipment: [meleeWeapon('Force', 'Sword', { key: 'force-sword', label: "Force Sword" })] },
-        { label: "Master Lance (Mounted Only)", cost: 5, addEquipment: [meleeWeapon('Master', 'Lance', { key: 'master-lance', label: "Master Lance", rules: rules('Mounted Only') })] },
+        { label: "Master Lance", cost: 5, requiresOneOfSelected: ["Chaos Steed", "Steed of Slaanesh", "Disc of Tzeentch", "Daemonic Mount", "Juggernaut of Khorne", "Palanquin of Nurgle", "Manticore", "Chaos Dragon"], addEquipment: [meleeWeapon('Master', 'Lance', { key: 'master-lance', label: "Master Lance" })] },
         { label: "Master Mace", cost: 20, addEquipment: [meleeWeapon('Master', 'Mace', { key: 'master-mace', label: "Master Mace" })] }
       ]),
       section("Mount on:", 'any', [
-        { label: "Chaos Steed", cost: 10, addEquipment: [gear("Chaos Steed")] },
-        { label: "Steed of Slaanesh", cost: 20, addEquipment: [gear("Steed of Slaanesh")] },
-        { label: "Disc of Tzeentch", cost: 25, addEquipment: [gear("Disc of Tzeentch")] },
-        { label: "Daemonic Mount", cost: 50, addEquipment: [gear("Daemonic Mount")] },
-        { label: "Juggernaut of Khorne", cost: 55, addEquipment: [gear("Juggernaut of Khorne")] },
-        { label: "Palanquin of Nurgle", cost: 60, addEquipment: [gear("Palanquin of Nurgle")] },
-        { label: "Manticore", cost: 100, addEquipment: [gear("Manticore")] },
-        { label: "Chaos Dragon", cost: 125, addEquipment: [gear("Chaos Dragon")] }
+        { label: "Chaos Steed", cost: 10, addEquipment: [
+            meleeWeapon('Light', 'Claws', { key: 'light-claws', label: "Light Claws" }),
+            gear("Chaos Steed", { mount: true, rules: [{ ruleId: "fast" }, { ruleId: "nimble" }] })
+          ]
+        },
+        { label: "Steed of Slaanesh", cost: 20, addEquipment: [
+            meleeWeapon('Light', 'Claws', { key: 'light-claws', label: "Light Claws", rules: rules('Piercing, Poison') }),
+            gear("Steed of Slaanesh", { mount: true, rules: [{ ruleId: "fast" }, { ruleId: "fear" }, { ruleId: "nimble" }] })
+          ]
+        },
+        { label: "Disc of Tzeentch", cost: 25, addEquipment: [
+            meleeWeapon('Heavy', 'Claws', { key: 'heavy-claws', label: "Heavy Claws" }),
+            gear("Disc of Tzeentch", { mount: true, rules: [{ ruleId: "fast" }, { ruleId: "fear" }, { ruleId: "flying" }, { ruleId: "nimble" }] })
+          ]
+        },
+        { label: "Daemonic Mount", cost: 50, addEquipment: [
+            meleeWeapon('Medium', 'Claws', { key: 'medium-claws', label: "Medium Claws" }),
+            gear("Daemonic Mount", { mount: true, rules: [{ ruleId: "fear" }, { ruleId: "nimble" }, { ruleId: "impact", param: 1 }, { ruleId: "tough", param: 3 }] })
+          ]
+        },
+        { label: "Juggernaut of Khorne", cost: 55, addEquipment: [
+            meleeWeapon('Heavy', 'Claws', { key: 'heavy-claws', label: "Heavy Claws" }),
+            gear("Juggernaut of Khorne", { mount: true, rules: [{ ruleId: "fear" }, { ruleId: "impact", param: 1 }, { ruleId: "nimble" }, { ruleId: "tough", param: 3 }] })
+          ]
+        },
+        { label: "Palanquin of Nurgle", cost: 60, addEquipment: [
+            meleeWeapon('Force', 'Claws', { key: 'force-claws', label: "Force Claws" }),
+            gear("Palanquin of Nurgle", { mount: true, rules: [{ ruleId: "fear" }, { ruleId: "impact", param: 1 }, { ruleId: "nimble" }, { ruleId: "tough", param: 3 }] })
+          ]
+        },
+        { label: "Manticore", cost: 100, addEquipment: [
+            meleeWeapon('Master', 'Claws', { key: 'master-claws', label: "Master Claws", rules: rules('Poison') }),
+            gear("Manticore", { mount: true, rules: [{ ruleId: "fear" }, { ruleId: "flying" }, { ruleId: "impact", param: "D6" }, { ruleId: "regeneration" }, { ruleId: "tough", param: 3 }] })
+          ]
+        },
+        { label: "Chaos Dragon", cost: 125, addEquipment: [
+            gear("Fiery Breath", { rules: rules("Fiery Breath") }),
+            meleeWeapon('Force', 'Claws', { key: 'force-claws', label: "Force Claws", rules: rules('Piercing') }),
+            gear("Chaos Dragon", { mount: true, rules: [{ ruleId: "fear" }, { ruleId: "flying" }, { ruleId: "impact", param: "D6" }, { ruleId: "tough", param: 6 }] })
+          ]
+        }
       ]),
       section("Upgrade Wizard(1):", 'one', [
         // NOTE: this option's cost was not legible in the source transcription (one-page-fantasy-army-lists.md,
@@ -78,7 +111,7 @@ export const warriorsofchaos = faction({
         // Using +5pts to match the same single-step Wizard(1)->Wizard(2) upgrade cost in Empire/Orcs/Goblins;
         // needs verification against the original PDF.
         { label: "Wizard(2)", cost: 5, adds: ["Wizard(2)"] }
-      ], { requiresBaselineRule: ["Wizard(1)"] })
+      ], { prerequisite: { requiresBaselineRule: ["Wizard(1)"] } })
     ]),
     group("I", [
       section("Upgrade with:", 'any', [
@@ -87,7 +120,7 @@ export const warriorsofchaos = faction({
     ]),
     group("J", [
       section("Upgrade with:", 'any', [
-        { label: "Light Spears", cost: 10, addEquipment: [meleeWeapon('Light', 'Spears', { key: 'light-spear', label: "Light Spears" })] },
+        { label: "Light Spears", cost: 10, addEquipment: [meleeWeapon('Light', 'Spear', { key: 'light-spear', label: "Light Spears" })] },
         { label: "Light Maces", cost: 25, addEquipment: [meleeWeapon('Light', 'Mace', { key: 'light-mace', label: "Light Maces" })] }
       ]),
       section("Upgrade all models with:", 'any', [
@@ -106,7 +139,7 @@ export const warriorsofchaos = faction({
         { label: "Sergeant", cost: 5, addEquipment: [gear("Sergeant", { rules: rules("Sergeant") })] },
         { label: "Musician", cost: 10, addEquipment: [gear("Musician", { rules: rules("Musician") })] },
         { label: "Standard", cost: 10, addEquipment: [gear("Standard", { rules: rules("Standard") })] }
-      ])
+      ], { oncePerUnit: true })
     ]),
     group("L", [
       section("Upgrade with:", 'any', [

@@ -42,6 +42,7 @@ const meleeTypeRules: Record<string, RuleRef[]> = {
   halberd: [{ ruleId: 'piercing' }],
   mace: [{ ruleId: 'piercing' }, { ruleId: 'poison' }],
   lance: [{ ruleId: 'impact', param: 1 }],
+  spear: [{ ruleId: 'spear' }]
 }
 
 /** Clone `tier` with its type's innate rules (if any) attached. */
@@ -198,6 +199,8 @@ export interface EquipmentOpts {
   label?: string
   /** Override the auto-derived key, for the rare case where two distinct entries on one unit would otherwise collide. */
   key?: string
+  /** Marks this entry as the unit's mount (see {@link EquipmentEntry.isMount}). */
+  mount?: boolean
 }
 
 /** Reference a global weapon-table entry by id — the id is checked at compile time against {@link WeaponId}. */
@@ -281,6 +284,7 @@ export function gear(name: string, opts: EquipmentOpts = {}): EquipmentEntry {
     count: opts.count ?? 1,
     unitCount: opts.unitCount,
     rules: opts.rules ?? [],
+    ...(opts.mount ? { isMount: true } : {}),
   }
 }
 
@@ -374,7 +378,20 @@ export interface OptionInput {
   removeEquipment?: string[]
   /** Same as removeEquipment, but reduces the target's model-count by one instead of removing it outright. */
   removeOneEquipment?: string[]
+  /**
+   * Option-level counterpart to a section's `requiresOneOfSelected`: this
+   * option is only selectable while at least one of these other option
+   * *labels* (elsewhere on the same unit, possibly a different group) is also
+   * selected — e.g. a "(Mounted Only)" weapon option listing every option in
+   * the unit's own "Mount on:" section. Authored by label for the same reason
+   * as section prerequisites (ids don't exist yet at authoring time);
+   * resolved to ids by `faction()`.
+   */
+  requiresOneOfSelected?: string[]
 }
+
+/** Options with a not-yet-resolved (label-based) `requiresOneOfSelected`, keyed by the built option object. */
+const pendingOptionPrerequisites = new WeakMap<UpgradeOption, string[]>()
 
 export function option(groupId: string, idx: number, o: OptionInput): UpgradeOption {
   const opt: UpgradeOption = {
@@ -394,6 +411,7 @@ export function option(groupId: string, idx: number, o: OptionInput): UpgradeOpt
     effects.removeOneEquipment = o.removeOneEquipment.map(equipmentKeyOf)
   }
   if (Object.keys(effects).length) opt.effects = effects
+  if (o.requiresOneOfSelected?.length) pendingOptionPrerequisites.set(opt, o.requiresOneOfSelected)
   return opt
 }
 
@@ -435,6 +453,8 @@ export interface SectionInput {
   selection: UpgradeSelection
   options: OptionInput[]
   prerequisite?: SectionPrerequisiteInput
+  /** See {@link UpgradeSection.oncePerUnit}. */
+  oncePerUnit?: boolean
 }
 
 /** Sections with a not-yet-resolved (label-based) prerequisite, keyed by the built section object. */
@@ -445,9 +465,9 @@ export function section(
   title: string,
   selection: UpgradeSelection,
   options: OptionInput[],
-  prerequisite?: SectionPrerequisiteInput,
+  opts?: { prerequisite?: SectionPrerequisiteInput; oncePerUnit?: boolean },
 ): SectionInput {
-  return { title, selection, options, prerequisite }
+  return { title, selection, options, prerequisite: opts?.prerequisite, oncePerUnit: opts?.oncePerUnit }
 }
 
 /**
@@ -465,6 +485,7 @@ export function group(id: string, sections: SectionInput[], opts?: { hideId?: bo
       title: s.title,
       selection: s.selection,
       options: s.options.map((o) => option(id, idx++, o)),
+      ...(s.oncePerUnit ? { oncePerUnit: true } : {}),
     }
     if (s.prerequisite) pendingPrerequisites.set(sec, s.prerequisite)
     return sec
@@ -515,15 +536,20 @@ export function faction(input: FactionInput): Faction {
   for (const group of input.upgradeGroups) {
     for (const sec of group.sections) {
       const raw = pendingPrerequisites.get(sec)
-      if (!raw) continue
-      const prerequisite: SectionPrerequisite = {
-        blockedBySelecting: resolveLabels(raw.blockedBySelecting),
-        blockedBySelectingOnSingleModel: resolveLabels(raw.blockedBySelectingOnSingleModel),
-        requiresOneOfSelected: resolveLabels(raw.requiresOneOfSelected),
-        satisfiedByEquipment: raw.satisfiedByEquipment?.map(equipmentKeyOf),
-        requiresBaselineRule: raw.requiresBaselineRule?.map(parseRule),
+      if (raw) {
+        const prerequisite: SectionPrerequisite = {
+          blockedBySelecting: resolveLabels(raw.blockedBySelecting),
+          blockedBySelectingOnSingleModel: resolveLabels(raw.blockedBySelectingOnSingleModel),
+          requiresOneOfSelected: resolveLabels(raw.requiresOneOfSelected),
+          satisfiedByEquipment: raw.satisfiedByEquipment?.map(equipmentKeyOf),
+          requiresBaselineRule: raw.requiresBaselineRule?.map(parseRule),
+        }
+        sec.prerequisite = prerequisite
       }
-      sec.prerequisite = prerequisite
+      for (const opt of sec.options) {
+        const pendingOpt = pendingOptionPrerequisites.get(opt)
+        if (pendingOpt) opt.requiresOneOfSelected = resolveLabels(pendingOpt)
+      }
     }
   }
 

@@ -126,7 +126,7 @@ export const tyranids = faction({
       ]),
       section('Upgrade with one', 'one', [
         { label: 'Tyrannocyte (Transport(21))', cost: 40, adds: ['Transport(21)'] },
-        { label: 'Sporocyst (Mine Launcher)', cost: 60, addEquipment: [gear('Sporocyst', { rules: rules('Mine Launcher') })] },
+        { label: 'Sporocyst', cost: 60, addEquipment: [gear('Sporocyst', { rules: rules('Mine Launcher') })] },
       ]),
     ]),
     group('I', [

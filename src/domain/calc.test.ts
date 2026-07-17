@@ -9,12 +9,15 @@ import {
   groupEffectiveUnit,
   heroCount,
   isInfantry,
+  isOptionAvailable,
   isSectionAvailable,
+  oncePerUnitOptionIds,
   pruneInvalidSelections,
   sharedGroupDeployRuleId,
   totalPoints,
   unitCost,
   validate,
+  wholeUnitOptionIds,
 } from './calc'
 import { LIST_SCHEMA_VERSION, type ArmyList } from './list'
 import type { Faction, UnitProfile, UpgradeOption, UpgradeSection } from './types'
@@ -105,6 +108,127 @@ describe('applyUpgrades — parameterized rule merging', () => {
     const eff = applyUpgrades(librarian, [], sm)
     expect(eff.specialRules).toContainEqual({ ruleId: 'psyker', param: 1 })
     expect(eff.specialRules).toEqual(librarian.specialRules)
+  })
+})
+
+describe('applyUpgrades — mount rule inheritance', () => {
+  function makeUnit(specialRules: UnitProfile['specialRules'] = []): UnitProfile {
+    return {
+      id: 'test.unit',
+      factionId: 'test',
+      name: 'Test Unit',
+      size: 1,
+      quality: '4+',
+      equipment: [],
+      specialRules,
+      upgradeGroups: ['A'],
+      cost: 10,
+      isHero: false,
+    }
+  }
+
+  function makeFaction(options: UpgradeOption[]): Faction {
+    return {
+      id: 'test',
+      name: 'Test',
+      system: 'system-fantasy',
+      units: [],
+      upgradeGroups: [{ id: 'A', sections: [{ title: 'Mount on:', selection: 'any', options }] }],
+      armyRules: [],
+      psychicPowers: [],
+    }
+  }
+
+  const mountOption: UpgradeOption = {
+    id: 'A.0',
+    label: 'Warhorse',
+    costDelta: 10,
+    effects: {
+      addEquipment: [
+        {
+          key: 'warhorse',
+          label: 'Warhorse',
+          isMount: true,
+          rules: [{ ruleId: 'fast' }, { ruleId: 'nimble' }],
+        },
+        {
+          key: 'master-claws',
+          label: 'Master Claws',
+          weapon: { id: 'master-claws', name: 'Master Claws', range: null, attacks: '3', rules: [{ ruleId: 'piercing' }] },
+        },
+      ],
+    },
+  }
+
+  const mountWithToughOption: UpgradeOption = {
+    id: 'A.1',
+    label: 'Barded Warhorse',
+    costDelta: 15,
+    effects: {
+      addEquipment: [{ key: 'barded-warhorse', label: 'Barded Warhorse', isMount: true, rules: [{ ruleId: 'tough', param: 6 }] }],
+    },
+  }
+
+  const sergeantOption: UpgradeOption = {
+    id: 'A.2',
+    label: 'Sergeant',
+    costDelta: 5,
+    effects: {
+      addEquipment: [{ key: 'sergeant', label: 'Sergeant', rules: [{ ruleId: 'hero' }] }],
+    },
+  }
+
+  const toughBonusOption: UpgradeOption = {
+    id: 'A.3',
+    label: 'Barding',
+    costDelta: 5,
+    effects: { addRules: [{ ruleId: 'tough', param: '+3' }] },
+  }
+
+  it('a mount\'s non-Tough rules appear in specialRules once selected, absent otherwise', () => {
+    const unit = makeUnit()
+    const faction = makeFaction([mountOption, mountWithToughOption, sergeantOption, toughBonusOption])
+    const selected = applyUpgrades(unit, ['A.0'], faction)
+    const ids = selected.specialRules.map((r) => r.ruleId)
+    expect(ids).toContain('fast')
+    expect(ids).toContain('nimble')
+
+    const unselected = applyUpgrades(unit, [], faction)
+    const unselectedIds = unselected.specialRules.map((r) => r.ruleId)
+    expect(unselectedIds).not.toContain('fast')
+    expect(unselectedIds).not.toContain('nimble')
+  })
+
+  it('baseline Tough(3) plus a mount\'s Tough(6) sums into one Tough(9) entry', () => {
+    const unit = makeUnit([{ ruleId: 'tough', param: 3 }])
+    const faction = makeFaction([mountOption, mountWithToughOption, sergeantOption, toughBonusOption])
+    const eff = applyUpgrades(unit, ['A.1'], faction)
+    expect(eff.specialRules).toContainEqual({ ruleId: 'tough', param: 9 })
+    expect(eff.specialRules.filter((r) => r.ruleId === 'tough')).toHaveLength(1)
+  })
+
+  it('a mount\'s weapon rules stay on the weapon entry, not in specialRules', () => {
+    const unit = makeUnit()
+    const faction = makeFaction([mountOption, mountWithToughOption, sergeantOption, toughBonusOption])
+    const eff = applyUpgrades(unit, ['A.0'], faction)
+    expect(eff.specialRules.map((r) => r.ruleId)).not.toContain('piercing')
+    const claws = eff.equipment.find((e) => e.label === 'Master Claws')!
+    expect(claws.weapon?.rules).toContainEqual({ ruleId: 'piercing' })
+  })
+
+  it('a non-mount gear grant (e.g. Sergeant) is not promoted to specialRules', () => {
+    const unit = makeUnit()
+    const faction = makeFaction([mountOption, mountWithToughOption, sergeantOption, toughBonusOption])
+    const eff = applyUpgrades(unit, ['A.2'], faction)
+    expect(eff.specialRules.map((r) => r.ruleId)).not.toContain('hero')
+  })
+
+  it('baseline Tough(3) + a Tough(+3) additive upgrade + a mount\'s Tough(6) composes into Tough(12)', () => {
+    const unit = makeUnit([{ ruleId: 'tough', param: 3 }])
+    const faction = makeFaction([mountOption, mountWithToughOption, sergeantOption, toughBonusOption])
+    const eff = applyUpgrades(unit, ['A.1', 'A.3'], faction)
+    expect(eff.specialRules).toContainEqual({ ruleId: 'tough', param: 12 })
+    expect(eff.specialRules.filter((r) => r.ruleId === 'tough')).toHaveLength(1)
   })
 })
 
@@ -443,6 +567,72 @@ describe('pruneInvalidSelections', () => {
   })
 })
 
+describe('isOptionAvailable / requiresOneOfSelected (option-level, e.g. "Mounted Only")', () => {
+  const mountUnit: UnitProfile = {
+    id: 'test.hero',
+    factionId: 'test',
+    name: 'Hero',
+    size: 1,
+    quality: '4+',
+    equipment: [],
+    specialRules: [],
+    upgradeGroups: ['A'],
+    cost: 0,
+    isHero: true,
+  }
+  const mountSection: UpgradeSection = {
+    title: 'Mount on:',
+    selection: 'any',
+    options: [
+      { id: 'A.0', label: 'Warhorse', costDelta: 10 },
+      { id: 'A.1', label: 'Griffon', costDelta: 70 },
+    ],
+  }
+  const swordOption: UpgradeOption = { id: 'A.2', label: 'Master Sword', costDelta: 5 }
+  const lanceOption: UpgradeOption = {
+    id: 'A.3',
+    label: 'Heavy Lance (Mounted Only)',
+    costDelta: 5,
+    requiresOneOfSelected: ['A.0', 'A.1'],
+  }
+  const weaponSection: UpgradeSection = { title: 'Upgrade with:', selection: 'any', options: [swordOption, lanceOption] }
+  const testFaction: Faction = {
+    id: 'test',
+    name: 'Test',
+    system: 'system-fantasy',
+    units: [mountUnit],
+    upgradeGroups: [{ id: 'A', sections: [mountSection, weaponSection] }],
+    armyRules: [],
+    psychicPowers: [],
+  }
+
+  it('is unavailable when none of its requiresOneOfSelected ids are selected', () => {
+    expect(isOptionAvailable(mountUnit, weaponSection, lanceOption, [])).toBe(false)
+  })
+
+  it('is available once any one of its requiresOneOfSelected ids is selected', () => {
+    expect(isOptionAvailable(mountUnit, weaponSection, lanceOption, ['A.0'])).toBe(true)
+    expect(isOptionAvailable(mountUnit, weaponSection, lanceOption, ['A.1'])).toBe(true)
+  })
+
+  it('does not affect an unrestricted sibling option in the same section', () => {
+    expect(isOptionAvailable(mountUnit, weaponSection, swordOption, [])).toBe(true)
+  })
+
+  it('still respects the section-level prerequisite when both are present', () => {
+    const gatedSection: UpgradeSection = { ...weaponSection, prerequisite: { requiresOneOfSelected: ['some-other-option'] } }
+    expect(isOptionAvailable(mountUnit, gatedSection, swordOption, [])).toBe(false)
+  })
+
+  it('cascades via pruneInvalidSelections: deselecting the mount removes the mount-requiring option', () => {
+    const pruned = pruneInvalidSelections(testFaction, mountUnit, ['A.0', 'A.3'])
+    expect(pruned).toEqual(['A.0', 'A.3'])
+
+    const afterRemovingMount = pruneInvalidSelections(testFaction, mountUnit, ['A.3'])
+    expect(afterRemovingMount).toEqual([])
+  })
+})
+
 describe('isInfantry', () => {
   it('excludes a Hero unit', () => {
     expect(isInfantry(captain)).toBe(false)
@@ -500,7 +690,7 @@ describe('combinedEffectiveUnit', () => {
   it('doubles size and sums cost for two plain copies', () => {
     const effA = applyUpgrades(tacticals, [], sm)
     const effB = applyUpgrades(tacticals, [], sm)
-    const combined = combinedEffectiveUnit(effA, effB)
+    const combined = combinedEffectiveUnit(effA, effB, sm)
     expect(combined.size).toBe(tacticals.size * 2)
     expect(combined.cost).toBe(effA.cost + effB.cost)
   })
@@ -509,7 +699,7 @@ describe('combinedEffectiveUnit', () => {
     const stormbolter = optionId(sm, 'A', 'Stormbolter') // a removeOneEquipment ("replace one") option
     const effA = applyUpgrades(tacticals, [stormbolter], sm)
     const effB = applyUpgrades(tacticals, [], sm)
-    const combined = combinedEffectiveUnit(effA, effB)
+    const combined = combinedEffectiveUnit(effA, effB, sm)
 
     const stormbolterEntry = combined.equipment.find((e) => e.label.includes('Stormbolter'))
     expect(stormbolterEntry?.unitCount).toBe(1) // only swapped on one model of side A
@@ -526,7 +716,7 @@ describe('combinedEffectiveUnit', () => {
   it('dedupes special rules shared by both sides', () => {
     const effA = applyUpgrades(captain, [], sm)
     const effB = applyUpgrades(captain, [], sm)
-    const combined = combinedEffectiveUnit(effA, effB)
+    const combined = combinedEffectiveUnit(effA, effB, sm)
     const fearlessCount = combined.specialRules.filter((r) => r.ruleId === 'fearless').length
     expect(fearlessCount).toBe(1)
   })
@@ -536,7 +726,7 @@ describe('combinedEffectiveUnit', () => {
     const limitedMeltagun = optionId(sm, 'A', 'Meltagun') // Take one Assault Rifle attachment
     const effA = applyUpgrades(tacticals, [plainMeltagun], sm)
     const effB = applyUpgrades(tacticals, [limitedMeltagun], sm)
-    const combined = combinedEffectiveUnit(effA, effB)
+    const combined = combinedEffectiveUnit(effA, effB, sm)
 
     const meltagunEntries = combined.equipment.filter((e) => e.key === 'meltagun')
     expect(meltagunEntries).toHaveLength(2)
@@ -551,11 +741,88 @@ describe('combinedEffectiveUnit', () => {
     const plainMeltagun = optionId(sm, 'D', 'Meltagun')
     const effA = applyUpgrades(tacticals, [plainMeltagun], sm)
     const effB = applyUpgrades(tacticals, [plainMeltagun], sm)
-    const combined = combinedEffectiveUnit(effA, effB)
+    const combined = combinedEffectiveUnit(effA, effB, sm)
 
     const meltagunEntries = combined.equipment.filter((e) => e.key === 'meltagun')
     expect(meltagunEntries).toHaveLength(1)
     expect(meltagunEntries[0].unitCount).toBe(2)
+  })
+})
+
+describe('combinedEffectiveUnit — oncePerUnit cost dedup', () => {
+  const sergeantOption: UpgradeOption = {
+    id: 'A.0',
+    label: 'Sergeant',
+    costDelta: 5,
+    effects: { addEquipment: [{ key: 'sergeant', label: 'Sergeant', rules: [{ ruleId: 'sergeant' }] }] },
+  }
+
+  function makeFaction(): Faction {
+    return {
+      id: 'test',
+      name: 'Test',
+      system: 'system-fantasy',
+      units: [],
+      upgradeGroups: [{ id: 'A', sections: [{ title: 'Upgrade with:', selection: 'any', options: [sergeantOption], oncePerUnit: true }] }],
+      armyRules: [],
+      psychicPowers: [],
+    }
+  }
+
+  const faction = makeFaction()
+
+  function makeUnit(): UnitProfile {
+    return {
+      id: 'test.unit',
+      factionId: 'test',
+      name: 'Test Unit',
+      size: 5,
+      quality: '4+',
+      equipment: [],
+      specialRules: [],
+      upgradeGroups: ['A'],
+      cost: 30,
+      isHero: false,
+    }
+  }
+
+  it('charges a oncePerUnit option exactly once when both entries independently selected it', () => {
+    const unit = makeUnit()
+    const effA = applyUpgrades(unit, ['A.0'], faction)
+    const effB = applyUpgrades(unit, ['A.0'], faction)
+    const combined = combinedEffectiveUnit(effA, effB, faction)
+    expect(combined.cost).toBe(effA.cost + effB.cost - 5) // charged twice by applyUpgrades, corrected to once
+    expect(combined.upgradeLabels).toEqual(['Sergeant']) // still shown once
+  })
+
+  it("shows a oncePerUnit option's granted equipment at unitCount 1, not summed per entry", () => {
+    const unit = makeUnit()
+    const effA = applyUpgrades(unit, ['A.0'], faction)
+    const effB = applyUpgrades(unit, ['A.0'], faction)
+    const combined = combinedEffectiveUnit(effA, effB, faction)
+    const sergeantEntries = combined.equipment.filter((e) => e.key === 'sergeant')
+    expect(sergeantEntries).toHaveLength(1)
+    expect(sergeantEntries[0].unitCount).toBe(1) // not 2, even though both entries carry it
+  })
+
+  it('leaves cost untouched when only one entry selected the oncePerUnit option', () => {
+    const unit = makeUnit()
+    const effA = applyUpgrades(unit, ['A.0'], faction)
+    const effB = applyUpgrades(unit, [], faction)
+    const combined = combinedEffectiveUnit(effA, effB, faction)
+    expect(combined.cost).toBe(effA.cost + effB.cost) // no double-count to correct
+    const sergeantEntries = combined.equipment.filter((e) => e.key === 'sergeant')
+    expect(sergeantEntries[0].unitCount).toBe(1) // only one side ever contributed it
+  })
+
+  it('a oncePerUnit section\'s options are in oncePerUnitOptionIds, not wholeUnitOptionIds, but still affectsAllModels', () => {
+    // Per design.md decision 5: wholeUnitOptionIds now excludes oncePerUnit sections, since
+    // those are combined/toggled via the single-slot path (combineUnits/toggleUpgrade), not
+    // the mirror-to-both path wholeUnitOptionIds drives. affectsAllModels still returns true
+    // so the option renders in the same whole-unit UI panel.
+    expect(wholeUnitOptionIds(faction).has('A.0')).toBe(false)
+    expect(oncePerUnitOptionIds(faction).has('A.0')).toBe(true)
+    expect(affectsAllModels(faction.upgradeGroups[0].sections[0])).toBe(true)
   })
 })
 

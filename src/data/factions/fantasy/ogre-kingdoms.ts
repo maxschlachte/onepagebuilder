@@ -1,4 +1,4 @@
-import { faction, customWeapon, meleeWeapon, gear, rules, armyRule, power, section, group, type UnitInput } from '../helpers'
+import { faction, customWeapon, weaponFantasy, meleeWeapon, gear, rules, armyRule, power, section, group, type UnitInput } from '../helpers'
 
 const units: UnitInput[] = [
     { name: "Tyrant", size: 1, quality: "3+", equipment: [meleeWeapon('Master', 'Sword', { key: 'master-sword', label: "Master Sword" })], special: "Fear, Hero, Impact(D3), Tough(6)", upgrades: "A, C", cost: 75 },
@@ -6,7 +6,7 @@ const units: UnitInput[] = [
     { name: "Hunter", size: 1, quality: "4+", equipment: [customWeapon("Great Spear", { range: 12, attacks: "1", rules: rules("Piercing") }), meleeWeapon('Master', 'Sword', { key: 'master-sword', label: "Master Sword" })], special: "Fear, Hero, Impact(D3), Loner, Tough(3)", upgrades: "B, C", cost: 45 },
     { name: "Butcher", size: 1, quality: "4+", equipment: [meleeWeapon('Heavy', 'Sword', { key: 'heavy-sword', label: "Heavy Sword" })], special: "Fear, Impact(D3), Immune, Tough(3), Wizard(1)", upgrades: "D", cost: 70 },
     { name: "Firebelly", size: 1, quality: "4+", equipment: [gear("Fiery Breath", { rules: rules("Fiery Breath") }), meleeWeapon('Heavy', 'Sword', { key: 'heavy-sword', label: "Heavy Sword" })], special: "Fear, Impact(D3), Tough(3), Wizard(1)", upgrades: "D", cost: 75 },
-    { name: "Gnoblars", size: 10, quality: "6+", equipment: [customWeapon("Throwing Weapons", { range: 12, attacks: "1", rules: rules("") })], special: "-", upgrades: "E, F", cost: 40 },
+    { name: "Gnoblars", size: 10, quality: "6+", equipment: [weaponFantasy('throwing-weapon', { label: "Throwing Weapons" })], special: "-", upgrades: "E, F", cost: 40 },
     { name: "Ogres", size: 6, quality: "4+", equipment: [meleeWeapon('Heavy', 'Swords', { key: 'heavy-sword', label: "Heavy Swords" })], special: "Fear, Impact(D3), Tough(3)", upgrades: "E, H", cost: 215 },
     { name: "Maneaters", size: 6, quality: "3+", equipment: [meleeWeapon('Master', 'Swords', { key: 'master-sword', label: "Master Swords" })], special: "Experienced, Fear, Impact(D3), Tough(3)", upgrades: "E, I", cost: 330 },
     { name: "Leadbelchers", size: 3, quality: "4+", equipment: [customWeapon("Belchguns", { range: 24, attacks: "D6", rules: rules("Piercing") }), meleeWeapon('Heavy', 'Swords', { key: 'heavy-sword', label: "Heavy Swords" })], special: "Fear, Impact(D3), Tough(3)", upgrades: "E", cost: 205 },
@@ -17,7 +17,7 @@ const units: UnitInput[] = [
     { name: "Giant", size: 1, quality: "4+", equipment: [customWeapon("Giant Attack", { range: null, attacks: "D6", rules: rules("Piercing") })], special: "Armored, Fall Over, Fearless, Impact(D6), Tough(6)", upgrades: "-", cost: 100 },
     { name: "Stonehorn", size: 1, quality: "4+", equipment: [customWeapon("Chaintrap", { range: 12, attacks: "1", rules: rules("Deadly") }), meleeWeapon('Heavy', 'Sword', { key: 'heavy-sword', label: "Heavy Sword" }), meleeWeapon('Force', 'Claws', { key: 'force-claw', label: "Force Claws", rules: rules('Piercing') })], special: "Armored, Fear, Furious, Impact(D6), Tough(6), Trample", upgrades: "G", cost: 115 },
     { name: "Thundertusk", size: 1, quality: "4+", equipment: [customWeapon("Frost Sphere", { range: 24, attacks: "3", rules: rules("Piercing, Indirect") }), meleeWeapon('Force', 'Sword', { key: 'force-sword', label: "Force Sword" }), meleeWeapon('Force', 'Claws', { key: 'force-claw', label: "Force Claws", rules: rules('Piercing') })], special: "Armored, Fear, Impact(D6), Numbing Chill, Tough(6)", upgrades: "K", cost: 155 },
-    { name: "Scraplauncher", size: 1, quality: "5+", equipment: [customWeapon("Stone Thrower", { range: 48, attacks: "3", rules: rules("Piercing, Indirect, Deadly") }), meleeWeapon('Force', 'Sword', { key: 'force-sword', label: "Force Sword" }), meleeWeapon('Heavy', 'Claws', { key: 'heavy-claw', label: "Heavy Claws" })], special: "Armored, Fast, Fear, Impact(D6), Tough(6)", upgrades: "-", cost: 145 },
+    { name: "Scraplauncher", size: 1, quality: "5+", equipment: [weaponFantasy('stone-thrower', { rules: rules('Indirect, Deadly') }), meleeWeapon('Force', 'Sword', { key: 'force-sword', label: "Force Sword" }), meleeWeapon('Heavy', 'Claws', { key: 'heavy-claw', label: "Heavy Claws" })], special: "Armored, Fast, Fear, Impact(D6), Tough(6)", upgrades: "-", cost: 145 },
     { name: "Ironblaster", size: 1, quality: "4+", equipment: [customWeapon("Titan Cannon", { range: 36, attacks: "D3+3", rules: rules("Piercing") }), meleeWeapon('Heavy', 'Sword', { key: 'heavy-sword', label: "Heavy Sword" }), meleeWeapon('Heavy', 'Claws', { key: 'heavy-claw', label: "Heavy Claws" })], special: "Armored, Fast, Fear, Impact(D6), Tough(6)", upgrades: "-", cost: 155 },
 ]
 
@@ -48,7 +48,11 @@ export const ogrekingdoms = faction({
         { label: "Harpoon Launcher", cost: 15, addEquipment: [customWeapon("Harpoon Launcher", { range: 36, attacks: "1", rules: rules("Piercing") })] }
       ]),
       section("Mount on:", 'any', [
-        { label: "Stonehorn", cost: 95, addEquipment: [gear("Stonehorn")] }
+        { label: "Stonehorn", cost: 95, addEquipment: [
+            meleeWeapon('Force', 'Claws', { key: 'force-claws', label: "Force Claws", rules: rules('Piercing') }),
+            gear("Stonehorn", { mount: true, rules: [{ ruleId: "armored" }, { ruleId: "furious" }, { ruleId: "impact", param: "+3" }, { ruleId: "tough", param: 6 }, { ruleId: "trample" }] })
+          ]
+        }
       ])
     ]),
     group("C", [
@@ -71,14 +75,14 @@ export const ogrekingdoms = faction({
       section("Upgrade Wizard(1):", 'any', [
         { label: "Wizard(2)", cost: 5, adds: ["Wizard(2)"] },
         { label: "Wizard(3)", cost: 10, adds: ["Wizard(3)"] }
-      ], { requiresBaselineRule: ["Wizard(1)"] })
+      ], { prerequisite: { requiresBaselineRule: ["Wizard(1)"] } })
     ]),
     group("E", [
       section("Upgrade with:", 'any', [
         { label: "Sergeant", cost: 5, addEquipment: [gear("Sergeant", { rules: rules("Sergeant") })] },
         { label: "Musician", cost: 10, addEquipment: [gear("Musician", { rules: rules("Musician") })] },
         { label: "Standard", cost: 10, addEquipment: [gear("Standard", { rules: rules("Standard") })] }
-      ])
+      ], { oncePerUnit: true })
     ]),
     group("F", [
       section("Upgrade all models with:", 'any', [

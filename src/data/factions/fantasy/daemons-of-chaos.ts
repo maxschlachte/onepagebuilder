@@ -1,34 +1,34 @@
-import { faction, customWeapon, weaponFantasy, gear, rules, armyRule, power, section, group, type UnitInput } from '../helpers'
+import { faction, customWeapon, weaponFantasy, meleeWeapon, gear, rules, armyRule, power, section, group, type UnitInput } from '../helpers'
 
 const units: UnitInput[] = [
     // "Bloodthrister" as printed in the source (likely a transcription typo for "Bloodthirster") — kept verbatim.
-    { name: "Bloodthrister", size: 1, quality: "2+", equipment: [customWeapon("Force Claws", { range: null, attacks: "5", rules: rules("Piercing") })], special: "Armored, Fear, Furious, Flying, Hero, Impact(D6), Resistance, Tough(6)", upgrades: "-", cost: 150 },
-    { name: "Lord of Change", size: 1, quality: "2+", equipment: [customWeapon("Force Claws", { range: null, attacks: "5", rules: rules("Piercing") })], special: "Armored, Fear, Flying, Hero, Impact(D6), Regeneration, Tough(6), Wizard(2)", upgrades: "-", cost: 175 },
-    { name: "Unclean One", size: 1, quality: "2+", equipment: [customWeapon("Force Claws", { range: null, attacks: "5", rules: rules("Piercing, Poison") })], special: "Armored, Fear, Hero, Impact(D6), Stench, Tough(6), Wizard(1)", upgrades: "-", cost: 190 },
-    { name: "Keeper of Secrets", size: 1, quality: "2+", equipment: [customWeapon("Force Claws", { range: null, attacks: "5", rules: rules("Piercing") })], special: "Armored, Fear, Hero, Impact(D6), Tough(6), Wizard(2)", upgrades: "-", cost: 165 },
-    { name: "Daemon Prince", size: 1, quality: "2+", equipment: [customWeapon("Force Claws", { range: null, attacks: "5", rules: rules("Piercing") })], special: "Armored, Fear, Hero, Impact(D6), Tough(6)", upgrades: "D, H", cost: 130 },
-    { name: "Herald of Khorne", size: 1, quality: "3+", equipment: [customWeapon("Heavy Sword", { range: null, attacks: "3", rules: rules("") })], special: "Fear, Fearless, Furious, Hero, Resistance, Tough(3)", upgrades: "A", cost: 50 },
-    { name: "Herald of Tzeentch", size: 1, quality: "5+", equipment: [customWeapon("Medium Sword", { range: null, attacks: "2", rules: rules("") })], special: "Fear, Fearless, Hero, Regeneration, Tough(3), Wizard(1)", upgrades: "B", cost: 50 },
-    { name: "Herald of Nurgle", size: 1, quality: "4+", equipment: [customWeapon("Heavy Sword", { range: null, attacks: "3", rules: rules("Poison") })], special: "Fear, Fearless, Hero, Stench, Tough(3)", upgrades: "E", cost: 50 },
-    { name: "Herald of Slaanesh", size: 1, quality: "4+", equipment: [customWeapon("Master Sword", { range: null, attacks: "4", rules: rules("Piercing") })], special: "Fear, Fearless, Hero, Tough(3)", upgrades: "F", cost: 40 },
-    { name: "Pink Horrors", size: 10, quality: "5+", equipment: [customWeapon("Light Claws", { range: null, attacks: "1", rules: rules("") })], special: "Fear, Fearless, Horrors, Regeneration", upgrades: "C, G", cost: 140 },
-    { name: "Plaguebearers", size: 10, quality: "4+", equipment: [customWeapon("Light Swords", { range: null, attacks: "1", rules: rules("Poison") })], special: "Fear, Fearless, Stench", upgrades: "C", cost: 210 },
-    { name: "Daemonettes", size: 10, quality: "4+", equipment: [customWeapon("Medium Claws", { range: null, attacks: "2", rules: rules("Piercing") })], special: "Fear, Fearless", upgrades: "C", cost: 210 },
-    { name: "Bloodletters", size: 10, quality: "3+", equipment: [customWeapon("Light Swords", { range: null, attacks: "1", rules: rules("") })], special: "Fear, Fearless, Furious, Resistance", upgrades: "C", cost: 235 },
-    { name: "Chaos Furies", size: 10, quality: "4+", equipment: [customWeapon("Light Claws", { range: null, attacks: "1", rules: rules("") })], special: "Fear, Fearless, Flying", upgrades: "H", cost: 180 },
-    { name: "Seekers", size: 5, quality: "4+", equipment: [customWeapon("Medium Swords", { range: null, attacks: "2", rules: rules("Piercing, Poison") })], special: "Fast, Fear, Fearless, Nimble", upgrades: "C", cost: 160 },
-    { name: "Screamers", size: 5, quality: "4+", equipment: [customWeapon("Heavy Claws", { range: null, attacks: "3", rules: rules("") }), gear("Slashing Attack")], special: "Fast, Fear, Fearless, Flying, Nimble, Tough(3)", upgrades: "-", cost: 235 },
-    { name: "Flesh Hounds", size: 5, quality: "3+", equipment: [customWeapon("Medium Claws", { range: null, attacks: "2", rules: rules("") })], special: "Fast, Fear, Fearless, Furious, Nimble, Resistance, Tough(3)", upgrades: "-", cost: 265 },
-    { name: "Nurglings", size: 3, quality: "5+", equipment: [customWeapon("Master Claws", { range: null, attacks: "4", rules: rules("") })], special: "Fear, Fearless, Scout, Stench, Tough(3)", upgrades: "-", cost: 105 },
-    { name: "Plague Drones", size: 3, quality: "4+", equipment: [customWeapon("Light Sword", { range: null, attacks: "1", rules: rules("Poison") }), customWeapon("Heavy Claws", { range: null, attacks: "3", rules: rules("") })], special: "Fear, Fearless, Impact(1), Nimble, Strider, Tough(3)", upgrades: "C, I", cost: 135 },
-    { name: "Flamers", size: 3, quality: "4+", equipment: [customWeapon("Flamers", { range: 18, attacks: "D6", rules: rules("") }), customWeapon("Medium Claws", { range: null, attacks: "2", rules: rules("") })], special: "Fear, Fearless, Regeneration, Tough(3)", upgrades: "-", cost: 150 },
-    { name: "Fiends", size: 3, quality: "3+", equipment: [customWeapon("Heavy Claws", { range: null, attacks: "3", rules: rules("Piercing") })], special: "Fast, Fear, Fearless, Impact(1), Nimble, Tough(3)", upgrades: "-", cost: 175 },
+    { name: "Bloodthrister", size: 1, quality: "2+", equipment: [meleeWeapon('Force', 'Claws', { key: 'force-claw', label: "Force Claws", rules: rules('Piercing') })], special: "Armored, Fear, Furious, Flying, Hero, Impact(D6), Resistance, Tough(6)", upgrades: "-", cost: 150 },
+    { name: "Lord of Change", size: 1, quality: "2+", equipment: [meleeWeapon('Force', 'Claws', { key: 'force-claw', label: "Force Claws", rules: rules('Piercing') })], special: "Armored, Fear, Flying, Hero, Impact(D6), Regeneration, Tough(6), Wizard(2)", upgrades: "-", cost: 175 },
+    { name: "Unclean One", size: 1, quality: "2+", equipment: [meleeWeapon('Force', 'Claws', { key: 'force-claw', label: "Force Claws", rules: rules('Piercing, Poison') })], special: "Armored, Fear, Hero, Impact(D6), Stench, Tough(6), Wizard(1)", upgrades: "-", cost: 190 },
+    { name: "Keeper of Secrets", size: 1, quality: "2+", equipment: [meleeWeapon('Force', 'Claws', { key: 'force-claw', label: "Force Claws", rules: rules('Piercing') })], special: "Armored, Fear, Hero, Impact(D6), Tough(6), Wizard(2)", upgrades: "-", cost: 165 },
+    { name: "Daemon Prince", size: 1, quality: "2+", equipment: [meleeWeapon('Force', 'Claws', { key: 'force-claw', label: "Force Claws", rules: rules('Piercing') })], special: "Armored, Fear, Hero, Impact(D6), Tough(6)", upgrades: "D, H", cost: 130 },
+    { name: "Herald of Khorne", size: 1, quality: "3+", equipment: [meleeWeapon('Heavy', 'Sword', { key: 'heavy-sword', label: "Heavy Sword" })], special: "Fear, Fearless, Furious, Hero, Resistance, Tough(3)", upgrades: "A", cost: 50 },
+    { name: "Herald of Tzeentch", size: 1, quality: "5+", equipment: [meleeWeapon('Medium', 'Sword', { key: 'medium-sword', label: "Medium Sword" })], special: "Fear, Fearless, Hero, Regeneration, Tough(3), Wizard(1)", upgrades: "B", cost: 50 },
+    { name: "Herald of Nurgle", size: 1, quality: "4+", equipment: [meleeWeapon('Heavy', 'Sword', { key: 'heavy-sword', label: "Heavy Sword", rules: rules('Poison') })], special: "Fear, Fearless, Hero, Stench, Tough(3)", upgrades: "E", cost: 50 },
+    { name: "Herald of Slaanesh", size: 1, quality: "4+", equipment: [meleeWeapon('Master', 'Sword', { key: 'master-sword', label: "Master Sword", rules: rules('Piercing') })], special: "Fear, Fearless, Hero, Tough(3)", upgrades: "F", cost: 40 },
+    { name: "Pink Horrors", size: 10, quality: "5+", equipment: [meleeWeapon('Light', 'Claws', { key: 'light-claw', label: "Light Claws" })], special: "Fear, Fearless, Horrors, Regeneration", upgrades: "C, G", cost: 140 },
+    { name: "Plaguebearers", size: 10, quality: "4+", equipment: [meleeWeapon('Light', 'Swords', { key: 'light-sword', label: "Light Swords", rules: rules('Poison') })], special: "Fear, Fearless, Stench", upgrades: "C", cost: 210 },
+    { name: "Daemonettes", size: 10, quality: "4+", equipment: [meleeWeapon('Medium', 'Claws', { key: 'medium-claw', label: "Medium Claws", rules: rules('Piercing') })], special: "Fear, Fearless", upgrades: "C", cost: 210 },
+    { name: "Bloodletters", size: 10, quality: "3+", equipment: [meleeWeapon('Light', 'Swords', { key: 'light-sword', label: "Light Swords" })], special: "Fear, Fearless, Furious, Resistance", upgrades: "C", cost: 235 },
+    { name: "Chaos Furies", size: 10, quality: "4+", equipment: [meleeWeapon('Light', 'Claws', { key: 'light-claw', label: "Light Claws" })], special: "Fear, Fearless, Flying", upgrades: "H", cost: 180 },
+    { name: "Seekers", size: 5, quality: "4+", equipment: [meleeWeapon('Medium', 'Swords', { key: 'medium-sword', label: "Medium Swords", rules: rules('Piercing, Poison') })], special: "Fast, Fear, Fearless, Nimble", upgrades: "C", cost: 160 },
+    { name: "Screamers", size: 5, quality: "4+", equipment: [meleeWeapon('Heavy', 'Claws', { key: 'heavy-claw', label: "Heavy Claws" }), gear("Slashing Attack")], special: "Fast, Fear, Fearless, Flying, Nimble, Tough(3)", upgrades: "-", cost: 235 },
+    { name: "Flesh Hounds", size: 5, quality: "3+", equipment: [meleeWeapon('Medium', 'Claws', { key: 'medium-claw', label: "Medium Claws" })], special: "Fast, Fear, Fearless, Furious, Nimble, Resistance, Tough(3)", upgrades: "-", cost: 265 },
+    { name: "Nurglings", size: 3, quality: "5+", equipment: [meleeWeapon('Master', 'Claws', { key: 'master-claw', label: "Master Claws" })], special: "Fear, Fearless, Scout, Stench, Tough(3)", upgrades: "-", cost: 105 },
+    { name: "Plague Drones", size: 3, quality: "4+", equipment: [meleeWeapon('Light', 'Sword', { key: 'light-sword', label: "Light Sword", rules: rules('Poison') }), meleeWeapon('Heavy', 'Claws', { key: 'heavy-claw', label: "Heavy Claws" })], special: "Fear, Fearless, Impact(1), Nimble, Strider, Tough(3)", upgrades: "C, I", cost: 135 },
+    { name: "Flamers", size: 3, quality: "4+", equipment: [customWeapon("Flamers", { range: 18, attacks: "D6", rules: rules("") }), meleeWeapon('Medium', 'Claws', { key: 'medium-claw', label: "Medium Claws" })], special: "Fear, Fearless, Regeneration, Tough(3)", upgrades: "-", cost: 150 },
+    { name: "Fiends", size: 3, quality: "3+", equipment: [meleeWeapon('Heavy', 'Claws', { key: 'heavy-claw', label: "Heavy Claws", rules: rules('Piercing') })], special: "Fast, Fear, Fearless, Impact(1), Nimble, Tough(3)", upgrades: "-", cost: 175 },
     { name: "Nurgle Beasts", size: 3, quality: "4+", equipment: [customWeapon("Rotten Attack", { range: null, attacks: "D6+1", rules: rules("Poison") })], special: "Armored, Fear, Fearless, Impact(1), Nimble, Regeneration, Stench, Tough(3)", upgrades: "-", cost: 235 },
-    { name: "Bloodcrushers", size: 3, quality: "3+", equipment: [customWeapon("Light Swords", { range: null, attacks: "1", rules: rules("") }), customWeapon("Heavy Claws", { range: null, attacks: "3", rules: rules("") })], special: "Armored, Fear, Fearless, Furious, Impact(1), Nimble, Resistance, Tough(3)", upgrades: "C", cost: 205 },
-    { name: "Soul Grinder", size: 1, quality: "4+", equipment: [customWeapon("Master Claws", { range: null, attacks: "4", rules: rules("Piercing, Caught") })], special: "Armored, Fear, Fearless, Impact(D6), Tough(6)", upgrades: "H, J", cost: 95 },
-    { name: "Seeker Chariot", size: 1, quality: "4+", equipment: [customWeapon("Master Claws", { range: null, attacks: "4", rules: rules("Piercing") }), customWeapon("Medium Claws", { range: null, attacks: "2", rules: rules("Piercing, Poison") })], special: "Armored, Fast, Fear, Impact(D6), Tough(3)", upgrades: "-", cost: 75 },
-    { name: "Burning Chariot", size: 1, quality: "3+", equipment: [customWeapon("Fire Thrower", { range: 18, attacks: "6", rules: rules("") }), customWeapon("Blazing Fire", { range: null, attacks: "9", rules: rules("") })], special: "Armored, Fast, Fear, Impact(D6), Regeneration, Tough(3)", upgrades: "-", cost: 120 },
-    { name: "Skull Cannon", size: 1, quality: "3+", equipment: [customWeapon("Cannon", { range: 48, attacks: "D3+3", rules: rules("Piercing") }), customWeapon("Force Claws", { range: null, attacks: "5", rules: rules("Piercing") })], special: "Armored, Fast, Fear, Furious, Impact(D6), Tough(3)", upgrades: "-", cost: 205 },
+    { name: "Bloodcrushers", size: 3, quality: "3+", equipment: [meleeWeapon('Light', 'Swords', { key: 'light-sword', label: "Light Swords" }), meleeWeapon('Heavy', 'Claws', { key: 'heavy-claw', label: "Heavy Claws" })], special: "Armored, Fear, Fearless, Furious, Impact(1), Nimble, Resistance, Tough(3)", upgrades: "C", cost: 205 },
+    { name: "Soul Grinder", size: 1, quality: "4+", equipment: [meleeWeapon('Master', 'Claws', { key: 'master-claw', label: "Master Claws", rules: rules('Piercing, Caught') })], special: "Armored, Fear, Fearless, Impact(D6), Tough(6)", upgrades: "H, J", cost: 95 },
+    { name: "Seeker Chariot", size: 1, quality: "4+", equipment: [meleeWeapon('Master', 'Claws', { key: 'master-claw', label: "Master Claws", rules: rules('Piercing') }), meleeWeapon('Medium', 'Claws', { key: 'medium-claw', label: "Medium Claws", rules: rules('Piercing, Poison') })], special: "Armored, Fast, Fear, Impact(D6), Tough(3)", upgrades: "-", cost: 75 },
+    { name: "Burning Chariot", size: 1, quality: "3+", equipment: [weaponFantasy('fire-thrower'), customWeapon("Blazing Fire", { range: null, attacks: "9", rules: rules("") })], special: "Armored, Fast, Fear, Impact(D6), Regeneration, Tough(3)", upgrades: "-", cost: 120 },
+    { name: "Skull Cannon", size: 1, quality: "3+", equipment: [weaponFantasy('cannon'), meleeWeapon('Force', 'Claws', { key: 'force-claw', label: "Force Claws", rules: rules('Piercing') })], special: "Armored, Fast, Fear, Furious, Impact(D6), Tough(3)", upgrades: "-", cost: 205 },
 ]
 
 export const daemonsofchaos = faction({
@@ -44,8 +44,16 @@ export const daemonsofchaos = faction({
         { label: "Locus of Fury", cost: 115, adds: ["Locus of Fury"] }
       ]),
       section("Mount on:", 'any', [
-        { label: "Juggernaut", cost: 60, addEquipment: [gear("Juggernaut")] },
-        { label: "Blood Throne", cost: 85, addEquipment: [gear("Blood Throne")] }
+        { label: "Juggernaut", cost: 60, addEquipment: [
+            meleeWeapon('Heavy', 'Claws', { key: 'heavy-claws', label: "Heavy Claws" }),
+            gear("Juggernaut", { mount: true, rules: [{ ruleId: "armored" }, { ruleId: "impact", param: 1 }, { ruleId: "nimble" }, { ruleId: "tough", param: 3 }] })
+          ]
+        },
+        { label: "Blood Throne", cost: 85, addEquipment: [
+            meleeWeapon('Force', 'Claws', { key: 'force-claws', label: "Force Claws", rules: rules('Piercing') }),
+            gear("Blood Throne", { mount: true, rules: [{ ruleId: "armored" }, { ruleId: "fast" }, { ruleId: "impact", param: "D6" }, { ruleId: "tough", param: 3 }] })
+          ]
+        }
       ])
     ]),
     group("E", [
@@ -58,7 +66,11 @@ export const daemonsofchaos = faction({
         { label: "Wizard(1)", cost: 25, adds: ["Wizard(1)"] }
       ]),
       section("Mount on:", 'any', [
-        { label: "Palanquin", cost: 40, addEquipment: [gear("Palanquin")] }
+        { label: "Palanquin", cost: 40, addEquipment: [
+            meleeWeapon('Force', 'Claws', { key: 'force-claws', label: "Force Claws" }),
+            gear("Palanquin", { mount: true, rules: [{ ruleId: "impact", param: 1 }, { ruleId: "nimble" }, { ruleId: "tough", param: 3 }] })
+          ]
+        }
       ])
     ]),
     group("B", [
@@ -71,8 +83,17 @@ export const daemonsofchaos = faction({
         { label: "Wizard(2)", cost: 5, adds: ["Wizard(2)"] }
       ]),
       section("Mount on:", 'any', [
-        { label: "Disc", cost: 10, addEquipment: [gear("Disc")] },
-        { label: "Seeker Chariot", cost: 55, addEquipment: [customWeapon("Seeker Chariot", { range: null, attacks: '1', rules: rules('') })] }
+        { label: "Disc", cost: 10, addEquipment: [
+            meleeWeapon('Heavy', 'Claws', { key: 'heavy-claws', label: "Heavy Claws" }),
+            gear("Disc", { mount: true, rules: [{ ruleId: "fast" }, { ruleId: "flying" }, { ruleId: "nimble" }] })
+          ]
+        },
+        { label: "Seeker Chariot", cost: 55, addEquipment: [
+            meleeWeapon('Master', 'Claws', { key: 'master-claws', label: "Master Claws", rules: rules('Piercing') }),
+            meleeWeapon('Medium', 'Claws', { key: 'medium-claws', label: "Medium Claws", rules: rules('Piercing, Poison') }),
+            gear("Seeker Chariot", { mount: true, rules: [{ ruleId: "armored" }, { ruleId: "fast" }, { ruleId: "impact", param: "D6" }, { ruleId: "tough", param: 3 }] })
+          ]
+        }
       ])
     ]),
     group("F", [
@@ -85,8 +106,17 @@ export const daemonsofchaos = faction({
         { label: "Wizard(1)", cost: 25, adds: ["Wizard(1)"] }
       ]),
       section("Mount on:", 'any', [
-        { label: "Steed", cost: 10, addEquipment: [gear("Steed")] },
-        { label: "Seeker Chariot", cost: 65, addEquipment: [customWeapon("Seeker Chariot", { range: null, attacks: '1', rules: rules('') })] }
+        { label: "Steed", cost: 10, addEquipment: [
+            meleeWeapon('Light', 'Claws', { key: 'light-claws', label: "Light Claws", rules: rules('Piercing, Poison') }),
+            gear("Steed", { mount: true, rules: [{ ruleId: "fast" }, { ruleId: "nimble" }] })
+          ]
+        },
+        { label: "Seeker Chariot", cost: 65, addEquipment: [
+            meleeWeapon('Master', 'Claws', { key: 'master-claws', label: "Master Claws", rules: rules('Piercing') }),
+            meleeWeapon('Medium', 'Claws', { key: 'medium-claws', label: "Medium Claws", rules: rules('Piercing, Poison') }),
+            gear("Seeker Chariot", { mount: true, rules: [{ ruleId: "armored" }, { ruleId: "fast" }, { ruleId: "impact", param: "D6" }, { ruleId: "tough", param: 3 }] })
+          ]
+        }
       ])
     ]),
     group("C", [
@@ -94,7 +124,7 @@ export const daemonsofchaos = faction({
         { label: "Sergeant", cost: 5, addEquipment: [gear("Sergeant", { rules: rules("Sergeant") })] },
         { label: "Musician", cost: 10, addEquipment: [gear("Musician", { rules: rules("Musician") })] },
         { label: "Standard", cost: 10, addEquipment: [gear("Standard", { rules: rules("Standard") })] }
-      ])
+      ], { oncePerUnit: true })
     ]),
     group("G", [
       section("Upgrade one model with:", 'any', [
@@ -126,10 +156,10 @@ export const daemonsofchaos = faction({
     ]),
     group("J", [
       section("Upgrade with one:", 'one', [
-        { label: "Baleful Torrent", cost: 20, addEquipment: [customWeapon("Fire Thrower", { range: 18, attacks: "6", rules: rules("") })] },
+        { label: "Baleful Torrent", cost: 20, addEquipment: [weaponFantasy('fire-thrower')] },
         { label: "Warp Gaze", cost: 45, addEquipment: [weaponFantasy('bolt-thrower')] },
-        { label: "Phlegm Bombard", cost: 55, addEquipment: [customWeapon("Stone Thrower", { range: 48, attacks: "3", rules: rules("Piercing, Indirect") })] },
-        { label: "Harvester Cannon", cost: 90, addEquipment: [customWeapon("Cannon", { range: 48, attacks: "D3+3", rules: rules("Piercing") })] }
+        { label: "Phlegm Bombard", cost: 55, addEquipment: [weaponFantasy('stone-thrower', { rules: rules('Indirect') })] },
+        { label: "Harvester Cannon", cost: 90, addEquipment: [weaponFantasy('cannon')] }
       ])
     ])
   ],

@@ -311,6 +311,76 @@ describe('toggleUpgrade on a combined pair', () => {
   })
 })
 
+describe('oncePerUnit options on a combined pair (Sergeant/Musician/Standard)', () => {
+  function sergeantOption() {
+    return optionsIn('empire', 'F', 'Upgrade with:').find((o) => o.label === 'Sergeant')!
+  }
+
+  it('selecting via the whole-unit panel writes it to only the toggled entry, not both', () => {
+    const store = useListsStore()
+    const list = store.createList('Once Toggle Test', 'empire', 750)
+    const stateTroops = getFaction('empire')!.units.find((u) => u.name === 'State Troops')!
+    store.addUnit(list.id, stateTroops.id)
+    store.addUnit(list.id, stateTroops.id)
+    const [a, b] = list.units
+    store.combineUnits(list.id, a.instanceId, b.instanceId)
+
+    const sergeant = sergeantOption()
+    store.toggleUpgrade(list.id, a.instanceId, sergeant.id)
+    expect(a.selectedUpgrades).toContain(sergeant.id)
+    expect(b.selectedUpgrades).not.toContain(sergeant.id)
+  })
+
+  it('deselecting removes it from wherever it currently lives', () => {
+    const store = useListsStore()
+    const list = store.createList('Once Deselect Test', 'empire', 750)
+    const stateTroops = getFaction('empire')!.units.find((u) => u.name === 'State Troops')!
+    store.addUnit(list.id, stateTroops.id)
+    store.addUnit(list.id, stateTroops.id)
+    const [a, b] = list.units
+    store.combineUnits(list.id, a.instanceId, b.instanceId)
+
+    const sergeant = sergeantOption()
+    store.toggleUpgrade(list.id, a.instanceId, sergeant.id) // select, lands on a
+    store.toggleUpgrade(list.id, a.instanceId, sergeant.id) // deselect
+    expect(a.selectedUpgrades).not.toContain(sergeant.id)
+    expect(b.selectedUpgrades).not.toContain(sergeant.id)
+  })
+
+  it('combining two entries that each independently selected it collapses to one entry, not both', () => {
+    const store = useListsStore()
+    const list = store.createList('Once Combine Collapse Test', 'empire', 750)
+    const stateTroops = getFaction('empire')!.units.find((u) => u.name === 'State Troops')!
+    store.addUnit(list.id, stateTroops.id)
+    store.addUnit(list.id, stateTroops.id)
+    const [a, b] = list.units
+    const sergeant = sergeantOption()
+    store.toggleUpgrade(list.id, a.instanceId, sergeant.id)
+    store.toggleUpgrade(list.id, b.instanceId, sergeant.id)
+
+    store.combineUnits(list.id, a.instanceId, b.instanceId)
+    const onA = a.selectedUpgrades.includes(sergeant.id)
+    const onB = b.selectedUpgrades.includes(sergeant.id)
+    expect(onA !== onB).toBe(true) // exactly one, not both
+  })
+
+  it('splitting a combined pair after selecting it leaves it on only the one entry that holds it', () => {
+    const store = useListsStore()
+    const list = store.createList('Once Split Test', 'empire', 750)
+    const stateTroops = getFaction('empire')!.units.find((u) => u.name === 'State Troops')!
+    store.addUnit(list.id, stateTroops.id)
+    store.addUnit(list.id, stateTroops.id)
+    const [a, b] = list.units
+    store.combineUnits(list.id, a.instanceId, b.instanceId)
+    const sergeant = sergeantOption()
+    store.toggleUpgrade(list.id, a.instanceId, sergeant.id)
+
+    store.splitUnits(list.id, a.instanceId)
+    expect(a.selectedUpgrades).toContain(sergeant.id)
+    expect(b.selectedUpgrades).not.toContain(sergeant.id)
+  })
+})
+
 describe('attachToUnit / detachFromUnit', () => {
   it('attaches a Hero to a same-Quality Infantry-eligible unit', () => {
     const store = useListsStore()
@@ -696,5 +766,86 @@ describe('toggleUpgrade prerequisite enforcement', () => {
 
     store.toggleUpgrade(list.id, librarianInstanceId, psykerUpgrade.id) // baseline Psyker(1): accepted
     expect(list.units[1].selectedUpgrades).toEqual([psykerUpgrade.id])
+  })
+})
+
+describe('toggleUpgrade option-level prerequisite enforcement ("Mounted Only")', () => {
+  const empire = getFaction('empire')!
+  const general = empire.units.find((u) => u.name === 'General')!
+  const [lanceOption] = optionsIn('empire', 'A', 'Replace Heavy Sword:').filter((o) => o.label.startsWith('Heavy Lance'))
+  const [warhorseOption] = optionsIn('empire', 'A', 'Mount on:').filter((o) => o.label === 'Warhorse')
+
+  it('rejects a "Mounted Only" option on a foot unit, but allows it once any mount is selected', () => {
+    const store = useListsStore()
+    const list = store.createList('Mount Prereq Test', 'empire', 750)
+    store.addUnit(list.id, general.id)
+    const instanceId = list.units[0].instanceId
+
+    store.toggleUpgrade(list.id, instanceId, lanceOption.id) // no mount selected: rejected
+    expect(list.units[0].selectedUpgrades).toEqual([])
+
+    store.toggleUpgrade(list.id, instanceId, warhorseOption.id)
+    store.toggleUpgrade(list.id, instanceId, lanceOption.id) // mounted: accepted
+    expect(list.units[0].selectedUpgrades).toEqual(
+      expect.arrayContaining([warhorseOption.id, lanceOption.id]),
+    )
+  })
+
+  it('does not disable an unrestricted sibling option in the same section', () => {
+    const store = useListsStore()
+    const list = store.createList('Mount Prereq Sibling Test', 'empire', 750)
+    store.addUnit(list.id, general.id)
+    const instanceId = list.units[0].instanceId
+    const [swordOption] = optionsIn('empire', 'A', 'Replace Heavy Sword:').filter((o) => o.label === 'Master Sword')
+
+    store.toggleUpgrade(list.id, instanceId, swordOption.id) // no mount needed: accepted regardless
+    expect(list.units[0].selectedUpgrades).toEqual([swordOption.id])
+  })
+
+  it('cascades: deselecting the mount auto-clears the "Mounted Only" selection', () => {
+    const store = useListsStore()
+    const list = store.createList('Mount Prereq Cascade Test', 'empire', 750)
+    store.addUnit(list.id, general.id)
+    const instanceId = list.units[0].instanceId
+
+    store.toggleUpgrade(list.id, instanceId, warhorseOption.id)
+    store.toggleUpgrade(list.id, instanceId, lanceOption.id)
+    expect(list.units[0].selectedUpgrades).toEqual(
+      expect.arrayContaining([warhorseOption.id, lanceOption.id]),
+    )
+
+    store.toggleUpgrade(list.id, instanceId, warhorseOption.id) // deselect the mount
+    expect(list.units[0].selectedUpgrades).toEqual([])
+  })
+
+  it('rejects an imported list selecting a "Mounted Only" option without a mount', () => {
+    const list: ArmyList = {
+      schemaVersion: LIST_SCHEMA_VERSION,
+      id: 'x',
+      name: 'Bad Mount List',
+      factionId: 'empire',
+      pointsCap: 750,
+      units: [{ instanceId: 'u1', unitId: general.id, selectedUpgrades: [lanceOption.id] }],
+      createdAt: '2026-01-01T00:00:00.000Z',
+      updatedAt: '2026-01-01T00:00:00.000Z',
+    }
+    expect(() => validateImported(list)).toThrow(/prerequisite/)
+  })
+
+  it('accepts an imported list selecting a "Mounted Only" option alongside its mount', () => {
+    const list: ArmyList = {
+      schemaVersion: LIST_SCHEMA_VERSION,
+      id: 'x',
+      name: 'Good Mount List',
+      factionId: 'empire',
+      pointsCap: 750,
+      units: [{ instanceId: 'u1', unitId: general.id, selectedUpgrades: [warhorseOption.id, lanceOption.id] }],
+      createdAt: '2026-01-01T00:00:00.000Z',
+      updatedAt: '2026-01-01T00:00:00.000Z',
+    }
+    const imported = validateImported(list)
+    expect(imported.units[0].selectedUpgrades).toEqual(
+      expect.arrayContaining([warhorseOption.id, lanceOption.id]),
+    )
   })
 })

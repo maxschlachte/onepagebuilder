@@ -1,25 +1,25 @@
-import { faction, customWeapon, gear, rules, armyRule, power, section, group, type UnitInput } from '../helpers'
+import { faction, customWeapon, weaponFantasy, meleeWeapon, gear, rules, armyRule, power, section, group, type UnitInput } from '../helpers'
 
 const units: UnitInput[] = [
-    { name: "Night Goblin Boss", size: 1, quality: "6+", equipment: [customWeapon("Heavy Sword", { range: null, attacks: "3", rules: rules("") })], special: "Deranged, Hero, Tough(3)", upgrades: "A", cost: 15 },
-    { name: "Goblin Boss", size: 1, quality: "6+", equipment: [customWeapon("Heavy Sword", { range: null, attacks: "3", rules: rules("") })], special: "Hero, Tough(3)", upgrades: "A", cost: 10 },
-    { name: "Night Goblin Shaman", size: 1, quality: "6+", equipment: [customWeapon("Light Sword", { range: null, attacks: "1", rules: rules("") })], special: "Deranged, Tough(3), Wizard(1)", upgrades: "B", cost: 40 },
-    { name: "Goblin Shaman", size: 1, quality: "6+", equipment: [customWeapon("Light Sword", { range: null, attacks: "1", rules: rules("") })], special: "Tough(3), Wizard(1)", upgrades: "B", cost: 35 },
-    { name: "Goblins", size: 10, quality: "6+", equipment: [customWeapon("Light Swords", { range: null, attacks: "1", rules: rules("") })], special: "-", upgrades: "C, G", cost: 30 },
-    { name: "Night Goblins", size: 10, quality: "6+", equipment: [customWeapon("Light Swords", { range: null, attacks: "1", rules: rules("") })], special: "Deranged", upgrades: "C, D", cost: 35 },
-    { name: "Snotlings", size: 3, quality: "6+", equipment: [customWeapon("Force Swords", { range: null, attacks: "5", rules: rules("") }), gear("Explodin’ Spores", { rules: rules("Explodin’ Spores") })], special: "Tough(6)", upgrades: "-", cost: 80 },
-    { name: "Squig Herd", size: 10, quality: "5+", equipment: [customWeapon("Medium Claws", { range: null, attacks: "2", rules: rules("") })], special: "Deranged, Fearless, Wild", upgrades: "-", cost: 110 },
-    { name: "Goblin Archers", size: 5, quality: "6+", equipment: [customWeapon("Shortbows", { range: 18, attacks: "1", rules: rules("") })], special: "-", upgrades: "C, G, H", cost: 25 },
-    { name: "Night Goblin Archers", size: 5, quality: "6+", equipment: [customWeapon("Shortbows", { range: 18, attacks: "1", rules: rules("") })], special: "Deranged", upgrades: "C, D", cost: 30 },
-    { name: "Wolf Riders", size: 5, quality: "6+", equipment: [customWeapon("Light Swords", { range: null, attacks: "1", rules: rules("") })], special: "Fast, Nimble", upgrades: "C, H, I", cost: 25 },
-    { name: "Squig Hoppers", size: 5, quality: "6+", equipment: [customWeapon("Medium Swords", { range: null, attacks: "2", rules: rules("") })], special: "Boingy, Deranged, Fearless, Nimble", upgrades: "-", cost: 40 },
-    { name: "Spider Riders", size: 5, quality: "6+", equipment: [customWeapon("Light Spears", { range: null, attacks: "1", rules: rules("Poison") })], special: "Fast, Nimble, Strider", upgrades: "C, I", cost: 45 },
+    { name: "Night Goblin Boss", size: 1, quality: "6+", equipment: [meleeWeapon('Heavy', 'Sword', { key: 'heavy-sword', label: "Heavy Sword" })], special: "Deranged, Hero, Tough(3)", upgrades: "A", cost: 15 },
+    { name: "Goblin Boss", size: 1, quality: "6+", equipment: [meleeWeapon('Heavy', 'Sword', { key: 'heavy-sword', label: "Heavy Sword" })], special: "Hero, Tough(3)", upgrades: "A", cost: 10 },
+    { name: "Night Goblin Shaman", size: 1, quality: "6+", equipment: [meleeWeapon('Light', 'Sword', { key: 'light-sword', label: "Light Sword" })], special: "Deranged, Tough(3), Wizard(1)", upgrades: "B", cost: 40 },
+    { name: "Goblin Shaman", size: 1, quality: "6+", equipment: [meleeWeapon('Light', 'Sword', { key: 'light-sword', label: "Light Sword" })], special: "Tough(3), Wizard(1)", upgrades: "B", cost: 35 },
+    { name: "Goblins", size: 10, quality: "6+", equipment: [meleeWeapon('Light', 'Swords', { key: 'light-sword', label: "Light Swords" })], special: "-", upgrades: "C, G", cost: 30 },
+    { name: "Night Goblins", size: 10, quality: "6+", equipment: [meleeWeapon('Light', 'Swords', { key: 'light-sword', label: "Light Swords" })], special: "Deranged", upgrades: "C, D", cost: 35 },
+    { name: "Snotlings", size: 3, quality: "6+", equipment: [meleeWeapon('Force', 'Swords', { key: 'force-sword', label: "Force Swords" }), gear("Explodin’ Spores", { rules: rules("Explodin’ Spores") })], special: "Tough(6)", upgrades: "-", cost: 80 },
+    { name: "Squig Herd", size: 10, quality: "5+", equipment: [meleeWeapon('Medium', 'Claws', { key: 'medium-claw', label: "Medium Claws" })], special: "Deranged, Fearless, Wild", upgrades: "-", cost: 110 },
+    { name: "Goblin Archers", size: 5, quality: "6+", equipment: [weaponFantasy('shortbow', { label: "Shortbows" })], special: "-", upgrades: "C, G, H", cost: 25 },
+    { name: "Night Goblin Archers", size: 5, quality: "6+", equipment: [weaponFantasy('shortbow', { label: "Shortbows" })], special: "Deranged", upgrades: "C, D", cost: 30 },
+    { name: "Wolf Riders", size: 5, quality: "6+", equipment: [meleeWeapon('Light', 'Swords', { key: 'light-sword', label: "Light Swords" })], special: "Fast, Nimble", upgrades: "C, H, I", cost: 25 },
+    { name: "Squig Hoppers", size: 5, quality: "6+", equipment: [meleeWeapon('Medium', 'Swords', { key: 'medium-sword', label: "Medium Swords" })], special: "Boingy, Deranged, Fearless, Nimble", upgrades: "-", cost: 40 },
+    { name: "Spider Riders", size: 5, quality: "6+", equipment: [meleeWeapon('Light', 'Spear', { key: 'light-spear', label: "Light Spears", rules: rules('Poison') })], special: "Fast, Nimble, Strider", upgrades: "C, I", cost: 45 },
     { name: "Mangler Squigs", size: 1, quality: "5+", equipment: [gear("Out of Control", { rules: rules("Out of Control") })], special: "Fearless, Tough(3)", upgrades: "-", cost: 110 },
-    { name: "Arachnarok Spider", size: 1, quality: "4+", equipment: [customWeapon("Fangs", { range: null, attacks: "8", rules: rules("Poison") }), gear("Venom Surge", { rules: rules("Venom Surge") }), customWeapon("Master Spear", { range: null, attacks: "4", rules: rules("") }), customWeapon("Shortbows", { range: 18, attacks: "1", rules: rules("") }, )], special: "Armored, Fear, Fearless, Impact(D6), Strider, Tough(9)", upgrades: "E", cost: 185 },
-    { name: "Pump Wagon", size: 1, quality: "6+", equipment: [customWeapon("Force Sword", { range: null, attacks: "5", rules: rules("") }), gear("Explodin’ Spores", { rules: rules("Explodin’ Spores") })], special: "Armored, Impact(2D6), Pump, Tough(3)", upgrades: "F", cost: 55 },
-    { name: "Wolf Chariots", size: 3, quality: "6+", equipment: [customWeapon("Shortbows", { range: 18, attacks: "1", rules: rules("") }, { count: 3 }), customWeapon("Force Spears", { range: null, attacks: "5", rules: rules("") })], special: "Armored, Fast, Impact(D6), Tough(3)", upgrades: "-", cost: 120 },
-    { name: "Spear Chukka", size: 1, quality: "5+", equipment: [customWeapon("Bolt Thrower", { range: 48, attacks: "3", rules: rules("Piercing, Single Target") })], special: "Armored, Ordnance, Tough(3)", upgrades: "-", cost: 55 },
-    { name: "Rock Lobber", size: 1, quality: "5+", equipment: [customWeapon("Stone Thrower", { range: 48, attacks: "3", rules: rules("Piercing, Indirect") })], special: "Armored, Ordnance, Tough(3)", upgrades: "-", cost: 70 },
+    { name: "Arachnarok Spider", size: 1, quality: "4+", equipment: [customWeapon("Fangs", { range: null, attacks: "8", rules: rules("Poison") }), gear("Venom Surge", { rules: rules("Venom Surge") }), meleeWeapon('Master', 'Spear', { key: 'master-spear', label: "Master Spear" }), weaponFantasy('shortbow', { label: "Shortbows" })], special: "Armored, Fear, Fearless, Impact(D6), Strider, Tough(9)", upgrades: "E", cost: 185 },
+    { name: "Pump Wagon", size: 1, quality: "6+", equipment: [meleeWeapon('Force', 'Sword', { key: 'force-sword', label: "Force Sword" }), gear("Explodin’ Spores", { rules: rules("Explodin’ Spores") })], special: "Armored, Impact(2D6), Pump, Tough(3)", upgrades: "F", cost: 55 },
+    { name: "Wolf Chariots", size: 3, quality: "6+", equipment: [weaponFantasy('shortbow', { count: 3 }), meleeWeapon('Force', 'Spear', { key: 'force-spear', label: "Force Spears" })], special: "Armored, Fast, Impact(D6), Tough(3)", upgrades: "-", cost: 120 },
+    { name: "Spear Chukka", size: 1, quality: "5+", equipment: [weaponFantasy('bolt-thrower')], special: "Armored, Ordnance, Tough(3)", upgrades: "-", cost: 55 },
+    { name: "Rock Lobber", size: 1, quality: "5+", equipment: [weaponFantasy('stone-thrower', { rules: rules('Indirect') })], special: "Armored, Ordnance, Tough(3)", upgrades: "-", cost: 70 },
     { name: "Doom Diver Catapult", size: 1, quality: "5+", equipment: [customWeapon("Doom Diver", { range: 48, attacks: "D6", rules: rules("Piercing, Indirect") })], special: "Armored, Ordnance, Tough(3)", upgrades: "-", cost: 75 },
 ]
 
@@ -31,20 +31,39 @@ export const goblins = faction({
   upgradeGroups: [
     group("A", [
       section("Replace Heavy Sword:", 'any', [
-        { label: "Master Sword", cost: 5, addEquipment: [customWeapon("Master Sword", { range: null, attacks: '4', rules: rules('') })] },
-        // "(Mounted Only)" is a printed usage restriction, not a special rule the model gains.
-        { label: "Heavy Spear (Mounted Only)", cost: 5, addEquipment: [customWeapon("Heavy Spear", { range: null, attacks: '3', rules: rules("") })] },
-        { label: "Heavy Mace", cost: 10, addEquipment: [customWeapon("Heavy Mace", { range: null, attacks: '3', rules: rules('Piercing, Poison') })] }
+        { label: "Master Sword", cost: 5, addEquipment: [meleeWeapon('Master', 'Sword', { key: 'master-sword', label: "Master Sword" })], removeEquipment: ["heavy-sword"] },
+        { label: "Heavy Spear", cost: 5, requiresOneOfSelected: ["Giant Wolf", "Giant Spider", "Great Cave Squig", "Gigantic Spider", "Wolf Chariot"], addEquipment: [meleeWeapon('Heavy', 'Spear', { key: 'heavy-spear', label: "Heavy Spear" })], removeEquipment: ["heavy-sword"] },
+        { label: "Heavy Mace", cost: 10, addEquipment: [meleeWeapon('Heavy', 'Mace', { key: 'heavy-mace', label: "Heavy Mace" })], removeEquipment: ["heavy-sword"] }
       ]),
       section("Equip with:", 'any', [
-        { label: "Shortbow", cost: 5, addEquipment: [customWeapon("Shortbow", { range: 18, attacks: '1', rules: rules('') })] }
+        { label: "Shortbow", cost: 5, addEquipment: [weaponFantasy('shortbow')] }
       ]),
       section("Mount on:", 'any', [
-        { label: "Giant Wolf", cost: 5, addEquipment: [gear("Giant Wolf")] },
-        { label: "Giant Spider", cost: 5, addEquipment: [gear("Giant Spider")] },
-        { label: "Great Cave Squig", cost: 15, addEquipment: [gear("Great Cave Squig")] },
-        { label: "Gigantic Spider", cost: 25, addEquipment: [gear("Gigantic Spider")] },
-        { label: "Wolf Chariot", cost: 40, addEquipment: [gear("Wolf Chariot")] }
+        { label: "Giant Wolf", cost: 5, addEquipment: [
+            meleeWeapon('Light', 'Claws', { key: 'light-claws', label: "Light Claws" }),
+            gear("Giant Wolf", { mount: true, rules: [{ ruleId: "fast" }, { ruleId: "nimble" }] })
+          ]
+        },
+        { label: "Giant Spider", cost: 5, addEquipment: [
+            meleeWeapon('Light', 'Claws', { key: 'light-claws', label: "Light Claws", rules: rules('Poison') }),
+            gear("Giant Spider", { mount: true, rules: [{ ruleId: "fast" }, { ruleId: "nimble" }, { ruleId: "strider" }] })
+          ]
+        },
+        { label: "Great Cave Squig", cost: 15, addEquipment: [
+            meleeWeapon('Heavy', 'Claws', { key: 'heavy-claws', label: "Heavy Claws" }),
+            gear("Great Cave Squig", { mount: true, rules: [{ ruleId: "boingy" }, { ruleId: "fearless" }, { ruleId: "impact", param: 1 }, { ruleId: "nimble" }, { ruleId: "tough", param: 3 }] })
+          ]
+        },
+        { label: "Gigantic Spider", cost: 25, addEquipment: [
+            meleeWeapon('Heavy', 'Claws', { key: 'heavy-claws', label: "Heavy Claws", rules: rules('Poison') }),
+            gear("Gigantic Spider", { mount: true, rules: [{ ruleId: "fast" }, { ruleId: "fear" }, { ruleId: "impact", param: 1 }, { ruleId: "nimble" }, { ruleId: "strider" }, { ruleId: "tough", param: 3 }] })
+          ]
+        },
+        { label: "Wolf Chariot", cost: 40, addEquipment: [
+            meleeWeapon('Medium', 'Claws', { key: 'medium-claws', label: "Medium Claws" }),
+            gear("Wolf Chariot", { mount: true, rules: [{ ruleId: "armored" }, { ruleId: "fast" }, { ruleId: "impact", param: "D6" }, { ruleId: "tough", param: 3 }] })
+          ]
+        }
       ])
     ]),
     group("B", [
@@ -52,8 +71,16 @@ export const goblins = faction({
         { label: "Wizard(2)", cost: 5, adds: ["Wizard(2)"] }
       ]),
       section("Mount on:", 'any', [
-        { label: "Giant Wolf", cost: 5, addEquipment: [gear("Giant Wolf")] },
-        { label: "Wolf Chariot", cost: 40, addEquipment: [gear("Wolf Chariot")] }
+        { label: "Giant Wolf", cost: 5, addEquipment: [
+            meleeWeapon('Light', 'Claws', { key: 'light-claws', label: "Light Claws" }),
+            gear("Giant Wolf", { mount: true, rules: [{ ruleId: "fast" }, { ruleId: "nimble" }] })
+          ]
+        },
+        { label: "Wolf Chariot", cost: 40, addEquipment: [
+            meleeWeapon('Medium', 'Claws', { key: 'medium-claws', label: "Medium Claws" }),
+            gear("Wolf Chariot", { mount: true, rules: [{ ruleId: "armored" }, { ruleId: "fast" }, { ruleId: "impact", param: "D6" }, { ruleId: "tough", param: 3 }] })
+          ]
+        }
       ])
     ]),
     group("C", [
@@ -61,7 +88,7 @@ export const goblins = faction({
         { label: "Sergeant", cost: 5, addEquipment: [gear("Sergeant", { rules: rules("Sergeant") })] },
         { label: "Musician", cost: 10, addEquipment: [gear("Musician", { rules: rules("Musician") })] },
         { label: "Standard", cost: 10, addEquipment: [gear("Standard", { rules: rules("Standard") })] }
-      ])
+      ], { oncePerUnit: true })
     ]),
     group("D", [
       section("Take up to three:", 'any', [
@@ -71,12 +98,12 @@ export const goblins = faction({
         { label: "Nets", cost: 15, adds: ["Nets"] }
       ]),
       section("Replace all Light Swords:", 'any', [
-        { label: "Light Spears", cost: 5, addEquipment: [customWeapon("Light Spears", { range: null, attacks: '1', rules: rules('') })], removeEquipment: ["Light Swords"] }
+        { label: "Light Spears", cost: 5, addEquipment: [meleeWeapon('Light', 'Spear', { key: 'light-spear', label: "Light Spears" })], removeEquipment: ["Light Swords"] }
       ])
     ]),
     group("E", [
       section("Equip with:", 'any', [
-        { label: "Stone Thrower", cost: 85, addEquipment: [customWeapon("Stone Thrower", { range: 48, attacks: '3', rules: rules("Piercing, Indirect, Sticky") })] }
+        { label: "Stone Thrower", cost: 85, addEquipment: [weaponFantasy('stone-thrower', { rules: rules('Indirect, Sticky') })] }
       ])
     ]),
     group("F", [
@@ -95,12 +122,12 @@ export const goblins = faction({
     ]),
     group("H", [
       section("Replace all Light Swords:", 'any', [
-        { label: "Light Spears", cost: 5, addEquipment: [customWeapon("Light Spears", { range: null, attacks: '1', rules: rules('') })], removeEquipment: ["Light Swords"] }
+        { label: "Light Spears", cost: 5, addEquipment: [meleeWeapon('Light', 'Spear', { key: 'light-spear', label: "Light Spears" })], removeEquipment: ["Light Swords"] }
       ])
     ]),
     group("I", [
       section("Equip all models with:", 'any', [
-        { label: "Shortbows", cost: 10, addEquipment: [customWeapon("Shortbows", { range: 18, attacks: '1', rules: rules('') })] }
+        { label: "Shortbows", cost: 10, addEquipment: [weaponFantasy('shortbow', { label: "Shortbows" })] }
       ])
     ])
   ],

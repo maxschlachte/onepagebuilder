@@ -38,8 +38,10 @@ export const inquisition = faction({
           { label: 'Plasmagun (Limited)', cost: 5, addEquipment: [weapon('plasmagun', { rules: rules('Limited') })] },
         ],
         {
-          // Baseline is a Pistol only — an Assault Rifle only exists if produced above.
-          requiresOneOfSelected: ['Assault Rifle', 'Linked Assault Rifle'],
+          prerequisite: {
+            // Baseline is a Pistol only — an Assault Rifle only exists if produced above.
+            requiresOneOfSelected: ['Assault Rifle', 'Linked Assault Rifle'],
+          },
         },
       ),
     ]),

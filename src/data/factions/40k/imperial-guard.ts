@@ -61,12 +61,14 @@ export const imperialGuard = faction({
           },
         ],
         {
-          // No group-A unit has a baseline Medium CCW — one only exists if produced above.
-          requiresOneOfSelected: ['Pistol and Medium CCW', 'Plasma Pistol and Medium CCW'],
+          prerequisite: {
+            // No group-A unit has a baseline Medium CCW — one only exists if produced above.
+            requiresOneOfSelected: ['Pistol and Medium CCW', 'Plasma Pistol and Medium CCW'],
+          },
         },
       ),
       section('Upgrade Psyker(1)', 'one', [{ label: 'Psyker(2)', cost: 5, adds: ['Psyker(2)'] }], {
-        requiresBaselineRule: ['Psyker(1)'],
+        prerequisite: { requiresBaselineRule: ['Psyker(1)'] },
       }),
     ]),
     group('B', [

@@ -4,7 +4,7 @@ const units: UnitInput[] = [
     { name: "Warlord", size: 1, quality: "4+", equipment: [meleeWeapon('Heavy', 'Sword', { key: 'heavy-sword', label: "Heavy Sword" })], special: "Hero, Strength in Numbers, Tough(3)", upgrades: "A", cost: 30 },
     { name: "Chieftain", size: 1, quality: "5+", equipment: [meleeWeapon('Heavy', 'Sword', { key: 'heavy-sword', label: "Heavy Sword" })], special: "Hero, Strength in Numbers, Tough(3)", upgrades: "A", cost: 20 },
     { name: "Warlock Engineer", size: 1, quality: "5+", equipment: [meleeWeapon('Light', 'Halberd', { key: 'light-halberd', label: "Light Halberd" })], special: "Hero, Strength in Numbers, Tough(3)", upgrades: "B", cost: 15 },
-    { name: "Assassin", size: 1, quality: "3+", equipment: [customWeapon("Throwing Weapon", { range: 12, attacks: "1", rules: rules("") }), meleeWeapon('Master', 'Sword', { key: 'master-sword', label: "Master Sword", rules: rules('Poison') })], special: "Hero, Scout, Sneaky, Tough(3)", upgrades: "-", cost: 60 },
+    { name: "Assassin", size: 1, quality: "3+", equipment: [weaponFantasy('throwing-weapon'), meleeWeapon('Master', 'Sword', { key: 'master-sword', label: "Master Sword", rules: rules('Poison') })], special: "Hero, Scout, Sneaky, Tough(3)", upgrades: "-", cost: 60 },
     { name: "Plague Priest", size: 1, quality: "5+", equipment: [meleeWeapon('Heavy', 'Sword', { key: 'heavy-sword', label: "Heavy Sword" })], special: "Furious, Strength in Numbers, Tough(3), Wizard(1)", upgrades: "C", cost: 45 },
     { name: "Vermin Lord", size: 1, quality: "2+", equipment: [meleeWeapon('Force', 'Sword', { key: 'force-sword', label: "Force Sword", rules: rules('Piercing') })], special: "Armored, Fear, Impact(D6), Tough(6), Wizard(3)", upgrades: "-", cost: 170 },
     { name: "Giant Rats", size: 10, quality: "6+", equipment: [meleeWeapon('Light', 'Claws', { key: 'light-claw', label: "Light Claws" })], special: "Fast, Strength in Numbers", upgrades: "-", cost: 45 },
@@ -14,16 +14,16 @@ const units: UnitInput[] = [
     { name: "Plague Monks", size: 10, quality: "5+", equipment: [meleeWeapon('Medium', 'Swords', { key: 'medium-sword', label: "Medium Swords" })], special: "Furious, Strength in Numbers", upgrades: "D", cost: 100 },
     { name: "Stormvermin", size: 10, quality: "4+", equipment: [meleeWeapon('Light', 'Halberd', { key: 'light-halberd', label: "Light Halberds" })], special: "Strength in Numbers", upgrades: "D, E", cost: 120 },
     { name: "Censer Bearers", size: 10, quality: "5+", equipment: [meleeWeapon('Light', 'Mace', { key: 'light-mace', label: "Light Maces", rules: rules('Noxious') })], special: "Furious, Strength in Numbers", upgrades: "-", cost: 150 },
-    { name: "Globadiers", size: 5, quality: "5+", equipment: [customWeapon("Throwing Weapons", { range: 12, attacks: "1", rules: rules("Poison") })], special: "Strength in Numbers", upgrades: "-", cost: 60 },
-    { name: "Night Runners", size: 5, quality: "5+", equipment: [customWeapon("Throwing Weapons", { range: 12, attacks: "1", rules: rules("") }), meleeWeapon('Medium', 'Swords', { key: 'medium-sword', label: "Medium Swords" })], special: "Strength in Numbers, Vanguard", upgrades: "-", cost: 60 },
-    { name: "Gutter Runners", size: 5, quality: "4+", equipment: [customWeapon("Throwing Weapons", { range: 12, attacks: "1", rules: rules("") }), meleeWeapon('Medium', 'Swords', { key: 'medium-sword', label: "Medium Swords" })], special: "Scout, Sneaky, Strength in Numbers", upgrades: "G", cost: 100 },
+    { name: "Globadiers", size: 5, quality: "5+", equipment: [weaponFantasy('throwing-weapon', { label: "Throwing Weapons", rules: rules('Poison') })], special: "Strength in Numbers", upgrades: "-", cost: 60 },
+    { name: "Night Runners", size: 5, quality: "5+", equipment: [weaponFantasy('throwing-weapon', { label: "Throwing Weapons" }), meleeWeapon('Medium', 'Swords', { key: 'medium-sword', label: "Medium Swords" })], special: "Strength in Numbers, Vanguard", upgrades: "-", cost: 60 },
+    { name: "Gutter Runners", size: 5, quality: "4+", equipment: [weaponFantasy('throwing-weapon', { label: "Throwing Weapons" }), meleeWeapon('Medium', 'Swords', { key: 'medium-sword', label: "Medium Swords" })], special: "Scout, Sneaky, Strength in Numbers", upgrades: "G", cost: 100 },
     { name: "Rat Swarms", size: 3, quality: "6+", equipment: [meleeWeapon('Force', 'Claws', { key: 'force-claw', label: "Force Claws" })], special: "Tough(6)", upgrades: "-", cost: 50 },
     { name: "Rat Ogres", size: 3, quality: "4+", equipment: [meleeWeapon('Heavy', 'Claws', { key: 'heavy-claw', label: "Heavy Claws" })], special: "Fear, Furious, Impact(1), Packmaster, Tough(3)", upgrades: "-", cost: 105 },
     { name: "Stormfiends", size: 3, quality: "4+", equipment: [meleeWeapon('Master', 'Claws', { key: 'master-claw', label: "Master Claws" })], special: "Armored, Fear, Furious, Impact(1), Tough(3)", upgrades: "I", cost: 140 },
     { name: "Warplock Jezzails", size: 3, quality: "5+", equipment: [customWeapon("Jezzails", { range: 36, attacks: "1", rules: rules("Piercing, Sniper") })], special: "Armored", upgrades: "-", cost: 160 },
     { name: "Hell Pit Abomination", size: 1, quality: "4+", equipment: [customWeapon("Flailing Fists", { range: null, attacks: "3D6", rules: rules("Piercing") })], special: "Armored, Fear, Fearless, Impact(D6), Regeneration, Too Horrible to Die, Tough(6)", upgrades: "-", cost: 145 },
     { name: "Doomwheel", size: 1, quality: "5+", equipment: [customWeapon("Zzzzap!", { range: 18, attacks: "D6", rules: rules("Piercing") }), customWeapon("Crew", { range: null, attacks: "2D6", rules: rules("") })], special: "Armored, Fast, Fear, Impact(D6), Tough(6)", upgrades: "-", cost: 85 },
-    { name: "Lightning Cannon", size: 1, quality: "5+", equipment: [customWeapon("Cannon", { range: 48, attacks: "D3+3", rules: rules("Piercing, Poison") })], special: "Armored, Ordnance, Tough(3)", upgrades: "-", cost: 100 },
+    { name: "Lightning Cannon", size: 1, quality: "5+", equipment: [weaponFantasy('cannon', { rules: rules('Poison') })], special: "Armored, Ordnance, Tough(3)", upgrades: "-", cost: 100 },
     { name: "Plagueclaw Catapult", size: 1, quality: "5+", equipment: [customWeapon("Catapult", { range: 48, attacks: "9", rules: rules("Indirect, Poison") })], special: "Armored, Ordnance, Tough(3)", upgrades: "-", cost: 140 },
 ]
 
@@ -35,7 +35,7 @@ export const skaven = faction({
   upgradeGroups: [
     group("F", [
       section("Upgrade with:", 'any', [
-        { label: "Light Spears", cost: 5, addEquipment: [meleeWeapon('Light', 'Spears', { key: 'light-spear', label: "Light Spears" })] }
+        { label: "Light Spears", cost: 5, addEquipment: [meleeWeapon('Light', 'Spear', { key: 'light-spear', label: "Light Spears" })] }
       ]),
       section("Equip all models with:", 'any', [
         { label: "Throwing Weapons", cost: 10, addEquipment: [weaponFantasy('throwing-weapon', { label: "Throwing Weapons" })] }
@@ -53,9 +53,21 @@ export const skaven = faction({
         { label: "Unctuous Lotions", cost: 10, adds: ["Poison"] }
       ]),
       section("Mount on:", 'any', [
-        { label: "Great Pox Rat", cost: 15, addEquipment: [gear("Great Pox Rat")] },
-        { label: "War-Litter", cost: 30, addEquipment: [gear("War-Litter")] },
-        { label: "Ogre Bonebreaker", cost: 60, addEquipment: [gear("Ogre Bonebreaker")] }
+        { label: "Great Pox Rat", cost: 15, addEquipment: [
+            meleeWeapon('Medium', 'Claws', { key: 'medium-claws', label: "Medium Claws", rules: rules('Poison') }),
+            gear("Great Pox Rat", { mount: true, rules: [{ ruleId: "fast" }, { ruleId: "nimble" }] })
+          ]
+        },
+        { label: "War-Litter", cost: 30, addEquipment: [
+            meleeWeapon('Master', 'Sword', { key: 'war-litter-master-sword', label: "Master Sword" }),
+            gear("War-Litter", { mount: true, rules: rules("Tough(3)") })
+          ]
+        },
+        { label: "Ogre Bonebreaker", cost: 60, addEquipment: [
+            meleeWeapon('Force', 'Claws', { key: 'force-claws', label: "Force Claws" }),
+            gear("Ogre Bonebreaker", { mount: true, rules: [{ ruleId: "armored" }, { ruleId: "fear" }, { ruleId: "furious" }, { ruleId: "impact", param: 1 }, { ruleId: "tough", param: 3 }] })
+          ]
+        }
       ])
     ]),
     group("G", [
@@ -67,7 +79,7 @@ export const skaven = faction({
     ]),
     group("H", [
       section("Upgrade with:", 'any', [
-        { label: "Light Spears", cost: 10, addEquipment: [meleeWeapon('Light', 'Spears', { key: 'light-spear', label: "Light Spears" })] }
+        { label: "Light Spears", cost: 10, addEquipment: [meleeWeapon('Light', 'Spear', { key: 'light-spear', label: "Light Spears" })] }
       ])
     ]),
     group("B", [
@@ -103,9 +115,23 @@ export const skaven = faction({
         { label: "Wizard(2)", cost: 5, adds: ["Wizard(2)"] }
       ]),
       section("Mount on:", 'any', [
-        { label: "Great Pox Rat", cost: 15, addEquipment: [gear("Great Pox Rat")] },
-        { label: "Screaming Bell", cost: 125, addEquipment: [gear("Screaming Bell")] },
-        { label: "Plague Furnace", cost: 185, addEquipment: [gear("Plague Furnace")] }
+        { label: "Great Pox Rat", cost: 15, addEquipment: [
+            meleeWeapon('Medium', 'Claws', { key: 'medium-claws', label: "Medium Claws", rules: rules('Poison') }),
+            gear("Great Pox Rat", { mount: true, rules: [{ ruleId: "fast" }, { ruleId: "nimble" }] })
+          ]
+        },
+        { label: "Screaming Bell", cost: 125, addEquipment: [
+            gear("Bell", { rules: rules("Bell") }),
+            meleeWeapon('Heavy', 'Claws', { key: 'heavy-claws', label: "Heavy Claws" }),
+            gear("Screaming Bell", { mount: true, rules: [{ ruleId: "armored" }, { ruleId: "fear" }, { ruleId: "impact", param: "D6" }, { ruleId: "resistance" }, { ruleId: "tough", param: 6 }] })
+          ]
+        },
+        { label: "Plague Furnace", cost: 185, addEquipment: [
+            customWeapon("Fumes", { range: 12, attacks: "6", rules: rules("Poison") }),
+            gear("Noxious Wrecker", { rules: rules("Noxious Wrecker") }),
+            gear("Plague Furnace", { mount: true, rules: [{ ruleId: "armored" }, { ruleId: "impact", param: "D6" }, { ruleId: "tough", param: 6 }] })
+          ]
+        }
       ])
     ]),
     group("D", [
@@ -113,7 +139,7 @@ export const skaven = faction({
         { label: "Sergeant", cost: 5, addEquipment: [gear("Sergeant", { rules: rules("Sergeant") })] },
         { label: "Musician", cost: 10, addEquipment: [gear("Musician", { rules: rules("Musician") })] },
         { label: "Standard", cost: 10, addEquipment: [gear("Standard", { rules: rules("Standard") })] }
-      ])
+      ], { oncePerUnit: true })
     ]),
     group("E", [
       section("Upgrade with:", 'any', [

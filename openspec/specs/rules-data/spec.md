@@ -52,7 +52,7 @@ The system SHALL store the global special-rule glossary as resolvable entries, a
 
 ### Requirement: Weapon profiles
 
-The system SHALL encode weapon profiles as structured objects with an explicit range, attacks string, and rule references — never inferred by parsing a free-text equipment name. A ranged or melee weapon that appears in its game system's weapon table SHALL be referenced by that table's id — Warhammer 40k and Warhammer Fantasy SHALL each maintain their own weapon table, since some same-named weapons (e.g. `Pistol`, `Rifle`) differ in range, attacks, or rules between the two systems; a weapon whose profile is not in its system's table SHALL be constructed with an explicit range, attacks, and rules rather than embedding that profile inside a name string. The Piercing rule and the Piercing-plus-single-target-assignment combination SHALL be declared as explicit rule references at construction time rather than inferred from trailing `p`/`x` characters in a name. The `Linked` rule SHALL be declared by explicitly wrapping an equipment entry, not inferred from a `Linked ` name prefix. A close-combat weapon's attack-tier (`Light`/`Medium`/`Heavy`/`Master`/`Force`) and type (e.g. `CCW`, `Claws`, `Powersword`, `Powerfist`) SHALL each be declared as explicit construction arguments, with the type's innate rules (`Powersword` → Piercing; `Powerfist` → Piercing and Rending) resolved by direct lookup on those arguments rather than parsed out of a combined name string, and any additional rule declared alongside a melee type SHALL be merged into the same entry's rules rather than replacing the type's innate rule(s).
+The system SHALL encode weapon profiles as structured objects with an explicit range, attacks string, and rule references — never inferred by parsing a free-text equipment name. A ranged or melee weapon that appears in its game system's weapon table SHALL be referenced by that table's id — Warhammer 40k and Warhammer Fantasy SHALL each maintain their own weapon table, since some same-named weapons (e.g. `Pistol`, `Rifle`) differ in range, attacks, or rules between the two systems; a weapon whose profile is not in its system's table SHALL be constructed with an explicit range, attacks, and rules rather than embedding that profile inside a name string. The Piercing rule and the Piercing-plus-single-target-assignment combination SHALL be declared as explicit rule references at construction time rather than inferred from trailing `p`/`x` characters in a name. The `Linked` rule SHALL be declared by explicitly wrapping an equipment entry, not inferred from a `Linked ` name prefix. A close-combat weapon's attack-tier (`Light`/`Medium`/`Heavy`/`Master`/`Force`) and type (e.g. `CCW`, `Claws`, `Powersword`, `Powerfist`) SHALL each be declared as explicit construction arguments, with the type's innate rules (`Powersword` → Piercing; `Powerfist` → Piercing and Rending) resolved by direct lookup on those arguments rather than parsed out of a combined name string, and any additional rule declared alongside a melee type SHALL be merged into the same entry's rules rather than replacing the type's innate rule(s). A faction's equipment entry whose range, attacks, and rules are identical to (or a strict superset of, via additional merged rules) an entry already present in its game system's weapon table SHALL be authored as a reference to that table entry rather than as a hand-typed custom profile that duplicates its values.
 
 #### Scenario: Weapon profile fields match the PDF
 
@@ -88,6 +88,16 @@ The system SHALL encode weapon profiles as structured objects with an explicit r
 
 - **WHEN** a melee equipment entry is constructed with type `Powersword` at tier `Force` and an additional declared Rending rule, or type `Powerfist` at tier `Master` and an additional declared Shake rule
 - **THEN** the resolved weapon's rules include both the type's innate rule(s) and the additionally declared rule(s)
+
+#### Scenario: A fantasy faction's ranged weapon matching the Fantasy weapon table is authored as a reference
+
+- **WHEN** a `system-fantasy` faction's equipment entry has a range, attacks, and rule set that are identical to (or that add extra rules on top of) a `weaponsFantasy` table entry (e.g. a `Bow`, `Stone Thrower`, or `Cannon`)
+- **THEN** it is constructed via a reference to that table entry's id, with any additional rules merged in, rather than via a hand-typed custom profile that duplicates the table entry's range and attacks
+
+#### Scenario: A fantasy faction's melee weapon matching a shared tier/type is authored as a reference
+
+- **WHEN** a `system-fantasy` faction's melee equipment entry has range `null`, an attacks value matching one of the shared `Light`/`Medium`/`Heavy`/`Master`/`Force` tiers, and rules matching that tier's type-innate rules (if any)
+- **THEN** it is constructed via the tier-and-type melee builder rather than via a hand-typed custom profile that duplicates the tier's attacks value
 
 ### Requirement: Upgrade groups
 
@@ -200,6 +210,11 @@ The system SHALL encode, for every faction in `one-page-fantasy-army-lists.md`, 
 - **WHEN** a faction's `units` list is read
 - **THEN** it includes every standalone unit (including war machines, monsters, and mount-only entries printed with their own Quality/cost row) listed in that faction's table in `one-page-fantasy-army-lists.md`
 
+#### Scenario: A mount upgrade option grants that mount's own equipment
+
+- **WHEN** a unit's upgrade option adds a mount (a "Mount on:"-style section, or an equivalent single mount option such as "Replace Chaintrap:")
+- **THEN** the option's `addEquipment` includes the weapon and the full special-rules list printed on that mount's own standalone-unit row in `one-page-fantasy-army-lists.md`, not a bare named equipment entry carrying no weapon and no rules
+
 #### Scenario: Army rules and magic spells are not cross-contaminated
 
 - **WHEN** a faction's `armyRules` or `psychicPowers` entries are read
@@ -290,4 +305,28 @@ The system SHALL make `Sergeant`, `Musician`, and `Standard` resolvable special 
 
 - **WHEN** the user views the Musician or Standard upgrade option (or its equipment entry once selected) for any Warhammer Fantasy faction
 - **THEN** a tooltip/rule chip shows "Adds +1 for melee results." for each
+
+### Requirement: Age of Fantasy mount rule inheritance
+
+The system SHALL mark every equipment entry granted by a "Mount on:"-style upgrade option (or an equivalent single-mount option) as a mount (`EquipmentEntry.isMount`), and a unit's effective special rules SHALL include every special rule carried by its currently-selected mount(s), exactly as if those rules belonged to the unit itself, per `one-page-fantasy-rules.md`'s "Mounts" special rule.
+
+#### Scenario: A mount's non-Tough special rules are inherited by the mounted unit
+
+- **WHEN** a unit selects a mount option whose equipment carries special rules other than Tough (e.g. Fast, Nimble, Flying, Armored, Fear, Impact(N), Regeneration)
+- **THEN** the unit's effective special rules include each of those rules, in addition to the unit's own baseline special rules
+
+#### Scenario: Tough values are summed, not replaced
+
+- **WHEN** a unit with a baseline `Tough(N)` special rule selects a mount whose equipment carries `Tough(M)`
+- **THEN** the unit's effective special rules show a single `Tough(N+M)` entry, not two separate `Tough` entries and not just the higher of the two
+
+#### Scenario: A mount's weapon rules stay scoped to that weapon
+
+- **WHEN** a unit's selected mount grants a weapon with its own rules (e.g. `Piercing` on `Master Claws`)
+- **THEN** that rule stays attached to the weapon entry and is not duplicated into the unit's special rules list
+
+#### Scenario: Non-mount gear grants are not promoted to unit-wide special rules
+
+- **WHEN** a unit selects a non-mount gear-granting option (e.g. Sergeant, Musician, Standard, Fiery Breath)
+- **THEN** the granted rule is not added to the unit's effective special rules list, unchanged from today's behavior — only equipment entries marked as a mount are inherited this way
 
