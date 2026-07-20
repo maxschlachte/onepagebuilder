@@ -1,14 +1,12 @@
-# One Page 40k — Army Builder
+# Classic One Page — Army Builder
 
-An interactive army-list builder for [One Page 40k](https://www.mattcaron.net/opr_mirror/)
-(Main Rulebook **v3.3.1**). It enforces the army-composition rules, lets you assemble,
+An interactive army-list builder for [Classic One Page Rules](https://www.mattcaron.net/opr_mirror/)
+(Main Rulebook **v3.3.1** for 40k and **v3.2.0** for Fantasy). It enforces the army-composition rules, lets you assemble,
 edit, duplicate and delete lists, and produces a self-contained printable reference.
 
 The whole app **compiles to a single offline `.html` file** suitable for GitHub Pages —
 no backend, no network at runtime. Lists are stored in your browser (`localStorage`) and
-can be exported / imported as JSON.
-
-> All rules data is sourced **exclusively** from `1p40k - Main Rulebook v3.3.1.pdf`.
+can be exported / imported as JSON. You can use the app [here](https://maxschlachte.github.io/onepagebuilder/).
 
 ## Tech
 
@@ -41,12 +39,3 @@ npm run preview  # serve the production build locally
 
 The build output is a **single** `dist/index.html`. Open it directly in a browser
 (even with no network connection) and the app is fully usable.
-
-## Deploy to GitHub Pages
-
-A workflow at `.github/workflows/deploy.yml` builds on every push to `main` and
-publishes `dist/` to GitHub Pages. Enable it once under
-**Settings → Pages → Build and deployment → Source: GitHub Actions**.
-
-To publish manually instead, run `npm run build` and serve / commit the resulting
-`dist/index.html` (e.g. to a `gh-pages` branch or a `docs/` folder).
