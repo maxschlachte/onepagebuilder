@@ -394,29 +394,52 @@ export function pruneInvalidSelections(
 
 /**
  * Resolve one same-`ruleId` group of duplicate special rules into a single
- * entry, per `RuleRef.param`'s own convention: a plain number is a tier level
- * (keep the highest), a `+N` string is an additive bonus (sum onto the
- * group's absolute value, defaulting to 0). A group mixing either shape with
- * an unmergeable one (dice expressions, `note`-only rules) has no defined
- * combination — not reachable from current faction data — and collapses to
- * its first entry rather than growing merge logic for a case that can't
- * occur (see design.md decision 1 of merge-parameterized-rule-upgrades).
+ * entry, per `RuleRef.param`'s own convention: a value written `+X` is an
+ * additive bonus, anything else is a base value (a plain number is a tier
+ * level — keep the highest; a dice expression such as `D3`/`2D6` is kept
+ * verbatim, since it can't be reduced to a number).
+ *
+ * Merging is base ⊕ additives. When every value involved is a plain number
+ * the result is arithmetic (`Tough(3)` + `Tough(+3)` → `Tough(6)`). When any
+ * value is a dice expression the result is symbolic — the parts are joined
+ * with `+`, preserving each contributor exactly as printed (`Impact(D3)` +
+ * `Impact(+1)` → `Impact(D3+1)`; `Impact(2D6)` + `Impact(+D6)` →
+ * `Impact(2D6+D6)`). Dice are never normalized (`2D6+D6` does not become
+ * `3D6`): die sizes often differ, so concatenation is the one rule that
+ * covers every combination and always reads as what the player rolls.
+ *
+ * Every contributing value is represented in the result — see
+ * `parameterized-rule-merge-audit.test.ts`, which enforces that across all
+ * faction data. An earlier version bailed out on any group containing a
+ * dice expression and returned just its first entry, silently dropping the
+ * rest; that shape was assumed unreachable but was already present in the
+ * data (see design.md of merge-dice-parameterized-rules).
  */
 function mergeRuleGroup(group: RuleRef[]): RuleRef {
   if (group.length === 1) return group[0]
 
-  const additive = group.filter((r): r is RuleRef & { param: string } => typeof r.param === 'string' && /^\+\d+$/.test(r.param))
-  const absolute = group.filter((r): r is RuleRef & { param: number } => typeof r.param === 'number')
+  const isAdditiveParam = (p: RuleRef['param']): p is string => typeof p === 'string' && p.startsWith('+')
+  const additive = group.filter((r): r is RuleRef & { param: string } => isAdditiveParam(r.param))
+  const base = group.filter((r) => !isAdditiveParam(r.param))
 
-  if (additive.length + absolute.length !== group.length) return group[0]
+  // `note`-only entries (no param at all) carry nothing to combine.
+  if (base.some((r) => r.param === undefined)) return group[0]
 
-  if (additive.length) {
-    const base = absolute.length ? Math.max(...absolute.map((r) => r.param)) : 0
+  const allNumeric =
+    base.every((r) => typeof r.param === 'number') && additive.every((r) => /^\+\d+$/.test(r.param))
+
+  if (allNumeric) {
+    const highest = base.length ? Math.max(...base.map((r) => r.param as number)) : 0
+    if (!additive.length) return { ruleId: group[0].ruleId, param: highest }
     const bonus = additive.reduce((sum, r) => sum + Number(r.param.slice(1)), 0)
-    return { ruleId: group[0].ruleId, param: base + bonus }
+    return { ruleId: group[0].ruleId, param: highest + bonus }
   }
 
-  return absolute.reduce((max, r) => (r.param > max.param ? r : max))
+  // Symbolic: bases joined in first-occurrence order, then each additive
+  // appended verbatim — its own leading `+` acts as the joiner.
+  const baseText = base.map((r) => String(r.param)).join('+')
+  const param = baseText + additive.map((r) => r.param).join('')
+  return { ruleId: group[0].ruleId, param }
 }
 
 /** Collapse duplicate same-`ruleId` parameterized rules (see `mergeRuleGroup`), keeping first-occurrence order. */

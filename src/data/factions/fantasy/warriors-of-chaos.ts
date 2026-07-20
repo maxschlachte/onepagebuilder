@@ -62,7 +62,7 @@ export const warriorsofchaos = faction({
         { label: "Master Lance", cost: 5, requiresOneOfSelected: ["Chaos Steed", "Steed of Slaanesh", "Disc of Tzeentch", "Daemonic Mount", "Juggernaut of Khorne", "Palanquin of Nurgle", "Manticore", "Chaos Dragon"], addEquipment: [meleeWeapon('Master', 'Lance', { key: 'master-lance', label: "Master Lance" })] },
         { label: "Master Mace", cost: 20, addEquipment: [meleeWeapon('Master', 'Mace', { key: 'master-mace', label: "Master Mace" })] }
       ]),
-      section("Mount on:", 'any', [
+      section("Mount on:", 'one', [
         { label: "Chaos Steed", cost: 10, addEquipment: [
             meleeWeapon('Light', 'Claws', { key: 'light-claws', label: "Light Claws" }),
             gear("Chaos Steed", { mount: true, rules: [{ ruleId: "fast" }, { ruleId: "nimble" }] })

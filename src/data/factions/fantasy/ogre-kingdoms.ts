@@ -47,7 +47,7 @@ export const ogrekingdoms = faction({
         { label: "Vulture", cost: 10, addEquipment: [customWeapon("Vulture", { range: 36, attacks: "1", rules: rules("Ignores Cover") })] },
         { label: "Harpoon Launcher", cost: 15, addEquipment: [customWeapon("Harpoon Launcher", { range: 36, attacks: "1", rules: rules("Piercing") })] }
       ]),
-      section("Mount on:", 'any', [
+      section("Mount on:", 'one', [
         { label: "Stonehorn", cost: 95, addEquipment: [
             meleeWeapon('Force', 'Claws', { key: 'force-claws', label: "Force Claws", rules: rules('Piercing') }),
             gear("Stonehorn", { mount: true, rules: [{ ruleId: "armored" }, { ruleId: "furious" }, { ruleId: "impact", param: "+3" }, { ruleId: "tough", param: 6 }, { ruleId: "trample" }] })
@@ -59,7 +59,7 @@ export const ogrekingdoms = faction({
       section("Upgrade with one:", 'one', [
         { label: "Longstrider", cost: 5, adds: ["Fast"] },
         { label: "Wallcrusher", cost: 5, adds: ["Impact(+1)"] },
-        { label: "Brawlergut", cost: 5, adds: ["Piercing", "Impact"] },
+        { label: "Brawlergut", cost: 5, adds: ["Piercing Impact"] },
         { label: "Giantbreaker", cost: 10, adds: ["Piercing in Melee"] },
         { label: "Mountaineater", cost: 25, adds: ["Tough(+3)"] }
       ])

@@ -32,7 +32,7 @@ export const orcs = faction({
         { label: "Heavy Spear", cost: 5, requiresOneOfSelected: ["War Boar", "Boar Chariot", "Wyvern"], addEquipment: [meleeWeapon('Heavy', 'Spear', { key: 'heavy-spear', label: "Heavy Spear" })], removeEquipment: ["heavy-sword"] },
         { label: "Heavy Mace", cost: 15, addEquipment: [meleeWeapon('Heavy', 'Mace', { key: 'heavy-mace', label: "Heavy Mace" })], removeEquipment: ["heavy-sword"] }
       ]),
-      section("Mount on:", 'any', [
+      section("Mount on:", 'one', [
         { label: "War Boar", cost: 10, addEquipment: [
             meleeWeapon('Light', 'Claws', { key: 'light-claws', label: "Light Claws" }),
             gear("War Boar", { mount: true, rules: [{ ruleId: "fast" }, { ruleId: "nimble" }, { ruleId: "tusker-charge" }] })
@@ -54,7 +54,7 @@ export const orcs = faction({
       section("Upgrade with:", 'any', [
         { label: "Wizard(2)", cost: 5, adds: ["Wizard(2)"] }
       ]),
-      section("Mount on:", 'any', [
+      section("Mount on:", 'one', [
         { label: "War Boar", cost: 5, addEquipment: [
             meleeWeapon('Light', 'Claws', { key: 'light-claws', label: "Light Claws" }),
             gear("War Boar", { mount: true, rules: [{ ruleId: "fast" }, { ruleId: "nimble" }, { ruleId: "tusker-charge" }] })

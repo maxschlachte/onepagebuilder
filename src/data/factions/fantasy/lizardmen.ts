@@ -42,7 +42,7 @@ export const lizardmen = faction({
       section("Equip with:", 'any', [
         { label: "Heavy Armor", cost: 10, adds: ["Armored"] }
       ]),
-      section("Mount on:", 'any', [
+      section("Mount on:", 'one', [
         { label: "Cold One", cost: 15, addEquipment: [
             meleeWeapon('Medium', 'Claws', { key: 'medium-claws', label: "Medium Claws" }),
             gear("Cold One", { mount: true, rules: [{ ruleId: "fast" }, { ruleId: "nimble" }] })
@@ -73,7 +73,7 @@ export const lizardmen = faction({
         { label: "Blowpipe", cost: 10, addEquipment: [customWeapon("Blowpipe", { range: 12, attacks: "2", rules: rules("Poison") })] },
         { label: "Shield", cost: 10, adds: ["Armored"] }
       ]),
-      section("Mount on:", 'any', [
+      section("Mount on:", 'one', [
         { label: "Terradon", cost: 15, addEquipment: [
             meleeWeapon('Light', 'Claws', { key: 'light-claws', label: "Light Claws" }),
             gear("Terradon", { mount: true, rules: [{ ruleId: "drop-rocks" }, { ruleId: "fear" }, { ruleId: "flying" }, { ruleId: "impact", param: 1 }, { ruleId: "nimble" }, { ruleId: "tough", param: 3 }] })
@@ -129,6 +129,9 @@ export const lizardmen = faction({
   ],
   armyRules: [
     armyRule("Arcane Vassal", "Friendly Slann Mage-Priests within 24” of this model may cast spells from its position."),
+    // Distinct from the Empire's same-mechanic "Bloodroar" — each army list prints its own
+    // spelling and wording, so they stay separately registered per faction.
+    armyRule("Blood Roar", "Enemies re-roll morale from Fear."),
     armyRule("Bludgeon", "Whenever this unit fights in Melee nominate one of its attacks to be a bludgeon attack. That attack has the Piercing and Deadly rules."),
     armyRule("Chameleon", "Enemy units must re-roll successful hits from shooting against this unit."),
     armyRule("Drop Rocks", "Once per game his model may deal D3 hits to one enemy unit it passed over."),

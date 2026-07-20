@@ -43,7 +43,7 @@ export const daemonsofchaos = faction({
         { label: "Locus of Wrath", cost: 50, adds: ["Locus of Wrath"] },
         { label: "Locus of Fury", cost: 115, adds: ["Locus of Fury"] }
       ]),
-      section("Mount on:", 'any', [
+      section("Mount on:", 'one', [
         { label: "Juggernaut", cost: 60, addEquipment: [
             meleeWeapon('Heavy', 'Claws', { key: 'heavy-claws', label: "Heavy Claws" }),
             gear("Juggernaut", { mount: true, rules: [{ ruleId: "armored" }, { ruleId: "impact", param: 1 }, { ruleId: "nimble" }, { ruleId: "tough", param: 3 }] })
@@ -65,7 +65,7 @@ export const daemonsofchaos = faction({
       section("Upgrade with:", 'any', [
         { label: "Wizard(1)", cost: 25, adds: ["Wizard(1)"] }
       ]),
-      section("Mount on:", 'any', [
+      section("Mount on:", 'one', [
         { label: "Palanquin", cost: 40, addEquipment: [
             meleeWeapon('Force', 'Claws', { key: 'force-claws', label: "Force Claws" }),
             gear("Palanquin", { mount: true, rules: [{ ruleId: "impact", param: 1 }, { ruleId: "nimble" }, { ruleId: "tough", param: 3 }] })
@@ -82,7 +82,7 @@ export const daemonsofchaos = faction({
       section("Upgrade Wizard(1):", 'any', [
         { label: "Wizard(2)", cost: 5, adds: ["Wizard(2)"] }
       ]),
-      section("Mount on:", 'any', [
+      section("Mount on:", 'one', [
         { label: "Disc", cost: 10, addEquipment: [
             meleeWeapon('Heavy', 'Claws', { key: 'heavy-claws', label: "Heavy Claws" }),
             gear("Disc", { mount: true, rules: [{ ruleId: "fast" }, { ruleId: "flying" }, { ruleId: "nimble" }] })
@@ -105,7 +105,7 @@ export const daemonsofchaos = faction({
       section("Upgrade with:", 'any', [
         { label: "Wizard(1)", cost: 25, adds: ["Wizard(1)"] }
       ]),
-      section("Mount on:", 'any', [
+      section("Mount on:", 'one', [
         { label: "Steed", cost: 10, addEquipment: [
             meleeWeapon('Light', 'Claws', { key: 'light-claws', label: "Light Claws", rules: rules('Piercing, Poison') }),
             gear("Steed", { mount: true, rules: [{ ruleId: "fast" }, { ruleId: "nimble" }] })

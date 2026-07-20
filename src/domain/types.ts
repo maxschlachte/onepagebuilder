@@ -12,7 +12,6 @@ export interface SpecialRule {
   name: string
   text: string
   hasParameter?: boolean
-  isAdditive?: boolean
 }
 
 /**

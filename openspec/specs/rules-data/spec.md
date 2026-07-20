@@ -5,7 +5,7 @@ TBD - created by archiving change army-builder-1p40k. Update Purpose after archi
 ## Requirements
 ### Requirement: Typed rules schema
 
-The system SHALL define a typed schema for the rulesets it supports comprising factions, unit profiles, weapon profiles, upgrade groups, special rules, psychic powers, and army-composition limits. Every faction SHALL be tagged with the `GameSystem` it belongs to (`system-40k` or `system-fantasy`). All rules content SHALL be derived exclusively from that system's source document: `1p40k - Main Rulebook v3.3.1.pdf` for `system-40k`, `one-page-fantasy-army-lists.md` for `system-fantasy`.
+The system SHALL define a typed schema for the rulesets it supports comprising factions, unit profiles, weapon profiles, upgrade groups, special rules, psychic powers, and army-composition limits. Every faction SHALL be tagged with the `GameSystem` it belongs to (`system-40k` or `system-fantasy`). All rules content SHALL be derived exclusively from that system's source document: `1p40k - Main Rulebook v3.3.1.pdf` for `system-40k`, `one-page-fantasy-army-lists.md` for `system-fantasy`. Whether a parameterized rule's value combines additively SHALL be determined by the shape of the value at the reference site (a `+N`-style value is an additive bonus; a plain value is not), not by a flag on the rule's glossary definition — so the same convention applies uniformly across both game systems' glossaries.
 
 #### Scenario: Schema covers all rule entities
 
@@ -16,6 +16,11 @@ The system SHALL define a typed schema for the rulesets it supports comprising f
 
 - **WHEN** any unit, weapon, special rule, psychic power/magic spell, or point cost is added to the dataset for a given faction
 - **THEN** its values match the corresponding entry in that faction's game system's source document, and no value originates from any other source
+
+#### Scenario: Additive-ness is carried by the reference, not the definition
+
+- **WHEN** a glossary special-rule definition is read
+- **THEN** it carries no flag declaring the rule additive, and a consumer determines additive combination solely from the referencing value's own `+N` shape
 
 ### Requirement: Faction unit profiles
 
@@ -38,7 +43,7 @@ The system SHALL encode, for every faction in the rulebook, each unit's name, si
 
 ### Requirement: Parameterized special rules and glossary
 
-The system SHALL store the global special-rule glossary as resolvable entries, and SHALL represent rules with numeric parameters (e.g. `Tough(X)`, `Impact(X)`, `Psyker(X)`) as references that carry both the rule identity and its value.
+The system SHALL store the global special-rule glossary as resolvable entries, and SHALL represent rules with numeric parameters (e.g. `Tough(X)`, `Impact(X)`, `Psyker(X)`) as references that carry both the rule identity and its value. Every special-rule reference present in the shipped dataset SHALL resolve to a defined rule — in its game system's glossary, in its faction's army rules, or in its faction's psychic powers — so that no reference relies on the resolver's unknown-id fallback. A rule that is transcribed as a compound or derived modifier rather than a standalone rulebook entry (e.g. `Piercing in Melee`, `+1A in Melee`) SHALL still be declared as a named glossary entry rather than left unresolvable.
 
 #### Scenario: Glossary text is resolvable
 
@@ -49,6 +54,16 @@ The system SHALL store the global special-rule glossary as resolvable entries, a
 
 - **WHEN** a `Tough(3)` reference is resolved
 - **THEN** the system returns the rule's glossary text together with the parameter value `3`
+
+#### Scenario: Every shipped reference resolves to a named rule
+
+- **WHEN** every special-rule reference reachable in the dataset — a unit's `specialRules`, an equipment entry's `rules`, a weapon's `rules`, or an upgrade option's `addRules` and added-equipment rules — is resolved through the faction's own resolver
+- **THEN** each resolved name is the rule's declared display name, and no resolved name is the reference's raw kebab-case id
+
+#### Scenario: Unresolvable reference is detected by casing
+
+- **WHEN** a reference's id has no matching glossary entry, army rule, or psychic power, and the resolver falls back to returning the id itself
+- **THEN** the resulting name contains no uppercase letter, and the dataset audit fails and reports the faction and location of the offending reference
 
 ### Requirement: Weapon profiles
 
@@ -238,6 +253,20 @@ The system SHALL maintain a separate special-rule glossary for each game system 
 
 - **WHEN** the Warhammer Fantasy glossary is queried for the `wizard` rule id
 - **THEN** it returns Warhammer Fantasy's own sourced text for Wizard, independently of the Warhammer 40k glossary's `psyker` entry
+
+### Requirement: Faction-scoped rule registration
+
+The system SHALL resolve faction-specific special rules against the referencing faction's own `armyRules`, and SHALL permit two factions to declare same-named rules independently with their own text. A rule referenced by a faction's units or upgrade options SHALL be declared on that faction rather than assumed to exist in the shared glossary.
+
+#### Scenario: Faction rule resolves only for its own faction
+
+- **WHEN** a faction declares an army rule and one of its units references it
+- **THEN** the reference resolves to that faction's declared name and text
+
+#### Scenario: Same-named rules coexist across factions
+
+- **WHEN** two factions each declare a rule with the same name but different text
+- **THEN** each faction's references resolve to that faction's own text, with neither overriding the other
 
 ### Requirement: Warhammer Fantasy melee weapon profiles match the Weapons table
 

@@ -47,7 +47,7 @@ export const empire = faction({
         { label: "Rifle", cost: 10, addEquipment: [weaponFantasy('rifle')] },
         { label: "Longbow", cost: 15, addEquipment: [weaponFantasy('longbow')] }
       ]),
-      section("Mount on:", 'any', [
+      section("Mount on:", 'one', [
         { label: "Warhorse", cost: 10, addEquipment: [
             meleeWeapon('Light', 'Claws', { key: 'light-claws', label: "Light Claws" }),
             gear("Warhorse", { mount: true, rules: [{ ruleId: "fast" }, { ruleId: "nimble" }] })
@@ -113,7 +113,7 @@ export const empire = faction({
       section("Equip with:", 'any', [
         { label: "Heavy Armor", cost: 10, adds: ["Armored"] }
       ]),
-      section("Mount on:", 'any', [
+      section("Mount on:", 'one', [
         { label: "Warhorse", cost: 5, addEquipment: [
             meleeWeapon('Light', 'Claws', { key: 'light-claws', label: "Light Claws" }),
             gear("Warhorse", { mount: true, rules: [{ ruleId: "fast" }, { ruleId: "nimble" }] })
@@ -135,7 +135,7 @@ export const empire = faction({
       section("Upgrade with:", 'any', [
         { label: "Wizard(2)", cost: 5, adds: ["Wizard(2)"] }
       ]),
-      section("Mount on:", 'any', [
+      section("Mount on:", 'one', [
         { label: "Warhorse", cost: 5, addEquipment: [
             meleeWeapon('Light', 'Claws', { key: 'light-claws', label: "Light Claws" }),
             gear("Warhorse", { mount: true, rules: [{ ruleId: "fast" }, { ruleId: "nimble" }] })
@@ -145,7 +145,7 @@ export const empire = faction({
     ]),
     group("L", [
       section("Upgrade with:", 'any', [
-        { label: "Iron Hooves", cost: 5, adds: ["Piercing"] },
+        { label: "Iron Hooves", cost: 5, adds: ["Piercing Impact"] },
         // "Swift as the Wind" grants a move bonus with no matching glossary rule id — kept as a bare addRules token (parsed name only, no glossary text) rather than invented.
         { label: "Swift as the Wind", cost: 5, adds: ["Swift as the Wind"] }
       ])
@@ -158,7 +158,7 @@ export const empire = faction({
         { label: "Repeater Handgun", cost: 20, addEquipment: [customWeapon("Repeater Handgun", { range: 24, attacks: "3", rules: rules("Piercing") })] },
         { label: "Hochland Rifle", cost: 45, addEquipment: [customWeapon("Hochland Rifle", { range: 36, attacks: "1", rules: rules("Piercing, Sniper") })] }
       ]),
-      section("Mount on:", 'any', [
+      section("Mount on:", 'one', [
         { label: "Warhorse", cost: 5, addEquipment: [
             meleeWeapon('Light', 'Claws', { key: 'light-claws', label: "Light Claws" }),
             gear("Warhorse", { mount: true, rules: [{ ruleId: "fast" }, { ruleId: "nimble" }] })
@@ -195,6 +195,9 @@ export const empire = faction({
   armyRules: [
     armyRule("Accusation", "At the beginning of the game select one enemy model. The witch hunter may always target that model directly even if it is part of a unit, and it has the Rapid and Deadly rules against it."),
     armyRule("Ballistic Master", "Each round one Ordnance unit within 3” may shoot at Quality 4+."),
+    // Distinct from the Lizardmen's same-mechanic "Blood Roar" — each army list prints its
+    // own spelling and wording, so they stay separately registered per faction.
+    armyRule("Bloodroar", "Enemies must re-roll successful morale tests from Fear."),
     armyRule("End is Nigh!", "Whenever this unit fights in melee you may sacrifice D3 models before combat begins. If you do then this unit gets the Armored and Rapid special rules for that combat."),
     armyRule("Fury", "The hero and his unit get the Furious rule."),
     armyRule("Hold the Line!", "The hero and his unit get the Fearless special rule."),
@@ -202,6 +205,9 @@ export const empire = faction({
     armyRule("Portents", "All friendly units within 6” get the Rapid special rule."),
     armyRule("Prayer", "Whenever the hero and his unit fight in melee roll one die, on a 4+ the unit gets the Rapid and Armored special rules."),
     armyRule("Protection", "All friendly units within 6” may ignore Wounds of 6+."),
+    // Mechanically identical to the glossary's `Fast`, but printed under its own name in the
+    // Empire list rather than as "(Fast)", so it stays a faction rule rather than aliasing.
+    armyRule("Swift as the Wind", "This unit moves +3” when using Advance actions and +6” when using March/Charge actions."),
   ],
   psychicPowers: [
     power("Spirit Leech", 6, "Target enemy model within 12” must take a morale test. If failed it immediately takes D3 wounds."),

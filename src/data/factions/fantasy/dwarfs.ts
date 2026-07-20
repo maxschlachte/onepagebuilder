@@ -50,7 +50,7 @@ export const dwarfs = faction({
         { label: "Rapid Rifle", cost: 15, addEquipment: [customWeapon("Rapid Rifle", { range: null, attacks: '1', rules: rules('') })] },
         { label: "Rapid Crossbow", cost: 20, addEquipment: [customWeapon("Rapid Crossbow", { range: null, attacks: '1', rules: rules('') })] }
       ]),
-      section("Mount on:", 'any', [
+      section("Mount on:", 'one', [
         { label: "Shieldbearers", cost: 40, addEquipment: [
             meleeWeapon('Medium', 'Sword', { key: 'shieldbearers-medium-swords', label: "Medium Swords" }),
             gear("Shieldbearers", { mount: true, rules: rules("Tough(3)") })
@@ -140,6 +140,12 @@ export const dwarfs = faction({
     armyRule("Forgefire", "The hero’s unit gets the Piercing rule."),
     armyRule("Natural Resistance", "As long as this hero is alive you may add +2 to the result of your dispel rolls."),
     armyRule("Oathstone", "When taking morale tests this unit rolls one extra die and picks the highest result."),
+    // Runes whose granted effect is printed as free text under the option rather than as an
+    // existing rule name (contrast "Rune of Sanctuary (Resistance)", which grants a glossary rule).
+    armyRule("Rune of Battle", "Get +1 for melee results."),
+    armyRule("Rune of Disguise", "This unit always counts as being in Cover."),
+    armyRule("Rune of Immolation", "If an enemy kills this unit in Melee it takes 2D6 automatic hits."),
+    armyRule("Rune of Slowness", "Enemies charging this unit move -D6”."),
     armyRule("Shieldwall", "This unit may ignore wounds on a 6+ when being charged."),
     armyRule("Slow", "This unit moves up to 3” when using Advance actions, up to 6” when using March/Charge actions."),
   ],

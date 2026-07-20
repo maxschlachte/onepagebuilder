@@ -52,7 +52,7 @@ export const skaven = faction({
         { label: "Rat Hound", cost: 5, adds: ["+1 Melee attack"] },
         { label: "Unctuous Lotions", cost: 10, adds: ["Poison"] }
       ]),
-      section("Mount on:", 'any', [
+      section("Mount on:", 'one', [
         { label: "Great Pox Rat", cost: 15, addEquipment: [
             meleeWeapon('Medium', 'Claws', { key: 'medium-claws', label: "Medium Claws", rules: rules('Poison') }),
             gear("Great Pox Rat", { mount: true, rules: [{ ruleId: "fast" }, { ruleId: "nimble" }] })
@@ -100,7 +100,9 @@ export const skaven = faction({
         { label: "Flayer Gauntlets", cost: 5, adds: ["Impact(+D3)"] },
         { label: "Shock Gauntlets", cost: 5, adds: ["Piercing in Melee"] },
         { label: "Grinderfists", cost: 15, addEquipment: [customWeapon("Grinderfists", { range: null, attacks: '1', rules: rules("Grinder") })] },
-        { label: "Warpfire Projectors", cost: 20, adds: ["Fire Thrower"] },
+        // "Fire Thrower" is a weapon in the fantasy table, not a rule — printed as
+        // "Warpfire Projectors (Fire Thrower)".
+        { label: "Warpfire Projectors", cost: 20, addEquipment: [weaponFantasy('fire-thrower', { label: "Warpfire Projectors" })] },
         { label: "Windlaunchers", cost: 45, addEquipment: [customWeapon("Windlaunchers", { range: 24, attacks: "3", rules: rules("Piercing, Indirect, Poison") })] },
         { label: "Ratling Cannons", cost: 70, addEquipment: [customWeapon("Ratling Cannons", { range: 18, attacks: "3D6", rules: rules("Piercing") })] }
       ])
@@ -114,7 +116,7 @@ export const skaven = faction({
       section("Upgrade Wizard(1):", 'any', [
         { label: "Wizard(2)", cost: 5, adds: ["Wizard(2)"] }
       ]),
-      section("Mount on:", 'any', [
+      section("Mount on:", 'one', [
         { label: "Great Pox Rat", cost: 15, addEquipment: [
             meleeWeapon('Medium', 'Claws', { key: 'medium-claws', label: "Medium Claws", rules: rules('Poison') }),
             gear("Great Pox Rat", { mount: true, rules: [{ ruleId: "fast" }, { ruleId: "nimble" }] })
@@ -143,7 +145,9 @@ export const skaven = faction({
     ]),
     group("E", [
       section("Upgrade with:", 'any', [
-        { label: "Weapons Team", cost: 25, adds: ["Ratling Gun"] }
+        // Grants the weapon itself (same profile as the Weapon Team unit's baseline), not a
+        // rule — the printed "Weapons Team (Ratling Gun)" names the gear it comes with.
+        { label: "Weapons Team", cost: 25, addEquipment: [customWeapon("Ratling Gun", { range: 18, attacks: "D6", rules: rules("Piercing") })] }
       ]),
       section("Replace Ratling Gun:", 'any', [
         { label: "Poisoned Wind Mortar", cost: 10, addEquipment: [customWeapon("Poisoned Wind Mortar", { range: 24, attacks: "3", rules: rules("Indirect, Poison") })], removeEquipment: ["Ratling Gun"] },

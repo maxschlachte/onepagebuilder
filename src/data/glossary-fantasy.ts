@@ -166,5 +166,74 @@ export const fantasyGlossary: SpecialRule[] = [
     id: 'spear',
     name: 'Spear',
     text: 'Gets +1 Attack when charged.'
+  },
+  {
+    id: 'piercing-in-melee',
+    name: 'Piercing in Melee',
+    text: 'Weapons ignore the Armored special rule when fighting in melee. If a unit without Armored is hit then it must re-roll successful blocks instead.'
+  },
+  {
+    id: 'piercing-impact',
+    name: 'Piercing Impact',
+    text: 'Impact hits ignore the Armored special rule. If a unit without Armored suffers Impact hits then it must re-roll successful blocks instead.'
+  },
+
+  // ---------------------------------------------------------------------------
+  // Derived and compound modifiers.
+  //
+  // Everything below this line is a transcription convenience, not a standalone
+  // "Common Special Rules" entry in `one-page-fantasy-rules.md`. The army lists
+  // grant these as parentheticals on an upgrade option (e.g. `Two Heads (+1A in
+  // Melee)`, `Rune of Smiting (Deadly in Melee)`, `Vulture (36”, A1, Ignores
+  // Cover)`), so `rules("…")` parses them into refs that need somewhere to
+  // resolve. Declaring them here — rather than stripping them from `addRules` —
+  // follows the same precedent as `piercing-in-melee` / `piercing-impact` above
+  // and keeps them tooltip-able in the UI. Their text restates the base rule
+  // scoped to the granting context; it is not quoted from the rulebook.
+  // ---------------------------------------------------------------------------
+  {
+    id: 'poison-in-melee',
+    name: 'Poison in Melee',
+    text: 'Whenever this unit hits in melee on a roll of 6 it causes one automatic wound. Note that these hits can’t be ignored by the Armored special rule.'
+  },
+  {
+    id: 'deadly-in-melee',
+    name: 'Deadly in Melee',
+    text: 'Whenever this unit hits an enemy model in melee on a roll of 6 it takes D3+1 automatic wounds. Note that these hits can’t be ignored by the Armored special rule.'
+  },
+  {
+    id: 'ignores-cover',
+    name: 'Ignores Cover',
+    text: 'Hits from this weapon may not be ignored by the Cover terrain rule.'
+  },
+  {
+    id: 'ignore-piercing',
+    name: 'Ignore Piercing',
+    text: 'Hits against this model do not benefit from the Piercing special rule, so its Armored rule applies as normal and it does not have to re-roll successful blocks.'
+  },
+  {
+    id: '1a-in-melee',
+    name: '+1A in Melee',
+    text: 'This model gets +1 attack in melee.'
+  },
+  {
+    id: '2a-in-melee',
+    name: '+2A in Melee',
+    text: 'This model gets +2 attacks in melee.'
+  },
+  {
+    id: '1-melee-attack',
+    name: '+1 Melee Attack',
+    text: 'This model gets +1 attack in melee.'
+  },
+  {
+    id: 'd3-melee-attacks',
+    name: '+D3 Melee Attacks',
+    text: 'This model gets +D3 attacks in melee.'
+  },
+  {
+    id: '1-attack',
+    name: '+1 Attack',
+    text: 'This model gets +1 attack.'
   }
 ]

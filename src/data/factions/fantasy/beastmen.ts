@@ -36,7 +36,7 @@ export const beastmen = faction({
       section("Equip with:", 'any', [
         { label: "Heavy Armor", cost: 10, adds: ["Armored"] }
       ]),
-      section("Mount on:", 'any', [
+      section("Mount on:", 'one', [
         { label: "Tuskgor Chariot", cost: 60, addEquipment: [
             meleeWeapon('Medium', 'Claws', { key: 'medium-claws', label: "Medium Claws" }),
             gear("Tuskgor Chariot", { mount: true, rules: [{ ruleId: "armored" }, { ruleId: "fast" }, { ruleId: "impact", param: "D6" }, { ruleId: "tough", param: 3 }] })
@@ -65,7 +65,7 @@ export const beastmen = faction({
       section("Upgrade Wizard(1):", 'any', [
         { label: "Wizard(2)", cost: 5, adds: ["Wizard(2)"] }
       ]),
-      section("Mount on:", 'any', [
+      section("Mount on:", 'one', [
         { label: "Tuskgor Chariot", cost: 50, addEquipment: [
             meleeWeapon('Medium', 'Claws', { key: 'medium-claws', label: "Medium Claws" }),
             gear("Tuskgor Chariot", { mount: true, rules: [{ ruleId: "armored" }, { ruleId: "fast" }, { ruleId: "impact", param: "D6" }, { ruleId: "tough", param: 3 }] })

@@ -47,7 +47,7 @@ export const darkelves = faction({
         { label: "Rapid Pistol", cost: 10, addEquipment: [customWeapon("Rapid Pistol", { range: 12, attacks: '1', rules: rules("Piercing, Rapid") })] },
         { label: "Rapid Crossbow", cost: 20, addEquipment: [customWeapon("Rapid Crossbow", { range: 30, attacks: '1', rules: rules("Piercing, Rapid") })] }
       ]),
-      section("Mount on:", 'any', [
+      section("Mount on:", 'one', [
         { label: "Cold One", cost: 15, addEquipment: [
             meleeWeapon('Medium', 'Claws', { key: 'medium-claws', label: "Medium Claws" }),
             gear("Cold One", { mount: true, rules: [{ ruleId: "fast" }, { ruleId: "fear" }, { ruleId: "nimble" }] })
@@ -100,7 +100,7 @@ export const darkelves = faction({
       section("Upgrade Wizard(1):", 'any', [
         { label: "Wizard(2)", cost: 10, adds: ["Wizard(2)"] }
       ], { prerequisite: { requiresBaselineRule: ["Wizard(1)"] } }),
-      section("Mount on:", 'any', [
+      section("Mount on:", 'one', [
         { label: "Cold One", cost: 15, addEquipment: [
             meleeWeapon('Medium', 'Claws', { key: 'medium-claws', label: "Medium Claws" }),
             gear("Cold One", { mount: true, rules: [{ ruleId: "fast" }, { ruleId: "fear" }, { ruleId: "nimble" }] })

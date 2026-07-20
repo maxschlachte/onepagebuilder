@@ -29,7 +29,7 @@ export const bretonnia = faction({
         { label: "Master Lance", cost: 5, addEquipment: [meleeWeapon('Master', 'Lance', { key: 'master-lance', label: "Master Lance" })], removeEquipment: ["Master Sword"] },
         { label: "Master Mace", cost: 20, addEquipment: [meleeWeapon('Master', 'Mace', { key: 'master-mace', label: "Master Mace" })], removeEquipment: ["Master Sword"] }
       ]),
-      section("Mount on:", 'any', [
+      section("Mount on:", 'one', [
         { label: "Royal Pegasus", cost: 50, addEquipment: [
             meleeWeapon('Medium', 'Claws', { key: 'medium-claws', label: "Medium Claws" }),
             gear("Royal Pegasus", { mount: true, rules: [{ ruleId: "flying" }, { ruleId: "impact", param: 1 }, { ruleId: "tough", param: 3 }] })
@@ -47,7 +47,7 @@ export const bretonnia = faction({
         { label: "Heavy Lance", cost: 5, addEquipment: [meleeWeapon('Heavy', 'Lance', { key: 'heavy-lance', label: "Heavy Lance" })], removeEquipment: ["Heavy Sword"] },
         { label: "Heavy Mace", cost: 10, addEquipment: [meleeWeapon('Heavy', 'Mace', { key: 'heavy-mace', label: "Heavy Mace" })], removeEquipment: ["Heavy Sword"] }
       ]),
-      section("Mount on:", 'any', [
+      section("Mount on:", 'one', [
         { label: "Royal Pegasus", cost: 30, addEquipment: [
             meleeWeapon('Medium', 'Claws', { key: 'medium-claws', label: "Medium Claws" }),
             gear("Royal Pegasus", { mount: true, rules: [{ ruleId: "flying" }, { ruleId: "impact", param: 1 }, { ruleId: "tough", param: 3 }] })
@@ -56,7 +56,7 @@ export const bretonnia = faction({
       ])
     ]),
     group("C", [
-      section("Mount on:", 'any', [
+      section("Mount on:", 'one', [
         { label: "Bretonnian Warhorse", cost: 5, addEquipment: [
             meleeWeapon('Light', 'Claws', { key: 'light-claws', label: "Light Claws" }),
             gear("Bretonnian Warhorse", { mount: true, rules: [{ ruleId: "fast" }, { ruleId: "nimble" }] })
@@ -73,7 +73,7 @@ export const bretonnia = faction({
       section("Upgrade Wizard(1):", 'any', [
         { label: "Wizard(2)", cost: 10, adds: ["Wizard(2)"] }
       ]),
-      section("Mount on:", 'any', [
+      section("Mount on:", 'one', [
         { label: "Bretonnian Warhorse", cost: 5, addEquipment: [
             meleeWeapon('Light', 'Claws', { key: 'light-claws', label: "Light Claws" }),
             gear("Bretonnian Warhorse", { mount: true, rules: [{ ruleId: "fast" }, { ruleId: "nimble" }] })

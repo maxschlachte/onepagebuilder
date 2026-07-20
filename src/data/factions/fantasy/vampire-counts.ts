@@ -46,7 +46,7 @@ export const vampirecounts = faction({
       section("Upgrade Wizard(1):", 'any', [
         { label: "Wizard(2)", cost: 5, adds: ["Wizard(2)"] }
       ], { prerequisite: { requiresBaselineRule: ["Wizard(1)"] } }),
-      section("Mount on:", 'any', [
+      section("Mount on:", 'one', [
         { label: "Nightmare", cost: 10, addEquipment: [
             meleeWeapon('Light', 'Claws', { key: 'light-claws', label: "Light Claws" }),
             gear("Nightmare", { mount: true, rules: [{ ruleId: "fast" }, { ruleId: "nimble" }] })
@@ -90,7 +90,7 @@ export const vampirecounts = faction({
       section("Equip with:", 'any', [
         { label: "Heavy Armor", cost: 10, adds: ["Armored"] }
       ]),
-      section("Mount on:", 'any', [
+      section("Mount on:", 'one', [
         { label: "Skeletal Steed", cost: 15, addEquipment: [
             meleeWeapon('Light', 'Claws', { key: 'light-claws', label: "Light Claws" }),
             gear("Skeletal Steed", { mount: true, rules: [{ ruleId: "ethereal" }, { ruleId: "fast" }, { ruleId: "nimble" }] })
@@ -102,7 +102,7 @@ export const vampirecounts = faction({
       section("Upgrade Wizard(1):", 'any', [
         { label: "Wizard(2)", cost: 5, adds: ["Wizard(2)"] }
       ], { prerequisite: { requiresBaselineRule: ["Wizard(1)"] } }),
-      section("Mount on:", 'any', [
+      section("Mount on:", 'one', [
         { label: "Nightmare", cost: 5, addEquipment: [
             meleeWeapon('Light', 'Claws', { key: 'light-claws', label: "Light Claws" }),
             gear("Nightmare", { mount: true, rules: [{ ruleId: "fast" }, { ruleId: "nimble" }] })

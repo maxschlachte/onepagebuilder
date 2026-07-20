@@ -35,7 +35,7 @@ export const woodelves = faction({
         { label: "Heavy Spear", cost: 5, addEquipment: [meleeWeapon('Heavy', 'Spear', { key: 'heavy-spear', label: "Heavy Spear" })], removeEquipment: ["Heavy Sword"] },
         { label: "Heavy Mace", cost: 15, addEquipment: [meleeWeapon('Heavy', 'Mace', { key: 'heavy-mace', label: "Heavy Mace" })], removeEquipment: ["Heavy Sword"] }
       ]),
-      section("Mount on:", 'any', [
+      section("Mount on:", 'one', [
         { label: "Elven Steed", cost: 10, addEquipment: [
             meleeWeapon('Light', 'Claws', { key: 'light-claws', label: "Light Claws" }),
             gear("Elven Steed", { mount: true, rules: [{ ruleId: "fast" }, { ruleId: "nimble" }] })
@@ -66,7 +66,7 @@ export const woodelves = faction({
       section("Upgrade Wizard(1):", 'any', [
         { label: "Wizard(2)", cost: 10, adds: ["Wizard(2)"] }
       ]),
-      section("Mount on:", 'any', [
+      section("Mount on:", 'one', [
         { label: "Elven Steed", cost: 10, addEquipment: [
             meleeWeapon('Light', 'Claws', { key: 'light-claws', label: "Light Claws" }),
             gear("Elven Steed", { mount: true, rules: [{ ruleId: "fast" }, { ruleId: "nimble" }] })
@@ -95,7 +95,10 @@ export const woodelves = faction({
         { label: "Skyfire Shot", cost: 15, adds: ["Rapid"] },
         { label: "Hagbane Tips", cost: 15, adds: ["Poison"] },
         { label: "Arcane Bodkins", cost: 25, adds: ["Piercing"] },
-        // "+1 Attack" is not a named rule anywhere in the source (no Common Special Rules entry, no Wood Elves army rule defines it standalone — it only appears as a sub-choice inside "Dancer"/"Hawk-eyed"'s own text) so this reference is left as best-effort and will not resolve against the glossary.
+        // "+1 Attack" is not a named rule anywhere in the source (no Common Special Rules entry,
+        // no Wood Elves army rule defines it standalone — it only appears as a sub-choice inside
+        // "Dancer"/"Hawk-eyed"'s own text). It is declared as a derived modifier in
+        // `glossary-fantasy.ts` so it resolves to a readable name instead of its raw id.
         { label: "Swiftshiver Shards", cost: 50, adds: ["+1 Attack"] }
       ])
     ]),

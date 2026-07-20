@@ -43,7 +43,7 @@ export const tombkings = faction({
       section("Upgrade with:", 'any', [
         { label: "Prince’s Will", cost: 120, adds: ["Prince’s Will"] }
       ]),
-      section("Mount on:", 'any', [
+      section("Mount on:", 'one', [
         { label: "Skeletal Steed", cost: 10, addEquipment: [
             meleeWeapon('Light', 'Claws', { key: 'light-claws', label: "Light Claws" }),
             gear("Skeletal Steed", { mount: true, rules: [{ ruleId: "fast" }, { ruleId: "nimble" }] })
@@ -66,7 +66,7 @@ export const tombkings = faction({
         { label: "Wizard(2)", cost: 10, adds: ["Wizard(2)"] },
         { label: "Wizard(3)", cost: 20, adds: ["Wizard(3)"] }
       ], { prerequisite: { requiresBaselineRule: ["Wizard(1)"] } }),
-      section("Mount on:", 'any', [
+      section("Mount on:", 'one', [
         { label: "Skeletal Steed", cost: 5, addEquipment: [
             meleeWeapon('Light', 'Claws', { key: 'light-claws', label: "Light Claws" }),
             gear("Skeletal Steed", { mount: true, rules: [{ ruleId: "fast" }, { ruleId: "nimble" }] })

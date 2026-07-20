@@ -104,6 +104,55 @@ describe('applyUpgrades — parameterized rule merging', () => {
     expect(eff.specialRules.filter((r) => r.ruleId === 'tough')).toHaveLength(1)
   })
 
+  // A dice-expression baseline (`Impact(D3)`) is not a plain number, so an additive `+N`
+  // on top of it can't be summed arithmetically — the two are joined symbolically instead,
+  // preserving each contributor exactly as printed. Before this was handled, the additive
+  // was silently dropped and the unit displayed its bare baseline.
+  it('an Impact(+1) upgrade joins onto a dice baseline Impact(D3) as one entry', () => {
+    const ogres = getFaction('ogre-kingdoms')!
+    const tyrant = ogres.units.find((u) => u.name === 'Tyrant')! // baseline Impact(D3)
+    const wallcrusher = optionId(ogres, 'C', 'Wallcrusher')
+    const eff = applyUpgrades(tyrant, [wallcrusher], ogres)
+    expect(eff.specialRules).toContainEqual({ ruleId: 'impact', param: 'D3+1' })
+    expect(eff.specialRules.filter((r) => r.ruleId === 'impact')).toHaveLength(1)
+  })
+
+  it('an Impact(+3) upgrade joins onto a dice baseline Impact(D6)', () => {
+    const lizardmen = getFaction('lizardmen')!
+    const stegadon = lizardmen.units.find((u) => u.name === 'Stegadon')! // baseline Impact(D6)
+    const sharpHorns = optionId(lizardmen, 'E', 'Sharp Horns')
+    const eff = applyUpgrades(stegadon, [sharpHorns], lizardmen)
+    expect(eff.specialRules).toContainEqual({ ruleId: 'impact', param: 'D6+3' })
+    expect(eff.specialRules.filter((r) => r.ruleId === 'impact')).toHaveLength(1)
+  })
+
+  it('a dice-expression additive Impact(+D6) joins onto a dice baseline Impact(2D6)', () => {
+    const goblins = getFaction('goblins')!
+    const pumpWagon = goblins.units.find((u) => u.name === 'Pump Wagon')! // baseline Impact(2D6)
+    const spores = optionId(goblins, 'F', 'Giant Explodin')
+    const eff = applyUpgrades(pumpWagon, [spores], goblins)
+    expect(eff.specialRules).toContainEqual({ ruleId: 'impact', param: '2D6+D6' })
+    expect(eff.specialRules.filter((r) => r.ruleId === 'impact')).toHaveLength(1)
+  })
+
+  it('joins two different die sizes without attempting dice arithmetic', () => {
+    const orks = getFaction('orks')!
+    const deffDred = orks.units.find((u) => u.name === 'Deff Dred')! // baseline Impact(D3)
+    const wreckinBall = optionId(orks, 'K', 'Wreckin')
+    const eff = applyUpgrades(deffDred, [wreckinBall], orks)
+    expect(eff.specialRules).toContainEqual({ ruleId: 'impact', param: 'D3+D6' })
+    expect(eff.specialRules.filter((r) => r.ruleId === 'impact')).toHaveLength(1)
+  })
+
+  it('keeps an all-numeric merge arithmetic, not symbolic', () => {
+    const eldar = getFaction('eldar')!
+    const vyper = eldar.units.find((u) => u.name === 'Vyper')! // baseline Tough(3)
+    const powerField = optionId(eldar, 'C', 'Power-Field')
+    const merged = applyUpgrades(vyper, [powerField], eldar).specialRules.find((r) => r.ruleId === 'tough')!
+    expect(merged.param).toBe(6)
+    expect(typeof merged.param).toBe('number')
+  })
+
   it('leaves baseline rules unmodified when no upgrades are selected', () => {
     const eff = applyUpgrades(librarian, [], sm)
     expect(eff.specialRules).toContainEqual({ ruleId: 'psyker', param: 1 })

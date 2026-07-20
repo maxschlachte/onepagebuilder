@@ -38,7 +38,7 @@ export const goblins = faction({
       section("Equip with:", 'any', [
         { label: "Shortbow", cost: 5, addEquipment: [weaponFantasy('shortbow')] }
       ]),
-      section("Mount on:", 'any', [
+      section("Mount on:", 'one', [
         { label: "Giant Wolf", cost: 5, addEquipment: [
             meleeWeapon('Light', 'Claws', { key: 'light-claws', label: "Light Claws" }),
             gear("Giant Wolf", { mount: true, rules: [{ ruleId: "fast" }, { ruleId: "nimble" }] })
@@ -70,7 +70,7 @@ export const goblins = faction({
       section("Upgrade with:", 'any', [
         { label: "Wizard(2)", cost: 5, adds: ["Wizard(2)"] }
       ]),
-      section("Mount on:", 'any', [
+      section("Mount on:", 'one', [
         { label: "Giant Wolf", cost: 5, addEquipment: [
             meleeWeapon('Light', 'Claws', { key: 'light-claws', label: "Light Claws" }),
             gear("Giant Wolf", { mount: true, rules: [{ ruleId: "fast" }, { ruleId: "nimble" }] })
@@ -112,7 +112,7 @@ export const goblins = faction({
         { label: "Flappas", cost: 5, adds: ["Strider"] },
         // Source prints a clarifying note on the following line: "(Impact(+D6) once per game)".
         { label: "Giant Explodin’ Spores", cost: 5, adds: ["Impact(+D6)"] },
-        { label: "Spiky Roller", cost: 10, adds: ["Piercing"] }
+        { label: "Spiky Roller", cost: 10, adds: ["Piercing Impact"] }
       ])
     ]),
     group("G", [

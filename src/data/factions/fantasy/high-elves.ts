@@ -47,7 +47,7 @@ export const highelves = faction({
         { label: "Longbow", cost: 10, addEquipment: [weaponFantasy('longbow')] },
         { label: "Heavy Armor", cost: 10, adds: ["Armored"] }
       ]),
-      section("Mount on:", 'any', [
+      section("Mount on:", 'one', [
         { label: "Elven Steed", cost: 10, addEquipment: [
             meleeWeapon('Light', 'Claws', { key: 'light-claws', label: "Light Claws" }),
             gear("Elven Steed", { mount: true, rules: [{ ruleId: "fast" }, { ruleId: "nimble" }] })
@@ -92,7 +92,7 @@ export const highelves = faction({
         { label: "Wizard(2)", cost: 10, adds: ["Wizard(2)"] },
         { label: "Wizard(3)", cost: 20, adds: ["Wizard(3)"] }
       ]),
-      section("Mount on:", 'any', [
+      section("Mount on:", 'one', [
         { label: "Elven Steed", cost: 10, addEquipment: [
             meleeWeapon('Light', 'Claws', { key: 'light-claws', label: "Light Claws" }),
             gear("Elven Steed", { mount: true, rules: [{ ruleId: "fast" }, { ruleId: "nimble" }] })
